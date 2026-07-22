@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-body text-gray-800 antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           bg-white text-navy-900 font-semibold rounded-lg
+           transition-all duration-200 hover:bg-gray-100 hover:scale-[1.02]
+           focus:outline-none focus:ring-2 focus:ring-white/50;
+  }
+  
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           bg-whatsapp text-white font-semibold rounded-lg
+           transition-all duration-200 hover:bg-whatsapp-light hover:scale-[1.02]
+           focus:outline-none focus:ring-2 focus:ring-whatsapp/50;
+  }
+  
+  .btn-brand {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           bg-brand-blue text-white font-semibold rounded-lg
+           transition-all duration-200 hover:bg-brand-light hover:scale-[1.02]
+           focus:outline-none focus:ring-2 focus:ring-brand-blue/50;
+  }
+  
+  .section-container {
+    @apply w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16;
+  }
+  
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70;
+  }
+}
+
+@layer utilities {
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+  .animation-delay-700 { animation-delay: 700ms; }
+  .animation-delay-800 { animation-delay: 800ms; }
+}
