@@ -5,9 +5,7 @@ import vike from 'vike/plugin'
 export default defineConfig({
   plugins: [
     react(),
-    vike({
-      prerender: true
-    })
+    vike()
   ],
   resolve: {
     alias: {
@@ -19,6 +17,9 @@ export default defineConfig({
       '@locales': '/src/locales',
       '@seo': '/src/seo'
     }
+  },
+  ssr: {
+    noExternal: ['react-helmet-async']
   },
   build: {
     outDir: 'dist',

@@ -1,52 +1,18 @@
-export const projects = [
-  {
-    id: 1,
-    title: 'Full Bathroom Refit',
-    location: 'Didsbury',
-    category: 'Plumbing & Tiling',
-    image: '/assets/img/projects/bathroom-refit.jpg',
-    description: 'Complete bathroom renovation with modern fixtures and tiling'
-  },
-  {
-    id: 2,
-    title: 'Kitchen Renovation',
-    location: 'Chorlton',
-    category: 'Full Renovation',
-    image: '/assets/img/projects/kitchen-renovation.jpg',
-    description: 'Full kitchen redesign and installation'
-  },
-  {
-    id: 3,
-    title: 'Modern Bathroom',
-    location: 'Trafford',
-    category: 'Plumbing & Plastering',
-    image: '/assets/img/projects/modern-bathroom.jpg',
-    description: 'Contemporary bathroom with premium finishes'
-  },
-  {
-    id: 4,
-    title: 'Interior Painting',
-    location: 'Salford',
-    category: 'Painting & Decorating',
-    image: '/assets/img/projects/interior-painting.jpg',
-    description: 'Full interior repaint with feature walls'
-  },
-  {
-    id: 5,
-    title: 'Property Refurb',
-    location: 'Stockport',
-    category: 'Full Renovation',
-    image: '/assets/img/projects/property-refurb.jpg',
-    description: 'Complete property refurbishment'
-  },
-  {
-    id: 6,
-    title: 'Lounge Makeover',
-    location: 'Eccles',
-    category: 'Plastering & Painting',
-    image: '/assets/img/projects/lounge-makeover.jpg',
-    description: 'Lounge renovation with plastering and decorating'
-  }
-]
+import projectsContent from '../locales/en/projects.json'
+
+const projectImages = {
+  1: '/assets/img/projects/bathroom-refit.jpg',
+  2: '/assets/img/projects/kitchen-renovation.jpg',
+  3: '/assets/img/projects/modern-bathroom.jpg',
+  4: '/assets/img/projects/interior-painting.jpg',
+  5: '/assets/img/projects/property-refurb.jpg',
+  6: '/assets/img/projects/lounge-makeover.jpg'
+}
+
+export const projects = Object.entries(projectsContent.items).map(([id, content]) => ({
+  id: Number(id),
+  image: projectImages[id],
+  ...content
+}))
 
 export default projects

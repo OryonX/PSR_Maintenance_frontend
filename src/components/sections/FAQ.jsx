@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import AnimatedSection from '../ui/AnimatedSection.jsx'
 import FAQItem from '../ui/FAQItem.jsx'
 import { faqItems } from '../../config/faq.js'
+import { useTranslation } from '../../hooks/useTranslation.js'
 
 function FAQ() {
   const [openItem, setOpenItem] = useState(null)
+  const { t } = useTranslation('home')
 
   const handleToggle = (id) => {
     setOpenItem(openItem === id ? null : id)
@@ -16,10 +18,10 @@ function FAQ() {
         {/* Header */}
         <AnimatedSection className="text-center mb-12">
           <span className="text-brand-blue text-sm font-semibold uppercase tracking-wider mb-2 block">
-            FAQs
+            {t('faq.badge')}
           </span>
           <h2 className="text-4xl lg:text-5xl font-black text-navy-900">
-            COMMON <span className="text-brand-blue">QUESTIONS</span>
+            {t('faq.titlePrefix')}<span className="text-brand-blue">{t('faq.titleHighlight')}</span>
           </h2>
         </AnimatedSection>
 
@@ -27,7 +29,7 @@ function FAQ() {
         <AnimatedSection delay={100}>
           <div className="space-y-3">
             {faqItems.map((item) => (
-              <FAQItem 
+              <FAQItem
                 key={item.id}
                 item={item}
                 isOpen={openItem === item.id}

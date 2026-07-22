@@ -1,0 +1,40 @@
+{
+  "items": {
+    "1": {
+      "title": "Full Bathroom Refit",
+      "location": "Didsbury",
+      "category": "Plumbing & Tiling",
+      "description": "Complete bathroom renovation with modern fixtures and tiling"
+    },
+    "2": {
+      "title": "Kitchen Renovation",
+      "location": "Chorlton",
+      "category": "Full Renovation",
+      "description": "Full kitchen redesign and installation"
+    },
+    "3": {
+      "title": "Modern Bathroom",
+      "location": "Trafford",
+      "category": "Plumbing & Plastering",
+      "description": "Contemporary bathroom with premium finishes"
+    },
+    "4": {
+      "title": "Interior Painting",
+      "location": "Salford",
+      "category": "Painting & Decorating",
+      "description": "Full interior repaint with feature walls"
+    },
+    "5": {
+      "title": "Property Refurb",
+      "location": "Stockport",
+      "category": "Full Renovation",
+      "description": "Complete property refurbishment"
+    },
+    "6": {
+      "title": "Lounge Makeover",
+      "location": "Eccles",
+      "category": "Plastering & Painting",
+      "description": "Lounge renovation with plastering and decorating"
+    }
+  }
+}

@@ -1,39 +1,41 @@
 import React from 'react'
 import { Shield, Zap, Award, Star } from 'lucide-react'
+import { useTranslation } from '../../hooks/useTranslation.js'
 
 const badgeConfig = {
   'gas-safe': {
     icon: Zap,
-    label: 'Gas Safe',
+    labelKey: 'trustBadges.gasSafe',
     color: 'bg-red-100 text-red-700 border-red-200',
     iconColor: 'text-red-600'
   },
   'part-p': {
     icon: Award,
-    label: 'Part P Certified',
+    labelKey: 'trustBadges.partP',
     color: 'bg-blue-100 text-blue-700 border-blue-200',
     iconColor: 'text-blue-600'
   },
   'insured': {
     icon: Shield,
-    label: 'Fully Insured',
+    labelKey: 'trustBadges.insured',
     color: 'bg-green-100 text-green-700 border-green-200',
     iconColor: 'text-green-600'
   },
   'trustmark': {
     icon: Star,
-    label: 'TrustMark',
+    labelKey: 'trustBadges.trustmark',
     color: 'bg-amber-100 text-amber-700 border-amber-200',
     iconColor: 'text-amber-600'
   }
 }
 
 function TrustBadge({ type, size = 'md' }) {
+  const { t } = useTranslation('common')
   const config = badgeConfig[type]
   if (!config) return null
 
   const Icon = config.icon
-  
+
   const sizeClasses = {
     sm: 'px-2 py-1 text-xs gap-1',
     md: 'px-3 py-1.5 text-sm gap-1.5',
@@ -49,7 +51,7 @@ function TrustBadge({ type, size = 'md' }) {
   return (
     <span className={`inline-flex items-center rounded-lg border font-medium ${config.color} ${sizeClasses[size]}`}>
       <Icon className={`${config.iconColor} ${iconSizes[size]}`} />
-      {config.label}
+      {t(config.labelKey)}
     </span>
   )
 }

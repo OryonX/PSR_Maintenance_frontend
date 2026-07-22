@@ -5,9 +5,11 @@ import StaggerContainer from '../ui/StaggerContainer.jsx'
 import ProjectCard from '../ui/ProjectCard.jsx'
 import { projects } from '../../config/projects.js'
 import { useContactPhone } from '../../hooks/useContactPhone.js'
+import { useTranslation } from '../../hooks/useTranslation.js'
 
 function Projects() {
   const { openWhatsApp } = useContactPhone()
+  const { t } = useTranslation('home')
 
   return (
     <section id="work" className="bg-navy-900 section-padding">
@@ -15,13 +17,13 @@ function Projects() {
         {/* Header */}
         <AnimatedSection className="text-center mb-12">
           <span className="text-white/60 text-sm font-semibold uppercase tracking-wider mb-2 block">
-            Our Work
+            {t('projects.badge')}
           </span>
           <h2 className="text-4xl lg:text-5xl font-black text-white mb-4">
-            RECENT <span className="text-white/60">PROJECTS</span>
+            {t('projects.titlePrefix')}<span className="text-white/60">{t('projects.titleHighlight')}</span>
           </h2>
           <p className="text-white/60 max-w-xl mx-auto">
-            Real work. Real homes. Across Greater Manchester.
+            {t('projects.subtitle')}
           </p>
         </AnimatedSection>
 
@@ -35,10 +37,10 @@ function Projects() {
         {/* CTA */}
         <AnimatedSection delay={600} className="text-center mt-12">
           <button
-            onClick={() => openWhatsApp('Hi, I saw your recent projects and would like to discuss starting my own project.')}
+            onClick={() => openWhatsApp(t('projects.whatsappMessage'))}
             className="btn-whatsapp group inline-flex"
           >
-            START YOUR PROJECT TODAY
+            {t('projects.cta')}
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
         </AnimatedSection>

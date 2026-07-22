@@ -1,7 +1,9 @@
 import React from 'react'
 import { ArrowRight } from 'lucide-react'
+import { useTranslation } from '../../hooks/useTranslation.js'
 
 function ServiceCard({ service }) {
+  const { t } = useTranslation('services')
   const Icon = service.icon
 
   return (
@@ -32,11 +34,11 @@ function ServiceCard({ service }) {
       </ul>
 
       {/* Link */}
-      <a 
+      <a
         href={service.slug}
         className="inline-flex items-center gap-2 text-sm font-semibold text-brand-blue hover:text-brand-light transition-colors duration-200 group/link"
       >
-        View service
+        {t('serviceCard.viewService')}
         <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1" />
       </a>
     </article>

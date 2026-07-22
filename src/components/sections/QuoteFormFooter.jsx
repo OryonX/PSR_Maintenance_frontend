@@ -3,15 +3,15 @@ import { MessageCircle, Phone, MapPin, ArrowRight, Check, Loader2 } from 'lucide
 import AnimatedSection from '../ui/AnimatedSection.jsx'
 import { services } from '../../config/services.js'
 import { useContactPhone } from '../../hooks/useContactPhone.js'
+import { useTranslation } from '../../hooks/useTranslation.js'
 
 const CONTACT_INFO = {
-  phone: import.meta.env.VITE_COMPANY_PHONE || '+44 7700 000 000',
-  address: 'Manchester, UK',
-  coverage: 'Covering all of Greater Manchester'
+  phone: import.meta.env.VITE_COMPANY_PHONE || '+44 7700 000 000'
 }
 
 function QuoteFormFooter() {
   const { openWhatsApp } = useContactPhone()
+  const { t } = useTranslation('home')
   const [formState, setFormState] = useState({
     full_name: '',
     phone: '',
@@ -25,27 +25,27 @@ function QuoteFormFooter() {
 
   const validateForm = () => {
     const newErrors = {}
-    
+
     if (!formState.full_name.trim()) {
-      newErrors.full_name = 'Full name is required'
+      newErrors.full_name = t('quoteForm.errors.fullNameRequired')
     }
-    
+
     if (!formState.phone.trim()) {
-      newErrors.phone = 'Phone number is required'
+      newErrors.phone = t('quoteForm.errors.phoneRequired')
     } else if (!/^\+?[\d\s-]{10,}$/.test(formState.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Please enter a valid phone number'
+      newErrors.phone = t('quoteForm.errors.phoneInvalid')
     }
-    
+
     if (formState.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
-      newErrors.email = 'Please enter a valid email'
+      newErrors.email = t('quoteForm.errors.emailInvalid')
     }
-    
+
     if (!formState.service_type) {
-      newErrors.service_type = 'Please select a service'
+      newErrors.service_type = t('quoteForm.errors.serviceTypeRequired')
     }
-    
+
     if (!formState.description.trim()) {
-      newErrors.description = 'Please describe your project'
+      newErrors.description = t('quoteForm.errors.descriptionRequired')
     }
 
     setErrors(newErrors)
@@ -54,14 +54,14 @@ function QuoteFormFooter() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!validateForm()) return
 
     setIsSubmitting(true)
 
     try {
       const webhookUrl = import.meta.env.VITE_QUOTE_WEBHOOK_URL
-      
+
       if (webhookUrl) {
         await fetch(webhookUrl, {
           method: 'POST',
@@ -73,7 +73,7 @@ function QuoteFormFooter() {
           })
         })
       }
-      
+
       // Simulate API delay for UX
       await new Promise(resolve => setTimeout(resolve, 1000))
       setIsSubmitted(true)
@@ -101,10 +101,10 @@ function QuoteFormFooter() {
         {/* Header */}
         <AnimatedSection className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-black text-navy-900 mb-4">
-            REQUEST A <span className="text-brand-blue">FREE QUOTE</span>
+            {t('quoteForm.titlePrefix')}<span className="text-brand-blue">{t('quoteForm.titleHighlight')}</span>
           </h2>
           <p className="text-gray-600 max-w-xl mx-auto">
-            Fill in the form below, message us on WhatsApp, or find us on the map. We'll get back to you within 24 hours.
+            {t('quoteForm.subtitle')}
           </p>
         </AnimatedSection>
 
@@ -113,15 +113,15 @@ function QuoteFormFooter() {
           <AnimatedSection className="lg:col-span-2 space-y-4">
             {/* WhatsApp Card */}
             <button
-              onClick={() => openWhatsApp('Hi, I\'d like to get a free quote for some work.')}
+              onClick={() => openWhatsApp(t('quoteForm.whatsappMessage'))}
               className="w-full flex items-center gap-4 p-4 bg-whatsapp/10 hover:bg-whatsapp/20 rounded-xl transition-colors text-left group"
             >
               <div className="w-12 h-12 bg-whatsapp rounded-xl flex items-center justify-center flex-shrink-0">
                 <MessageCircle className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-navy-900">Chat on WhatsApp</h4>
-                <p className="text-sm text-gray-600">Fastest way to reach us</p>
+                <h4 className="font-semibold text-navy-900">{t('quoteForm.whatsappCard.title')}</h4>
+                <p className="text-sm text-gray-600">{t('quoteForm.whatsappCard.subtitle')}</p>
               </div>
               <ArrowRight className="w-5 h-5 text-whatsapp opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
@@ -135,7 +135,7 @@ function QuoteFormFooter() {
                 <Phone className="w-6 h-6 text-navy-900" />
               </div>
               <div>
-                <p className="text-xs text-gray-500">Call us directly</p>
+                <p className="text-xs text-gray-500">{t('quoteForm.phoneCard.label')}</p>
                 <p className="font-semibold text-navy-900">{CONTACT_INFO.phone}</p>
               </div>
             </a>
@@ -146,9 +146,9 @@ function QuoteFormFooter() {
                 <MapPin className="w-6 h-6 text-navy-900" />
               </div>
               <div>
-                <p className="text-xs text-gray-500">Based in</p>
-                <p className="font-semibold text-navy-900">{CONTACT_INFO.address}</p>
-                <p className="text-xs text-gray-500">{CONTACT_INFO.coverage}</p>
+                <p className="text-xs text-gray-500">{t('quoteForm.locationCard.label')}</p>
+                <p className="font-semibold text-navy-900">{t('quoteForm.locationCard.address')}</p>
+                <p className="text-xs text-gray-500">{t('quoteForm.locationCard.coverage')}</p>
               </div>
             </div>
 
@@ -162,7 +162,7 @@ function QuoteFormFooter() {
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="PSR Maintenance Location"
+                title={t('quoteForm.mapTitle')}
               />
             </div>
           </AnimatedSection>
@@ -174,9 +174,9 @@ function QuoteFormFooter() {
                 <div className="w-16 h-16 bg-whatsapp/10 rounded-full flex items-center justify-center mb-4">
                   <Check className="w-8 h-8 text-whatsapp" />
                 </div>
-                <h3 className="text-2xl font-bold text-navy-900 mb-2">Quote Request Sent!</h3>
+                <h3 className="text-2xl font-bold text-navy-900 mb-2">{t('quoteForm.success.title')}</h3>
                 <p className="text-gray-600 mb-6">
-                  We respond within 24 hours. Keep an eye on your phone — we'll be in touch soon.
+                  {t('quoteForm.success.message')}
                 </p>
                 <button
                   onClick={() => {
@@ -191,7 +191,7 @@ function QuoteFormFooter() {
                   }}
                   className="text-brand-blue font-semibold hover:underline"
                 >
-                  Send another request
+                  {t('quoteForm.success.sendAnother')}
                 </button>
               </div>
             ) : (
@@ -200,7 +200,7 @@ function QuoteFormFooter() {
                   {/* Full Name */}
                   <div>
                     <label htmlFor="full_name" className="block text-sm font-medium text-navy-900 mb-1.5">
-                      Full Name <span className="text-red-500">*</span>
+                      {t('quoteForm.fields.fullName')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -208,7 +208,7 @@ function QuoteFormFooter() {
                       name="full_name"
                       value={formState.full_name}
                       onChange={handleChange}
-                      placeholder="John Smith"
+                      placeholder={t('quoteForm.fields.fullNamePlaceholder')}
                       className={`w-full px-4 py-2.5 rounded-lg border ${errors.full_name ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-brand-blue'} focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors`}
                     />
                     {errors.full_name && <p className="text-red-500 text-xs mt-1">{errors.full_name}</p>}
@@ -217,7 +217,7 @@ function QuoteFormFooter() {
                   {/* Phone */}
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-navy-900 mb-1.5">
-                      Phone Number <span className="text-red-500">*</span>
+                      {t('quoteForm.fields.phone')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="tel"
@@ -225,7 +225,7 @@ function QuoteFormFooter() {
                       name="phone"
                       value={formState.phone}
                       onChange={handleChange}
-                      placeholder="+44 7700 000 000"
+                      placeholder={t('quoteForm.fields.phonePlaceholder')}
                       className={`w-full px-4 py-2.5 rounded-lg border ${errors.phone ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-brand-blue'} focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors`}
                     />
                     {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
@@ -234,7 +234,7 @@ function QuoteFormFooter() {
                   {/* Email */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-navy-900 mb-1.5">
-                      Email Address
+                      {t('quoteForm.fields.email')}
                     </label>
                     <input
                       type="email"
@@ -242,7 +242,7 @@ function QuoteFormFooter() {
                       name="email"
                       value={formState.email}
                       onChange={handleChange}
-                      placeholder="john@example.com"
+                      placeholder={t('quoteForm.fields.emailPlaceholder')}
                       className={`w-full px-4 py-2.5 rounded-lg border ${errors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-brand-blue'} focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors`}
                     />
                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -251,7 +251,7 @@ function QuoteFormFooter() {
                   {/* Service Type */}
                   <div>
                     <label htmlFor="service_type" className="block text-sm font-medium text-navy-900 mb-1.5">
-                      Service Required <span className="text-red-500">*</span>
+                      {t('quoteForm.fields.serviceType')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       id="service_type"
@@ -260,7 +260,7 @@ function QuoteFormFooter() {
                       onChange={handleChange}
                       className={`w-full px-4 py-2.5 rounded-lg border ${errors.service_type ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-brand-blue'} focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors bg-white`}
                     >
-                      <option value="">Select a service...</option>
+                      <option value="">{t('quoteForm.fields.serviceTypePlaceholder')}</option>
                       {services.map((service) => (
                         <option key={service.id} value={service.id}>
                           {service.title}
@@ -274,14 +274,14 @@ function QuoteFormFooter() {
                 {/* Description */}
                 <div className="mb-6">
                   <label htmlFor="description" className="block text-sm font-medium text-navy-900 mb-1.5">
-                    Describe Your Project <span className="text-red-500">*</span>
+                    {t('quoteForm.fields.description')} <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     id="description"
                     name="description"
                     value={formState.description}
                     onChange={handleChange}
-                    placeholder="Tell us about the work you need — location, scope, any details..."
+                    placeholder={t('quoteForm.fields.descriptionPlaceholder')}
                     rows={5}
                     className={`w-full px-4 py-2.5 rounded-lg border ${errors.description ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-brand-blue'} focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors resize-none`}
                   />
@@ -297,18 +297,18 @@ function QuoteFormFooter() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Sending...
+                      {t('quoteForm.submitting')}
                     </>
                   ) : (
                     <>
-                      SEND QUOTE REQUEST
+                      {t('quoteForm.submit')}
                       <ArrowRight className="w-5 h-5" />
                     </>
                   )}
                 </button>
 
                 <p className="text-center text-xs text-gray-500 mt-4">
-                  We respond within 24 hours. Your details are never shared with third parties.
+                  {t('quoteForm.disclaimer')}
                 </p>
               </form>
             )}

@@ -1,0 +1,77 @@
+{
+  "brand": {
+    "short": "PSR",
+    "full": "PSR Maintenance"
+  },
+  "nav": {
+    "links": {
+      "services": "Services",
+      "about": "About",
+      "work": "Work",
+      "testimonials": "Testimonials",
+      "contact": "Contact"
+    },
+    "whatsapp": "WhatsApp",
+    "freeQuote": "FREE QUOTE",
+    "toggleMenu": "Toggle menu"
+  },
+  "cta": {
+    "whatsapp": "WhatsApp",
+    "callNow": "Call Now",
+    "getInstantQuote": "Get an instant quote",
+    "instantQuoteMessage": "Hi, I'd like to get an instant quote."
+  },
+  "trustBadges": {
+    "gasSafe": "Gas Safe",
+    "partP": "Part P Certified",
+    "insured": "Fully Insured",
+    "trustmark": "TrustMark"
+  },
+  "footer": {
+    "tagline": "Proudly serving Greater Manchester since 2012. Professional tradespeople delivering quality workmanship, on time and on budget.",
+    "servicesHeading": "Services",
+    "companyHeading": "Company",
+    "contactHeading": "Get in Touch",
+    "whatsappUs": "WhatsApp Us",
+    "googleBusinessProfile": "Google Business Profile",
+    "servicesLinks": {
+      "generalRepairs": "General Repairs",
+      "fullRenovations": "Full Renovations",
+      "plumbing": "Plumbing",
+      "electricalWork": "Electrical Work"
+    },
+    "companyLinks": {
+      "aboutUs": "About Us",
+      "ourWork": "Our Work",
+      "testimonials": "Testimonials",
+      "contact": "Contact"
+    },
+    "legalLinks": {
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service"
+    },
+    "copyright": "© {{year}} PSR Maintenance Services Ltd. Manchester, UK. All rights reserved."
+  },
+  "chatWidget": {
+    "assistantName": "PSR Assistant",
+    "onlineStatus": "Online · instant reply",
+    "greeting": "Hi there! I'm PSR's assistant. I can help you get an instant quote or answer questions about our services. What can I help you with today?",
+    "inputPlaceholder": "Type a message...",
+    "continueOnWhatsApp": "Continue on WhatsApp",
+    "openChat": "Open chat",
+    "closeChat": "Close chat",
+    "quickReplies": {
+      "quote": "Get a free quote",
+      "emergency": "Emergency call-out",
+      "services": "See our services",
+      "team": "Talk to the team"
+    },
+    "messages": {
+      "quote": "Hi, I'd like to get a free quote for some work on my property.",
+      "emergency": "Hi, I have an emergency and need help urgently.",
+      "services": "Hi, could you tell me more about your services?",
+      "team": "Hi, I'd like to speak with someone from your team.",
+      "contactedViaChat": "Hi, I contacted you through your website chat."
+    }
+  }
+}

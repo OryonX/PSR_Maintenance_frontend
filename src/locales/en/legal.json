@@ -1,0 +1,142 @@
+{
+  "privacy": {
+    "seoTitle": "Privacy Policy | PSR Maintenance Services",
+    "seoDescription": "How PSR Maintenance Services collects, uses, and protects your personal information.",
+    "pageTitle": "Privacy Policy",
+    "lastUpdatedLabel": "Last updated:",
+    "sections": [
+      {
+        "heading": "1. Introduction",
+        "paragraphs": [
+          "PSR Maintenance Services Ltd (\"we\", \"our\", or \"us\") is committed to protecting and respecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or use our services."
+        ]
+      },
+      {
+        "heading": "2. Information We Collect",
+        "intro": "We may collect and process the following data about you:",
+        "list": [
+          "Personal identification information (name, email address, phone number)",
+          "Address and location information",
+          "Details about your property and the services you require",
+          "Communication records between you and us",
+          "Technical data (IP address, browser type, device information)"
+        ]
+      },
+      {
+        "heading": "3. How We Use Your Information",
+        "intro": "We use your personal information to:",
+        "list": [
+          "Provide and manage our services",
+          "Respond to your enquiries and quote requests",
+          "Communicate with you about your project",
+          "Improve our website and services",
+          "Comply with legal obligations"
+        ]
+      },
+      {
+        "heading": "4. Data Security",
+        "paragraphs": [
+          "We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, alteration, disclosure, or destruction."
+        ]
+      },
+      {
+        "heading": "5. Your Rights",
+        "intro": "Under UK data protection law, you have the right to:",
+        "list": [
+          "Access your personal data",
+          "Request correction of inaccurate data",
+          "Request deletion of your data",
+          "Object to processing of your data",
+          "Request restriction of processing"
+        ]
+      },
+      {
+        "heading": "6. Contact Us",
+        "paragraphs": [
+          "If you have any questions about this Privacy Policy or how we handle your data, please contact us at:"
+        ]
+      }
+    ],
+    "contact": {
+      "companyName": "PSR Maintenance Services Ltd",
+      "address": "Manchester, UK",
+      "emailLabel": "Email:",
+      "email": "info@psrmaintenance.co.uk"
+    }
+  },
+  "terms": {
+    "seoTitle": "Terms of Service | PSR Maintenance Services",
+    "seoDescription": "Terms and conditions for using PSR Maintenance Services website and services.",
+    "pageTitle": "Terms of Service",
+    "lastUpdatedLabel": "Last updated:",
+    "sections": [
+      {
+        "heading": "1. Acceptance of Terms",
+        "paragraphs": [
+          "By accessing and using the PSR Maintenance Services website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our website or services."
+        ]
+      },
+      {
+        "heading": "2. Our Services",
+        "paragraphs": [
+          "PSR Maintenance Services provides property maintenance, renovation, and trade services in Greater Manchester, UK. All work is carried out by qualified and insured tradespeople."
+        ]
+      },
+      {
+        "heading": "3. Quotes and Estimates",
+        "paragraphs": [
+          "Quotes provided are based on the information supplied by you. Final costs may vary if the scope of work changes or if unforeseen issues are discovered during the project. We will always communicate any changes before proceeding."
+        ]
+      },
+      {
+        "heading": "4. Payment Terms",
+        "list": [
+          "A deposit may be required for larger projects",
+          "Payment is due on completion of work unless otherwise agreed",
+          "We accept bank transfer, credit/debit cards, and cash",
+          "Late payments may incur interest charges"
+        ]
+      },
+      {
+        "heading": "5. Cancellations",
+        "paragraphs": [
+          "We understand that plans can change. Please provide at least 48 hours notice for cancellations or rescheduling. Deposits may be forfeited for cancellations with less than 48 hours notice."
+        ]
+      },
+      {
+        "heading": "6. Warranties and Guarantees",
+        "paragraphs": [
+          "All work is guaranteed for a minimum of 12 months from completion. Manufacturer warranties on materials apply where applicable. Gas and electrical work comes with the appropriate certification."
+        ]
+      },
+      {
+        "heading": "7. Limitation of Liability",
+        "paragraphs": [
+          "While we maintain comprehensive insurance, our liability is limited to the value of the work performed. We are not liable for indirect or consequential losses."
+        ]
+      },
+      {
+        "heading": "8. Governing Law",
+        "paragraphs": [
+          "These Terms of Service are governed by and construed in accordance with the laws of England and Wales. Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales."
+        ]
+      },
+      {
+        "heading": "9. Changes to Terms",
+        "paragraphs": [
+          "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to our website. Your continued use of our services constitutes acceptance of the updated terms."
+        ]
+      },
+      {
+        "heading": "10. Contact Information",
+        "paragraphs": []
+      }
+    ],
+    "contact": {
+      "companyName": "PSR Maintenance Services Ltd",
+      "address": "Manchester, UK",
+      "emailLabel": "Email:",
+      "email": "info@psrmaintenance.co.uk"
+    }
+  }
+}

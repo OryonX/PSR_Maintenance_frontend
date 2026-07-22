@@ -1,8 +1,17 @@
 import { useState, useCallback } from 'react'
-import en from '../locales/home/en.json'
+import common from '../locales/en/common.json'
+import home from '../locales/en/home.json'
+import services from '../locales/en/services.json'
+import faq from '../locales/en/faq.json'
+import projects from '../locales/en/projects.json'
+import testimonials from '../locales/en/testimonials.json'
+import legal from '../locales/en/legal.json'
+import notFound from '../locales/en/notFound.json'
 
 // Simple i18n hook - currently English only, infrastructure ready for Spanish
-const translations = { en }
+const translations = {
+  en: { common, home, services, faq, projects, testimonials, legal, notFound }
+}
 
 export function useTranslation(namespace = 'common') {
   const [locale] = useState('en')
@@ -10,8 +19,8 @@ export function useTranslation(namespace = 'common') {
   const t = useCallback(
     (key, params = {}) => {
       const keys = key.split('.')
-      let value = translations[locale]?.[namespace] || translations[locale]
-      
+      let value = translations[locale]?.[namespace]
+
       for (const k of keys) {
         value = value?.[k]
         if (value === undefined) return key
@@ -19,12 +28,12 @@ export function useTranslation(namespace = 'common') {
 
       // Replace parameters
       if (typeof value === 'string' && Object.keys(params).length > 0) {
-        return value.replace(/\{\{(\w+)\}\}/g, (match, paramKey) => 
+        return value.replace(/\{\{(\w+)\}\}/g, (match, paramKey) =>
           params[paramKey] !== undefined ? params[paramKey] : match
         )
       }
 
-      return value || key
+      return value ?? key
     },
     [locale, namespace]
   )

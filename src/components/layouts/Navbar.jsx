@@ -2,20 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { Menu, X, MessageCircle, ArrowRight } from 'lucide-react'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { useContactPhone } from '../../hooks/useContactPhone.js'
+import { useTranslation } from '../../hooks/useTranslation.js'
 
-const navLinks = [
-  { id: 'services', label: 'Services' },
-  { id: 'about', label: 'About' },
-  { id: 'work', label: 'Work' },
-  { id: 'testimonials', label: 'Testimonials' },
-  { id: 'contact', label: 'Contact' }
-]
+const navLinkIds = ['services', 'about', 'work', 'testimonials', 'contact']
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const activeSection = useScrollSpy(navLinks.map(link => link.id), { offset: 150 })
+  const activeSection = useScrollSpy(navLinkIds, { offset: 150 })
   const { openWhatsApp } = useContactPhone()
+  const { t } = useTranslation('common')
+  const navLinks = navLinkIds.map((id) => ({ id, label: t(`nav.links.${id}`) }))
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,9 +46,9 @@ function Navbar() {
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-navy-900 font-black text-lg">PSR</span>
+              <span className="text-navy-900 font-black text-lg">{t('brand.short')}</span>
             </div>
-            <span className="text-white font-bold text-lg hidden sm:block">PSR Maintenance</span>
+            <span className="text-white font-bold text-lg hidden sm:block">{t('brand.full')}</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -78,13 +75,13 @@ function Navbar() {
               className="flex items-center gap-2 px-4 py-2 bg-whatsapp text-white text-sm font-semibold rounded-lg hover:bg-whatsapp-light transition-colors duration-200"
             >
               <MessageCircle className="w-4 h-4" />
-              WhatsApp
+              {t('nav.whatsapp')}
             </button>
             <button
               onClick={() => scrollToSection('contact')}
               className="flex items-center gap-2 px-4 py-2 bg-white text-navy-900 text-sm font-semibold rounded-lg hover:bg-gray-100 transition-colors duration-200"
             >
-              FREE QUOTE
+              {t('nav.freeQuote')}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -93,7 +90,7 @@ function Navbar() {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden w-10 h-10 flex items-center justify-center text-white"
-            aria-label="Toggle menu"
+            aria-label={t('nav.toggleMenu')}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -129,13 +126,13 @@ function Navbar() {
                   className="flex-1 flex items-center justify-center gap-2 py-3 bg-whatsapp text-white font-semibold rounded-lg"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  WhatsApp
+                  {t('nav.whatsapp')}
                 </button>
                 <button
                   onClick={() => scrollToSection('contact')}
                   className="flex-1 flex items-center justify-center gap-2 py-3 bg-white text-navy-900 font-semibold rounded-lg"
                 >
-                  FREE QUOTE
+                  {t('nav.freeQuote')}
                 </button>
               </div>
             </div>

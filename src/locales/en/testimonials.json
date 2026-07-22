@@ -1,0 +1,33 @@
+{
+  "verifiedLabel": "Verified on Google",
+  "items": {
+    "1": {
+      "name": "Sarah M.",
+      "location": "Didsbury",
+      "timeAgo": "2 weeks ago",
+      "text": "Absolutely brilliant work on our kitchen and bathroom renovation. Professional, tidy, finished ahead of schedule. 100% recommend PSR.",
+      "service": "Kitchen & Bathroom Renovation"
+    },
+    "2": {
+      "name": "James T.",
+      "location": "Chorlton",
+      "timeAgo": "1 month ago",
+      "text": "Called PSR for an emergency plumbing leak on a Sunday evening. Arrived within 2 hours, fixed it quickly, fair price. Exceptional service.",
+      "service": "Emergency Plumbing"
+    },
+    "3": {
+      "name": "Priya S.",
+      "location": "Salford",
+      "timeAgo": "3 weeks ago",
+      "text": "Hired PSR to repaint our Victorian terrace interior. Attention to detail was incredible — original coving perfectly preserved. Stunning result.",
+      "service": "Interior Painting & Decorating"
+    },
+    "4": {
+      "name": "David O.",
+      "location": "Stretford",
+      "timeAgo": "2 months ago",
+      "text": "Full loft conversion in 6 weeks. Superb craftsmanship, kept us informed every step. The new room has added real value to our home.",
+      "service": "Loft Conversion"
+    }
+  }
+}

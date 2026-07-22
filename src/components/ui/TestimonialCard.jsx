@@ -1,7 +1,9 @@
 import React from 'react'
 import { Star, BadgeCheck } from 'lucide-react'
+import { useTranslation } from '../../hooks/useTranslation.js'
 
 function TestimonialCard({ testimonial }) {
+  const { t } = useTranslation('testimonials')
   return (
     <article className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-full flex flex-col">
       {/* Header with rating and verified badge */}
@@ -20,7 +22,7 @@ function TestimonialCard({ testimonial }) {
         {testimonial.verified && (
           <div className="flex items-center gap-1 text-xs text-gray-500">
             <BadgeCheck className="w-4 h-4 text-blue-500" />
-            <span>Verified on Google</span>
+            <span>{t('verifiedLabel')}</span>
           </div>
         )}
       </div>

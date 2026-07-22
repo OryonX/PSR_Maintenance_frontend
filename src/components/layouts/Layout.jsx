@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
 import StickyMobileCTA from '../ui/StickyMobileCTA.jsx'
+import ChatWidget from '../ui/ChatWidget.jsx'
 
 function Layout({ children }) {
   return (
@@ -12,6 +13,7 @@ function Layout({ children }) {
       </main>
       <Footer />
       <StickyMobileCTA />
+      <ChatWidget />
     </div>
   )
 }

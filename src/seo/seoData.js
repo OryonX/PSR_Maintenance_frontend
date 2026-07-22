@@ -1,5 +1,15 @@
-const siteUrl = import.meta.env.VITE_SITE_URL || 'https://psrmaintenance.co.uk'
-const companyName = import.meta.env.VITE_COMPANY_NAME || 'PSR Maintenance Services Ltd'
+// Vike evaluates this file in plain Node at config-time (outside Vite's pipeline),
+// where env vars aren't populated, so these reads must tolerate that and fall back.
+let siteUrl = 'https://psrmaintenance.co.uk'
+let companyName = 'PSR Maintenance Services Ltd'
+let companyPhone = '+44 7700 000 000'
+try {
+  siteUrl = import.meta.env.VITE_SITE_URL || siteUrl
+  companyName = import.meta.env.VITE_COMPANY_NAME || companyName
+  companyPhone = import.meta.env.VITE_COMPANY_PHONE || companyPhone
+} catch {
+  // Config-time evaluation: env vars unavailable here, defaults above are kept.
+}
 
 export const homeSEO = {
   title: 'PSR Maintenance Services | Professional Trades & Renovations in Manchester',
@@ -12,7 +22,7 @@ export const homeSEO = {
     image: `${siteUrl}/assets/img/logo/psr-logo.png`,
     '@id': `${siteUrl}/`,
     url: siteUrl,
-    telephone: import.meta.env.VITE_COMPANY_PHONE || '+44 7700 000 000',
+    telephone: companyPhone,
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Manchester',

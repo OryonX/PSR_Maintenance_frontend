@@ -1,0 +1,114 @@
+{
+  "hero": {
+    "locationBadge": "Manchester & Greater Manchester",
+    "headline": {
+      "line1": "YOUR HOME.",
+      "line2": "OUR CRAFT.",
+      "line3": "EVERY JOB."
+    },
+    "description": "From a dripping tap to a full home renovation — Manchester's trusted trades team delivers quality workmanship, on time and on budget. Over 12 years serving Greater Manchester.",
+    "ctaQuote": "GET FREE QUOTE",
+    "ctaWhatsapp": "WhatsApp Now",
+    "whatsappMessage": "Hi, I saw your website and would like to discuss a project.",
+    "trust": {
+      "insured": "Fully Insured",
+      "certified": "Part P Certified",
+      "emergency": "Same-Day Emergency"
+    },
+    "scrollToServices": "Scroll to services",
+    "stats": {
+      "projects": "Projects completed",
+      "years": "Years experience",
+      "satisfaction": "Customer satisfaction",
+      "response": "Response time"
+    }
+  },
+  "services": {
+    "badge": "What We Do",
+    "titlePrefix": "SERVICES WE ",
+    "titleHighlight": "DELIVER",
+    "subtitle": "One team. Every trade. Whether it's a small fix or a full refurb, we bring the right skills to every job."
+  },
+  "about": {
+    "badge": "About PSR",
+    "titlePrefix": "MANCHESTER'S ",
+    "titleHighlight": "TRUSTED TRADES",
+    "titleSuffix": " PROFESSIONALS",
+    "paragraph1": "Founded right here in Manchester, PSR Maintenance Services has been transforming homes and properties across Greater Manchester for over a decade. Our team of fully qualified tradespeople takes pride in every project — big or small.",
+    "paragraph2": "We believe in honest pricing, clear communication, and workmanship that speaks for itself. No hidden costs. No cowboys. Just quality tradespeople who genuinely care about your home.",
+    "experienceBadge": {
+      "years": "12+",
+      "label": "Years Serving Manchester"
+    },
+    "mainImageAlt": "PSR Maintenance team at work",
+    "secondaryImageAlt": "Completed renovation project",
+    "cta": "GET YOUR FREE QUOTE",
+    "trustPoints": {
+      "insured": { "title": "Fully Insured", "description": "£5m public liability cover" },
+      "certified": { "title": "Certified Tradespeople", "description": "Part P, Gas Safe & more" },
+      "rated": { "title": "5-Star Rated", "description": "500+ happy customers" },
+      "emergency": { "title": "Emergency Call-Out", "description": "Available 7 days a week" }
+    }
+  },
+  "projects": {
+    "badge": "Our Work",
+    "titlePrefix": "RECENT ",
+    "titleHighlight": "PROJECTS",
+    "subtitle": "Real work. Real homes. Across Greater Manchester.",
+    "cta": "START YOUR PROJECT TODAY",
+    "whatsappMessage": "Hi, I saw your recent projects and would like to discuss starting my own project."
+  },
+  "testimonials": {
+    "badge": "Reviews",
+    "titlePrefix": "WHAT ",
+    "titleHighlight": "CUSTOMERS SAY",
+    "ratingOutOf": "out of 5",
+    "basedOn": "Based on",
+    "reviewsSuffix": "+ reviews on Google",
+    "viewOnGoogle": "View on Google",
+    "leaveReview": "Leave us a review on Google"
+  },
+  "faq": {
+    "badge": "FAQs",
+    "titlePrefix": "COMMON ",
+    "titleHighlight": "QUESTIONS"
+  },
+  "quoteForm": {
+    "titlePrefix": "REQUEST A ",
+    "titleHighlight": "FREE QUOTE",
+    "subtitle": "Fill in the form below, message us on WhatsApp, or find us on the map. We'll get back to you within 24 hours.",
+    "whatsappCard": { "title": "Chat on WhatsApp", "subtitle": "Fastest way to reach us" },
+    "whatsappMessage": "Hi, I'd like to get a free quote for some work.",
+    "phoneCard": { "label": "Call us directly" },
+    "locationCard": { "label": "Based in", "address": "Manchester, UK", "coverage": "Covering all of Greater Manchester" },
+    "mapTitle": "PSR Maintenance Location",
+    "success": {
+      "title": "Quote Request Sent!",
+      "message": "We respond within 24 hours. Keep an eye on your phone — we'll be in touch soon.",
+      "sendAnother": "Send another request"
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Smith",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+44 7700 000 000",
+      "email": "Email Address",
+      "emailPlaceholder": "john@example.com",
+      "serviceType": "Service Required",
+      "serviceTypePlaceholder": "Select a service...",
+      "description": "Describe Your Project",
+      "descriptionPlaceholder": "Tell us about the work you need — location, scope, any details..."
+    },
+    "errors": {
+      "fullNameRequired": "Full name is required",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Please enter a valid phone number",
+      "emailInvalid": "Please enter a valid email",
+      "serviceTypeRequired": "Please select a service",
+      "descriptionRequired": "Please describe your project"
+    },
+    "submit": "SEND QUOTE REQUEST",
+    "submitting": "Sending...",
+    "disclaimer": "We respond within 24 hours. Your details are never shared with third parties."
+  }
+}
