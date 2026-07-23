@@ -42,7 +42,7 @@ function WhyPSR() {
             {/* Main Image */}
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-navy-900">
               <img
-                src="/assets/img/about/team-working.jpg"
+                src="/assets/img/about/team-working.webp"
                 alt={t('about.mainImageAlt')}
                 className="w-full h-full object-cover"
               />
@@ -53,7 +53,7 @@ function WhyPSR() {
             {/* Secondary Image - Overlapping */}
             <div className="absolute -bottom-6 -right-6 w-2/3 rounded-xl overflow-hidden shadow-2xl border-4 border-white bg-navy-900 aspect-video">
               <img
-                src="/assets/img/about/completed-project.jpg"
+                src="/assets/img/about/completed-project.webp"
                 alt={t('about.secondaryImageAlt')}
                 className="w-full h-full object-cover"
               />

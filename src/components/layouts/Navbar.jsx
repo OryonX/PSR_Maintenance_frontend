@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Menu, X, MessageCircle, ArrowRight } from 'lucide-react'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { useContactPhone } from '../../hooks/useContactPhone.js'
@@ -8,20 +8,11 @@ import logo from "../../../public/img/rsr.png"
 const navLinkIds = ['services', 'about', 'work', 'testimonials', 'contact']
 
 function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const activeSection = useScrollSpy(navLinkIds, { offset: 150 })
   const { openWhatsApp } = useContactPhone()
   const { t } = useTranslation('common')
   const navLinks = navLinkIds.map((id) => ({ id, label: t(`nav.links.${id}`) }))
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id)
@@ -37,10 +28,8 @@ function Navbar() {
   }
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-navy-900/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-      }`}
+    <header
+      className="fixed top-0 left-0 right-0 z-50 bg-navy-900/95 backdrop-blur-md shadow-lg"
     >
       <nav className="section-container">
         <div className="flex items-center justify-between h-16 lg:h-20">

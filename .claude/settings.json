@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git stash *)",
+      "Bash(node _tmp-verify.mjs)",
+      "Bash(npm uninstall *)"
+    ]
+  }
+}
