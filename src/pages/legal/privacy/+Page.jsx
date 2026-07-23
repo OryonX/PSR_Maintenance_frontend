@@ -1,6 +1,7 @@
 import React from 'react'
 import HelmetSEO from '../../../seo/HelmetSEO.jsx'
 import { useTranslation } from '../../../hooks/useTranslation.js'
+import { COMPANY_INFO } from '../../../config/companyInfo.js'
 
 function Page() {
   const { t } = useTranslation('legal')
@@ -46,7 +47,7 @@ function Page() {
               <p className="mt-4">
                 <strong>{privacy.contact.companyName}</strong><br />
                 {privacy.contact.address}<br />
-                {privacy.contact.emailLabel} {privacy.contact.email}
+                {privacy.contact.emailLabel} {COMPANY_INFO.email}
               </p>
             </div>
           </div>

@@ -3,7 +3,7 @@
 export const i18nConfig = {
   defaultLocale: 'en',
   locales: ['en', 'es'],
-  namespaces: ['common', 'home', 'services', 'faq', 'projects', 'testimonials', 'legal', 'notFound']
+  namespaces: ['common', 'home', 'services', 'servicesDetail', 'faq', 'projects', 'testimonials', 'legal', 'notFound']
 }
 
 export const localeLabels = {

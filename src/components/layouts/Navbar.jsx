@@ -3,6 +3,7 @@ import { Menu, X, MessageCircle, ArrowRight } from 'lucide-react'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { useContactPhone } from '../../hooks/useContactPhone.js'
 import { useTranslation } from '../../hooks/useTranslation.js'
+import logo from "../../../public/img/rsr.png"
 
 const navLinkIds = ['services', 'about', 'work', 'testimonials', 'contact']
 
@@ -45,10 +46,10 @@ function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-navy-900 font-black text-lg">{t('brand.short')}</span>
+            <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center">
+              <img src={logo} alt="RSR Logo" className="w-12 h-12 object-contain " />
             </div>
-            <span className="text-white font-bold text-lg hidden sm:block">{t('brand.full')}</span>
+           
           </a>
 
           {/* Desktop Navigation */}

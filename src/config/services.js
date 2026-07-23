@@ -14,7 +14,7 @@ const serviceMeta = [
   { id: 'general-repairs', icon: Wrench },
   { id: 'full-renovations', icon: Home },
   { id: 'plumbing', icon: Droplets },
-  { id: 'electrical-work', icon: Zap },
+  { id: 'electrical', icon: Zap },
   { id: 'painting-decorating', icon: Paintbrush },
   { id: 'tiling-flooring', icon: Grid3X3 },
   { id: 'plastering', icon: BrickWall },
@@ -24,7 +24,7 @@ const serviceMeta = [
 export const services = serviceMeta.map(({ id, icon }) => ({
   id,
   icon,
-  slug: `/servicios/${id}`,
+  slug: `/services/${id}`,
   ...servicesContent.items[id]
 }))
 

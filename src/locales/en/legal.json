@@ -60,8 +60,7 @@
     "contact": {
       "companyName": "PSR Maintenance Services Ltd",
       "address": "Manchester, UK",
-      "emailLabel": "Email:",
-      "email": "info@psrmaintenance.co.uk"
+      "emailLabel": "Email:"
     }
   },
   "terms": {
@@ -135,8 +134,7 @@
     "contact": {
       "companyName": "PSR Maintenance Services Ltd",
       "address": "Manchester, UK",
-      "emailLabel": "Email:",
-      "email": "info@psrmaintenance.co.uk"
+      "emailLabel": "Email:"
     }
   }
 }

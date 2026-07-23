@@ -1,0 +1,239 @@
+{
+  "template": {
+    "breadcrumbHome": "Home",
+    "breadcrumbServices": "Services",
+    "heroKicker": "PSR Maintenance Services",
+    "ctaWhatsapp": "WhatsApp Now",
+    "ctaQuote": "GET FREE QUOTE",
+    "includedBadge": "What's Included",
+    "includedTitlePrefix": "WHAT'S ",
+    "includedTitleHighlight": "INCLUDED",
+    "galleryBadge": "Our Work",
+    "galleryTitlePrefix": "RECENT ",
+    "galleryTitleSuffix": " PROJECTS",
+    "whyChooseUsBadge": "Why PSR",
+    "whyChooseUsTitlePrefix": "WHY CHOOSE ",
+    "whyChooseUsTitleHighlight": "PSR",
+    "faqBadge": "FAQs",
+    "faqTitlePrefix": "COMMON ",
+    "faqTitleHighlight": "QUESTIONS",
+    "ctaFinalTitlePrefix": "GET A FREE QUOTE FOR ",
+    "ctaFinalWhatsappCard": { "title": "Chat on WhatsApp", "subtitle": "Fastest way to reach us" },
+    "otherServicesHeading": "Explore Our Other Services",
+    "viewAllServices": "View All Services"
+  },
+  "general-repairs": {
+    "tagline": "No job too small. Fast, reliable repairs across Greater Manchester.",
+    "subServices": [
+      { "name": "Door & Window Repairs", "description": "Sticking doors, broken hinges, warped frames, draughty windows — fixed right the first time." },
+      { "name": "Furniture Assembly", "description": "Flat-pack nightmares sorted quickly and correctly, from wardrobes to office shelving." },
+      { "name": "Shelving & Fixtures", "description": "Secure wall fixings, floating shelves, TV brackets, and picture rails installed to spec." },
+      { "name": "Minor Structural Fixes", "description": "Small cracks, loose bricks, damaged skirting boards and architraves repaired to a finish." }
+    ],
+    "galleryCaptions": ["Door Repair — Didsbury", "Shelving Install — Chorlton", "General Repairs — Salford"],
+    "whyChooseUs": [
+      "Same-day or next-day availability for most small jobs",
+      "No call-out fees — you only pay for the work done",
+      "Fully insured tradespeople on every visit",
+      "Tidy workers — we clean up after every job"
+    ],
+    "testimonial": {
+      "text": "Called PSR on a Tuesday morning and they had someone round by afternoon. Fixed my sticking front door and a broken towel rail. Efficient, friendly, and left the place spotless.",
+      "author": "Linda P.",
+      "location": "Withington, Manchester",
+      "timeAgo": "3 weeks ago",
+      "rating": 5
+    },
+    "faq": [
+      { "question": "Is there a minimum charge for small jobs?", "answer": "No minimum charge — we quote based on the actual work involved, whether that's a five-minute fix or a full afternoon. You'll always know the price before we start." },
+      { "question": "Can you handle multiple small repairs in one visit?", "answer": "Yes, that's actually the most efficient way to use a visit. Give us your full list beforehand and we'll batch everything into a single call-out, saving you time and money." },
+      { "question": "How quickly can you come out?", "answer": "Most general repairs are booked within 24–48 hours, and we offer same-day visits when our schedule allows — just ask when you get in touch." },
+      { "question": "Do you bring all the materials?", "answer": "For most jobs, yes — screws, fixings, sealant, and common parts are covered. For anything needing a specific item, we'll confirm with you before the visit." }
+    ]
+  },
+  "full-renovations": {
+    "tagline": "Complete transformations, managed start to finish, with one point of contact.",
+    "subServices": [
+      { "name": "Kitchen Refits", "description": "Full layout redesign, cabinetry, worktops, and appliance integration handled by one coordinated team." },
+      { "name": "Bathroom Renovations", "description": "From a compact ensuite to a full family bathroom — tiling, plumbing, and finish all under one roof." },
+      { "name": "Extension Works", "description": "Single and double-storey extensions managed from groundworks through to final plastering and decoration." },
+      { "name": "Loft Conversions", "description": "Structural work, insulation, staircases, and fit-out for a fully usable extra room, not just extra space." }
+    ],
+    "galleryCaptions": ["Kitchen Refit — Chorlton", "Loft Conversion — Stretford", "Full Bathroom Renovation — Stockport"],
+    "whyChooseUs": [
+      "One dedicated project manager from quote to completion",
+      "Fixed-price contracts — no surprise costs mid-project",
+      "12+ years coordinating multi-trade renovations across Manchester",
+      "Every trade — plumbing, electrics, plastering — under one team"
+    ],
+    "testimonial": {
+      "text": "Absolutely brilliant work on our kitchen and bathroom renovation. Professional, tidy, finished ahead of schedule. 100% recommend PSR.",
+      "author": "Sarah M.",
+      "location": "Didsbury, Manchester",
+      "timeAgo": "2 weeks ago",
+      "rating": 5
+    },
+    "faq": [
+      { "question": "How long does a full renovation typically take?", "answer": "It depends on scope — a kitchen refit usually runs 1–2 weeks, a loft conversion 4–6 weeks, and a full house renovation can run 8–12 weeks. We'll give you a realistic timeline at the quote stage and stick to it." },
+      { "question": "Do I need to move out during the renovation?", "answer": "For most kitchen and bathroom work, no — we section off the work area and keep disruption to a minimum. For extensive structural work, we'll discuss whether temporary arrangements make sense for your situation." },
+      { "question": "Who manages the different trades on my project?", "answer": "You get one point of contact for the whole job. We coordinate plumbers, electricians, plasterers, and decorators internally so you're never left chasing multiple people." },
+      { "question": "Can I make changes once work has started?", "answer": "Yes, within reason. We'll cost any changes clearly before proceeding so you always know the impact on price and timeline before agreeing." }
+    ]
+  },
+  "plumbing": {
+    "tagline": "Gas Safe registered plumbers, emergency call-outs, 7 days a week.",
+    "subServices": [
+      { "name": "Leak Detection & Repair", "description": "Fast diagnosis of hidden leaks using proven methods, with repairs completed the same visit wherever possible." },
+      { "name": "Boiler Installation & Servicing", "description": "New boiler installations, annual servicing, and breakdown repairs — all Gas Safe registered work." },
+      { "name": "Radiator Fitting", "description": "New radiator installation, replacement, and power flushing to keep your heating system running efficiently." },
+      { "name": "Bathroom Plumbing", "description": "First and second fix plumbing for bathroom renovations, from rough-in to final connections." }
+    ],
+    "galleryCaptions": ["Pipe Repair — Bolton", "Boiler Service — Trafford", "Leak Detection — Salford"],
+    "whyChooseUs": [
+      "Gas Safe registered on every job — certificates provided",
+      "Emergency call-outs 7 days a week, under 2-hour response target",
+      "Upfront pricing before any work begins",
+      "Clean, careful work in occupied homes — no mess left behind"
+    ],
+    "testimonial": {
+      "text": "Called PSR for an emergency plumbing leak on a Sunday evening. Arrived within 2 hours, fixed it quickly, fair price. Exceptional service.",
+      "author": "James T.",
+      "location": "Chorlton, Manchester",
+      "timeAgo": "1 month ago",
+      "rating": 5
+    },
+    "faq": [
+      { "question": "Are your plumbers Gas Safe registered?", "answer": "Yes, all gas work is carried out by Gas Safe registered engineers, and we provide the relevant certificate on completion of any gas-related job." },
+      { "question": "Do you offer emergency plumbing call-outs?", "answer": "Yes, 7 days a week for urgent issues like leaks, burst pipes, and no-heating emergencies, with an average response time under 2 hours across Greater Manchester." },
+      { "question": "How much does a boiler service cost?", "answer": "Boiler servicing is priced at a flat rate confirmed when you book — no hidden extras unless we find a fault that needs separate parts, which we'll always discuss with you first." },
+      { "question": "Can you fit a new bathroom suite?", "answer": "Yes, we handle full bathroom plumbing from first fix through to final connections, and can coordinate the tiling and finishing work as part of a complete renovation." }
+    ]
+  },
+  "electrical": {
+    "tagline": "Part P certified electricians. Safe, tested, fully compliant work.",
+    "subServices": [
+      { "name": "Consumer Unit Upgrades", "description": "Old fuse boxes replaced with modern, RCD-protected consumer units to current safety standards." },
+      { "name": "Socket & Lighting Circuits", "description": "New circuits, additional sockets, and lighting installations for renovations or everyday upgrades." },
+      { "name": "EV Charger Installation", "description": "Home EV charge point supply and installation, fully certified and ready for daily use." },
+      { "name": "Fault Finding & Repairs", "description": "Tripping breakers, dead sockets, flickering lights — diagnosed and fixed with the right test equipment." }
+    ],
+    "galleryCaptions": ["Consumer Unit Upgrade — Oldham", "Socket Installation — Rochdale", "Wiring Check — Bury"],
+    "whyChooseUs": [
+      "Part P certified — every job signed off and certificated",
+      "BS 7671 compliant wiring on all installations",
+      "Fault-finding equipment on every van for faster diagnosis",
+      "Clear written quotes before any work starts"
+    ],
+    "testimonial": {
+      "text": "Booked PSR to upgrade our old fuse box and add a couple of extra sockets in the kitchen. Electrician was on time, explained everything clearly, and left the certificate for our records. Really professional.",
+      "author": "Mark H.",
+      "location": "Oldham, Manchester",
+      "timeAgo": "1 month ago",
+      "rating": 5
+    },
+    "faq": [
+      { "question": "Is all your electrical work certified?", "answer": "Yes, every job is carried out by Part P certified electricians and comes with the appropriate certificate, which you'll need for building regulations compliance and when selling your property." },
+      { "question": "Can you install an EV charger at my home?", "answer": "Yes, we handle the full installation including the electrical supply assessment, so you get a certified, ready-to-use charge point." },
+      { "question": "What causes a breaker to keep tripping?", "answer": "Usually a fault on a specific circuit — a damaged cable, a faulty appliance, or an overloaded circuit. We use proper test equipment to isolate the cause rather than guessing, so the fix actually holds." },
+      { "question": "Do you upgrade old fuse boxes?", "answer": "Yes, we replace outdated fuse boxes with modern RCD-protected consumer units, which significantly improves safety and is often required for insurance or when selling a home." }
+    ]
+  },
+  "painting-decorating": {
+    "tagline": "Clean, lasting paintwork for homes and commercial spaces across Manchester.",
+    "subServices": [
+      { "name": "Interior Painting", "description": "Walls, ceilings, and woodwork painted with proper prep — filling, sanding, and priming before a single coat goes on." },
+      { "name": "Exterior Painting", "description": "Weather-resistant exterior paintwork for render, brick, and woodwork, prepped to last through Manchester winters." },
+      { "name": "Feature Walls", "description": "Bold colour or textured feature walls, precisely masked and finished for a sharp, professional edge." },
+      { "name": "Wallpaper Hanging", "description": "Pattern-matched wallpaper hanging, from a single feature wall to a full room." }
+    ],
+    "galleryCaptions": ["Interior Repaint — Withington", "Paintwork Detail — Salford", "Feature Wall — Eccles"],
+    "whyChooseUs": [
+      "Full surface prep every time — no shortcuts, no runs",
+      "Dust sheets and masking as standard to protect your home",
+      "Colour consultation included on larger jobs",
+      "Punctual, tidy decorators who finish when they say they will"
+    ],
+    "testimonial": {
+      "text": "Hired PSR to repaint our Victorian terrace interior. Attention to detail was incredible — original coving perfectly preserved. Stunning result.",
+      "author": "Priya S.",
+      "location": "Salford, Manchester",
+      "timeAgo": "3 weeks ago",
+      "rating": 5
+    },
+    "faq": [
+      { "question": "Do you provide the paint or should I buy it?", "answer": "Either works — we're happy to supply trade-quality paint as part of the quote, or use paint you've already chosen. We'll advise on finish and coverage either way." },
+      { "question": "How long does an average room take?", "answer": "A standard room is usually completed in a day, including prep, though feature walls, high ceilings, or heavily textured surfaces can take longer — we'll confirm timing at the quote." },
+      { "question": "Can you match an existing colour?", "answer": "Yes, we can colour-match from a sample or existing paint code, and we'll always test a small area first before committing to the full room." },
+      { "question": "Do you cover exterior painting too?", "answer": "Yes, render, brick, fascias, and woodwork — all prepped and painted with weather-resistant products suited to the surface." }
+    ]
+  },
+  "tiling-flooring": {
+    "tagline": "Precision tiling and flooring, from a single wall to a whole-house install.",
+    "subServices": [
+      { "name": "Wall Tiling", "description": "Bathroom and kitchen wall tiling with precise cuts, level lines, and consistent grout joints." },
+      { "name": "Floor Tiling", "description": "Durable floor tiling for kitchens, bathrooms, and hallways, including large-format porcelain." },
+      { "name": "Underfloor Heating", "description": "Electric underfloor heating supply and installation beneath new tiled or hard flooring." },
+      { "name": "Laminate & Vinyl Flooring", "description": "Fitted laminate and vinyl flooring for a quick, cost-effective flooring upgrade." }
+    ],
+    "galleryCaptions": ["Bathroom Floor Tiling — Didsbury", "Kitchen Splashback — Chorlton", "Tiling Detail — Trafford"],
+    "whyChooseUs": [
+      "Laser-level setting out for straight, even lines every time",
+      "Large-format porcelain and natural stone experience",
+      "Underfloor heating installation available on every job",
+      "Full clean-up and grout sealing before we leave"
+    ],
+    "testimonial": null,
+    "faq": [
+      { "question": "Can you tile over existing tiles?", "answer": "In some cases yes, if the existing surface is sound and flat, though we'll usually recommend removing old tiles first for the best long-term finish — we'll assess this on-site." },
+      { "question": "How long before I can use a newly tiled floor?", "answer": "Grout typically needs 24–48 hours to cure before light use, and we'll give you a precise timeline based on the products used and room conditions." },
+      { "question": "Do you install underfloor heating?", "answer": "Yes, we supply and install electric underfloor heating systems beneath tiled or hard flooring, either as part of a tiling job or as a standalone upgrade." },
+      { "question": "What's the difference between porcelain and ceramic tiles?", "answer": "Porcelain is denser and more water-resistant, making it better for floors and wet areas, while ceramic is often more affordable and suits walls well. We'll help you choose based on the room and budget." }
+    ]
+  },
+  "plastering": {
+    "tagline": "Flat, flawless walls and ceilings, ready for paint the next day.",
+    "subServices": [
+      { "name": "Skim Coating", "description": "A thin, smooth top coat applied over existing plaster or plasterboard for a flawless painted finish." },
+      { "name": "Dry Lining", "description": "Plasterboard partitions and wall linings installed and finished ready for decoration." },
+      { "name": "Coving & Cornices", "description": "Traditional and modern coving fitted cleanly to sharp, consistent lines." },
+      { "name": "Patch Repairs", "description": "Cracks, holes, and damage from pipework or electrics repaired and blended invisibly into the existing wall." }
+    ],
+    "galleryCaptions": ["Skim Coat Finish — Bolton", "Wall Finish — Wigan", "Plastering — Rochdale"],
+    "whyChooseUs": [
+      "Smooth, flat finish ready for paint within 24 hours",
+      "Dust sheets and floor protection on every job",
+      "Experienced with period properties and modern new-builds alike",
+      "Patch repairs blended invisibly into existing walls"
+    ],
+    "testimonial": null,
+    "faq": [
+      { "question": "How long does plaster need to dry before painting?", "answer": "Fresh plaster is usually ready for a mist coat after about 5–7 days of natural drying, depending on room temperature and ventilation — we'll confirm timing for your specific job." },
+      { "question": "Can you repair a small patch without re-plastering the whole wall?", "answer": "Yes, for isolated damage we blend a patch repair into the surrounding surface so it's invisible once painted, without the cost of re-skimming the entire wall." },
+      { "question": "Do you fit coving and cornices?", "answer": "Yes, both traditional coving and modern cornice profiles, fitted to clean, consistent lines throughout the room." },
+      { "question": "What's the difference between skimming and dry lining?", "answer": "Skimming applies a smooth plaster finish over an existing solid surface, while dry lining involves fitting plasterboard first — typically used for new partitions or when battening out an uneven wall." }
+    ]
+  },
+  "maintenance-plans": {
+    "tagline": "Scheduled inspections and priority call-out for homeowners and landlords.",
+    "subServices": [
+      { "name": "Monthly Inspections", "description": "Scheduled visual checks of key systems — plumbing, electrics, and structure — to catch issues early." },
+      { "name": "Seasonal Checks", "description": "Pre-winter and pre-summer inspections covering guttering, heating systems, and weatherproofing." },
+      { "name": "Priority Call-Out", "description": "Plan members jump the queue for repairs, with faster response times than standard bookings." },
+      { "name": "Full Property Reports", "description": "Written condition reports after each visit, useful for landlords managing multiple properties." }
+    ],
+    "galleryCaptions": ["Property Inspection — Tameside", "Maintenance Checklist — Stockport", "Seasonal Check — Manchester"],
+    "whyChooseUs": [
+      "Fixed monthly cost — no surprise call-out fees for plan members",
+      "Priority scheduling ahead of non-plan customers",
+      "Ideal for landlords managing compliance across multiple properties",
+      "Written reports after every visit for your records"
+    ],
+    "testimonial": null,
+    "faq": [
+      { "question": "What's included in a maintenance plan?", "answer": "Scheduled inspections, seasonal checks, priority call-out access, and a written property report after each visit. Exact frequency depends on the plan tier — we'll walk you through the options." },
+      { "question": "Are maintenance plans suitable for landlords?", "answer": "Yes, they're particularly popular with landlords who need to keep multiple properties compliant and well-maintained without managing each repair individually." },
+      { "question": "Can I cancel a maintenance plan?", "answer": "Yes, plans run month-to-month with no long-term lock-in — just give us notice before your next billing date." },
+      { "question": "Does the plan cover the cost of repairs?", "answer": "The plan covers inspections and priority scheduling; any repair work identified is quoted separately, though plan members often get preferential rates." }
+    ]
+  }
+}

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import common from '../locales/en/common.json'
 import home from '../locales/en/home.json'
 import services from '../locales/en/services.json'
+import servicesDetail from '../locales/en/servicesDetail.json'
 import faq from '../locales/en/faq.json'
 import projects from '../locales/en/projects.json'
 import testimonials from '../locales/en/testimonials.json'
@@ -10,7 +11,7 @@ import notFound from '../locales/en/notFound.json'
 
 // Simple i18n hook - currently English only, infrastructure ready for Spanish
 const translations = {
-  en: { common, home, services, faq, projects, testimonials, legal, notFound }
+  en: { common, home, services, servicesDetail, faq, projects, testimonials, legal, notFound }
 }
 
 export function useTranslation(namespace = 'common') {

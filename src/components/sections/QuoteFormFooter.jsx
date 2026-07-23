@@ -4,19 +4,16 @@ import AnimatedSection from '../ui/AnimatedSection.jsx'
 import { services } from '../../config/services.js'
 import { useContactPhone } from '../../hooks/useContactPhone.js'
 import { useTranslation } from '../../hooks/useTranslation.js'
+import { COMPANY_INFO } from '../../config/companyInfo.js'
 
-const CONTACT_INFO = {
-  phone: import.meta.env.VITE_COMPANY_PHONE || '+44 7700 000 000'
-}
-
-function QuoteFormFooter() {
+function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight, subtitle }) {
   const { openWhatsApp } = useContactPhone()
   const { t } = useTranslation('home')
   const [formState, setFormState] = useState({
     full_name: '',
     phone: '',
     email: '',
-    service_type: '',
+    service_type: defaultServiceType,
     description: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -101,10 +98,10 @@ function QuoteFormFooter() {
         {/* Header */}
         <AnimatedSection className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-black text-navy-900 mb-4">
-            {t('quoteForm.titlePrefix')}<span className="text-brand-blue">{t('quoteForm.titleHighlight')}</span>
+            {titlePrefix ?? t('quoteForm.titlePrefix')}<span className="text-brand-blue">{titleHighlight ?? t('quoteForm.titleHighlight')}</span>
           </h2>
           <p className="text-gray-600 max-w-xl mx-auto">
-            {t('quoteForm.subtitle')}
+            {subtitle ?? t('quoteForm.subtitle')}
           </p>
         </AnimatedSection>
 
@@ -128,7 +125,7 @@ function QuoteFormFooter() {
 
             {/* Phone Card */}
             <a
-              href={`tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`}
+              href={`tel:${COMPANY_INFO.phoneRaw}`}
               className="w-full flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-brand-blue transition-colors"
             >
               <div className="w-12 h-12 bg-surface-light rounded-xl flex items-center justify-center flex-shrink-0">
@@ -136,7 +133,7 @@ function QuoteFormFooter() {
               </div>
               <div>
                 <p className="text-xs text-gray-500">{t('quoteForm.phoneCard.label')}</p>
-                <p className="font-semibold text-navy-900">{CONTACT_INFO.phone}</p>
+                <p className="font-semibold text-navy-900">{COMPANY_INFO.phone}</p>
               </div>
             </a>
 
@@ -185,7 +182,7 @@ function QuoteFormFooter() {
                       full_name: '',
                       phone: '',
                       email: '',
-                      service_type: '',
+                      service_type: defaultServiceType,
                       description: ''
                     })
                   }}

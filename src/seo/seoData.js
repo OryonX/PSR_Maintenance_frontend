@@ -1,14 +1,12 @@
+import { COMPANY_INFO } from '../config/companyInfo.js'
+
 // Vike evaluates this file in plain Node at config-time (outside Vite's pipeline),
-// where env vars aren't populated, so these reads must tolerate that and fall back.
+// where env vars aren't populated, so this read must tolerate that and fall back.
 let siteUrl = 'https://psrmaintenance.co.uk'
-let companyName = 'PSR Maintenance Services Ltd'
-let companyPhone = '+44 7700 000 000'
 try {
   siteUrl = import.meta.env.VITE_SITE_URL || siteUrl
-  companyName = import.meta.env.VITE_COMPANY_NAME || companyName
-  companyPhone = import.meta.env.VITE_COMPANY_PHONE || companyPhone
 } catch {
-  // Config-time evaluation: env vars unavailable here, defaults above are kept.
+  // Config-time evaluation: env vars unavailable here, default above is kept.
 }
 
 export const homeSEO = {
@@ -18,11 +16,12 @@ export const homeSEO = {
   schema: {
     '@context': 'https://schema.org',
     '@type': 'HomeAndConstructionBusiness',
-    name: companyName,
+    name: COMPANY_INFO.name,
     image: `${siteUrl}/assets/img/logo/psr-logo.png`,
     '@id': `${siteUrl}/`,
     url: siteUrl,
-    telephone: companyPhone,
+    telephone: COMPANY_INFO.phoneRaw,
+    email: COMPANY_INFO.email,
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Manchester',
@@ -116,4 +115,12 @@ export const notFoundSEO = {
   noindex: true
 }
 
-export default { homeSEO, servicesSEO, notFoundSEO }
+export function serviceSEO(service) {
+  return {
+    title: `${service.title} | PSR Maintenance Services Manchester`,
+    description: service.tagline,
+    canonical: `${siteUrl}/services/${service.slug}`
+  }
+}
+
+export default { homeSEO, servicesSEO, notFoundSEO, serviceSEO }

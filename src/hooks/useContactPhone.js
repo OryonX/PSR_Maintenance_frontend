@@ -1,20 +1,18 @@
 import { useCallback } from 'react'
-
-const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '447700000000'
+import { COMPANY_INFO } from '../config/companyInfo.js'
 
 export function useContactPhone() {
   const openWhatsApp = useCallback((message = '') => {
     const encodedMessage = encodeURIComponent(message)
-    const url = `https://wa.me/${WHATSAPP_NUMBER}${message ? `?text=${encodedMessage}` : ''}`
+    const url = `${COMPANY_INFO.whatsappLink}${message ? `?text=${encodedMessage}` : ''}`
     window.open(url, '_blank', 'noopener,noreferrer')
   }, [])
 
   const callPhone = useCallback(() => {
-    const phone = import.meta.env.VITE_COMPANY_PHONE || '+44 7700 000 000'
-    window.location.href = `tel:${phone.replace(/\s/g, '')}`
+    window.location.href = `tel:${COMPANY_INFO.phoneRaw}`
   }, [])
 
-  return { openWhatsApp, callPhone, whatsappNumber: WHATSAPP_NUMBER }
+  return { openWhatsApp, callPhone, whatsappNumber: COMPANY_INFO.phoneRaw }
 }
 
 export default useContactPhone

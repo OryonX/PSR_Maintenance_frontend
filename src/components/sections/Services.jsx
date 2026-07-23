@@ -12,7 +12,7 @@ function Services() {
     <section id="services" className="bg-surface-light section-padding">
       <div className="section-container">
         {/* Header */}
-        <AnimatedSection className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-12">
+        <AnimatedSection className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-14 lg:mb-16">
           <div>
             <span className="text-brand-blue text-sm font-semibold uppercase tracking-wider mb-2 block">
               {t('services.badge')}
@@ -27,7 +27,7 @@ function Services() {
         </AnimatedSection>
 
         {/* Services Grid */}
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {services.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}

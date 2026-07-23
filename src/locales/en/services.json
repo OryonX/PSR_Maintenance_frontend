@@ -28,7 +28,7 @@
       "description": "PSR's plumbing team covers everything from a dripping tap to a full heating system installation. All our plumbers are fully qualified and Gas Safe registered where applicable. We offer emergency call-outs across Greater Manchester, 7 days a week, with a response target of under 2 hours.",
       "bullets": ["Leak Detection & Repair", "Boiler Installation & Servicing", "Radiator Fitting", "Bathroom Plumbing"]
     },
-    "electrical-work": {
+    "electrical": {
       "title": "Electrical Work",
       "description": "All electrical work at PSR is carried out by Part P certified electricians, ensuring every installation is safe, tested, and fully compliant with current BS 7671 wiring regulations. From a single socket to a full consumer unit upgrade, we issue the correct certification on completion.",
       "bullets": ["Consumer Unit Upgrades", "Socket & Lighting Circuits", "EV Charger Installation", "Fault Finding & Repairs"]
