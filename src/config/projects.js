@@ -5,8 +5,7 @@ const projectImages = {
   2: '/assets/img/projects/kitchen-renovation.webp',
   3: '/assets/img/projects/modern-bathroom.webp',
   4: '/assets/img/projects/interior-painting.webp',
-  // No source photo yet for property-refurb — ProjectCard falls back to a solid navy background.
-  5: '/workspaces/PSR_Maintenance_frontend/src/assets/img-optimized/services/plastering/plastering-skim-coat.webp',
+  5: '/assets/img/projects/property-refurb.webp',
   6: '/assets/img/projects/lounge-makeover.webp'
 }
 
