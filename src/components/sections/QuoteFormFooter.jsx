@@ -6,9 +6,11 @@ import { useContactPhone } from '../../hooks/useContactPhone.js'
 import { useTranslation } from '../../hooks/useTranslation.js'
 import { COMPANY_INFO } from '../../config/companyInfo.js'
 
-// n8n lead-intake webhook (env var overrides for staging/local)
-const N8N_WEBHOOK_URL = import.meta.env.VITE_QUOTE_WEBHOOK_URL
-  || 'https://n8n.diegoalejandrojs.com/webhook/26423563-21d8-435f-b52a-59f258afa49f'
+// CRM lead intake — public POST /api/leads resolves the tenant via
+// organization_slug (PublicTenantResolver). Env var overrides for staging/local.
+const CRM_LEADS_URL = import.meta.env.VITE_CRM_LEADS_URL
+  || 'https://oryonlabsdb-production.up.railway.app/api/leads'
+const ORGANIZATION_SLUG = 'psr-maintenance'
 
 const INITIAL_FORM = (defaultServiceType) => ({
   full_name: '',
@@ -97,25 +99,32 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
     try {
       const utm = getUtmParams()
 
-      // Payload keyed to what the n8n data_enrichment node expects
+      // Payload keyed to POST /api/leads (LeadController@store).
+      // Tenant routing + PSR-specific dynamic fields go into `details`
+      // (stored in leads.details JSON per the field_service vertical config).
       const payload = {
+        organization_slug: ORGANIZATION_SLUG,
+        lead_type: 'trade_job',
         name: formState.full_name.trim(),
         phone: formState.phone.trim(),
-        email: formState.email.trim(),
-        service_type: formState.service_type,
-        postcode: formState.postcode.trim().toUpperCase(),
-        urgency: formState.urgency,
-        preferred_contact: formState.preferred_contact,
+        email: formState.email.trim() || null,
+        channel: 'form', // leads.channel enum: form|chatbot|whatsapp|phone|email|instagram|tikTok|other
         challenge: formState.description.trim(),
-        channel: 'web_form',
+        urgency: formState.urgency,
         language: (navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en',
-        utm_source: utm.utm_source,
-        utm_campaign: utm.utm_campaign,
-        timestamp: new Date().toISOString(),
-        source: 'website_quote_form'
+        details: {
+          service_type: formState.service_type,
+          postcode: formState.postcode.trim().toUpperCase(),
+          urgency: formState.urgency,
+          preferred_contact: formState.preferred_contact || null,
+          utm_source: utm.utm_source || null,
+          utm_campaign: utm.utm_campaign || null,
+          source: 'website_quote_form',
+          submitted_at: new Date().toISOString()
+        }
       }
 
-      const response = await fetch(N8N_WEBHOOK_URL, {
+      const response = await fetch(CRM_LEADS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
