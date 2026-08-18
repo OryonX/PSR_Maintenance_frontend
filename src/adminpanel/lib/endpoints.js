@@ -94,6 +94,10 @@ export const usersApi = {
   remove: (id) => api.delete(`users/${id}`)
 }
 
+// GlobalSearchController::search() — type must be exactly 'email'|'phone'|'name'
+// (backend validates `required|in:email,phone,name`); anything else is a 422.
+// Scoped to the caller's own organization automatically via Sanctum auth —
+// never pass an organization_id/slug here, there's nothing to override.
 export const searchApi = {
-  search: (q) => api.get('search', { q })
+  search: (type, value) => api.get('search', { type, value })
 }

@@ -3,6 +3,7 @@ import { Menu, ExternalLink, LogOut, ChevronDown } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth.js'
 import { useTenantConfig } from '../../hooks/useTenantConfig.js'
 import { NAV_ITEMS } from './Sidebar.jsx'
+import GlobalSearch from './GlobalSearch.jsx'
 
 function pageTitle(currentPath, label) {
   const match = [...NAV_ITEMS].reverse().find(
@@ -27,7 +28,11 @@ function Header({ onMenuClick, currentPath }) {
         >
           <Menu className="w-5 h-5" />
         </button>
-        <h1 className="text-lg font-bold text-navy-900">{pageTitle(currentPath, label)}</h1>
+        <h1 className="text-lg font-bold text-navy-900 hidden sm:block">{pageTitle(currentPath, label)}</h1>
+      </div>
+
+      <div className="flex-1 flex justify-center px-2 sm:px-6 max-w-md mx-auto">
+        <GlobalSearch />
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
