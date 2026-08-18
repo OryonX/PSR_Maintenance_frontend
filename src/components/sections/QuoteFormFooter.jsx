@@ -6,16 +6,44 @@ import { useContactPhone } from '../../hooks/useContactPhone.js'
 import { useTranslation } from '../../hooks/useTranslation.js'
 import { COMPANY_INFO } from '../../config/companyInfo.js'
 
+// n8n lead-intake webhook (env var overrides for staging/local)
+const N8N_WEBHOOK_URL = import.meta.env.VITE_QUOTE_WEBHOOK_URL
+  || 'https://n8n.diegoalejandrojs.com/webhook/26423563-21d8-435f-b52a-59f258afa49f'
+
+const INITIAL_FORM = (defaultServiceType) => ({
+  full_name: '',
+  phone: '',
+  email: '',
+  service_type: defaultServiceType,
+  postcode: '',
+  urgency: '',
+  preferred_contact: '',
+  description: ''
+})
+
+// UTM params survive SPA navigation via sessionStorage
+function getUtmParams() {
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const fromUrl = {
+      utm_source: params.get('utm_source') || '',
+      utm_campaign: params.get('utm_campaign') || ''
+    }
+    if (fromUrl.utm_source || fromUrl.utm_campaign) {
+      sessionStorage.setItem('psr_utm', JSON.stringify(fromUrl))
+      return fromUrl
+    }
+    const stored = JSON.parse(sessionStorage.getItem('psr_utm') || '{}')
+    return { utm_source: stored.utm_source || '', utm_campaign: stored.utm_campaign || '' }
+  } catch {
+    return { utm_source: '', utm_campaign: '' }
+  }
+}
+
 function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight, subtitle }) {
   const { openWhatsApp } = useContactPhone()
   const { t } = useTranslation('home')
-  const [formState, setFormState] = useState({
-    full_name: '',
-    phone: '',
-    email: '',
-    service_type: defaultServiceType,
-    description: ''
-  })
+  const [formState, setFormState] = useState(() => INITIAL_FORM(defaultServiceType))
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [errors, setErrors] = useState({})
@@ -41,6 +69,16 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
       newErrors.service_type = t('quoteForm.errors.serviceTypeRequired')
     }
 
+    if (!formState.postcode.trim()) {
+      newErrors.postcode = t('quoteForm.errors.postcodeRequired')
+    } else if (!/^[A-Za-z]{1,2}\d[A-Za-z\d]?\s*\d[A-Za-z]{2}$/.test(formState.postcode.trim())) {
+      newErrors.postcode = t('quoteForm.errors.postcodeInvalid')
+    }
+
+    if (!formState.urgency) {
+      newErrors.urgency = t('quoteForm.errors.urgencyRequired')
+    }
+
     if (!formState.description.trim()) {
       newErrors.description = t('quoteForm.errors.descriptionRequired')
     }
@@ -57,22 +95,36 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
     setIsSubmitting(true)
 
     try {
-      const webhookUrl = import.meta.env.VITE_QUOTE_WEBHOOK_URL
+      const utm = getUtmParams()
 
-      if (webhookUrl) {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...formState,
-            timestamp: new Date().toISOString(),
-            source: 'website_quote_form'
-          })
-        })
+      // Payload keyed to what the n8n data_enrichment node expects
+      const payload = {
+        name: formState.full_name.trim(),
+        phone: formState.phone.trim(),
+        email: formState.email.trim(),
+        service_type: formState.service_type,
+        postcode: formState.postcode.trim().toUpperCase(),
+        urgency: formState.urgency,
+        preferred_contact: formState.preferred_contact,
+        challenge: formState.description.trim(),
+        channel: 'web_form',
+        language: (navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en',
+        utm_source: utm.utm_source,
+        utm_campaign: utm.utm_campaign,
+        timestamp: new Date().toISOString(),
+        source: 'website_quote_form'
       }
 
-      // Simulate API delay for UX
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      if (!response.ok) {
+        throw new Error(`Webhook responded ${response.status}`)
+      }
+
       setIsSubmitted(true)
     } catch (error) {
       console.error('Form submission error:', error)
@@ -178,13 +230,7 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
                 <button
                   onClick={() => {
                     setIsSubmitted(false)
-                    setFormState({
-                      full_name: '',
-                      phone: '',
-                      email: '',
-                      service_type: defaultServiceType,
-                      description: ''
-                    })
+                    setFormState(INITIAL_FORM(defaultServiceType))
                   }}
                   className="text-brand-blue font-semibold hover:underline"
                 >
@@ -265,6 +311,63 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
                       ))}
                     </select>
                     {errors.service_type && <p className="text-red-500 text-xs mt-1">{errors.service_type}</p>}
+                  </div>
+
+                  {/* Postcode */}
+                  <div>
+                    <label htmlFor="postcode" className="block text-sm font-medium text-navy-900 mb-1.5">
+                      {t('quoteForm.fields.postcode')} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="postcode"
+                      name="postcode"
+                      value={formState.postcode}
+                      onChange={handleChange}
+                      placeholder={t('quoteForm.fields.postcodePlaceholder')}
+                      className={`w-full px-4 py-2.5 rounded-lg border ${errors.postcode ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-brand-blue'} focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors`}
+                    />
+                    {errors.postcode && <p className="text-red-500 text-xs mt-1">{errors.postcode}</p>}
+                  </div>
+
+                  {/* Urgency */}
+                  <div>
+                    <label htmlFor="urgency" className="block text-sm font-medium text-navy-900 mb-1.5">
+                      {t('quoteForm.fields.urgency')} <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="urgency"
+                      name="urgency"
+                      value={formState.urgency}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-2.5 rounded-lg border ${errors.urgency ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-brand-blue'} focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors bg-white`}
+                    >
+                      <option value="">{t('quoteForm.fields.urgencyPlaceholder')}</option>
+                      <option value="Emergency">{t('quoteForm.fields.urgencyOptions.emergency')}</option>
+                      <option value="This week">{t('quoteForm.fields.urgencyOptions.thisWeek')}</option>
+                      <option value="Next 2-4 weeks">{t('quoteForm.fields.urgencyOptions.next2to4Weeks')}</option>
+                      <option value="Flexible">{t('quoteForm.fields.urgencyOptions.flexible')}</option>
+                    </select>
+                    {errors.urgency && <p className="text-red-500 text-xs mt-1">{errors.urgency}</p>}
+                  </div>
+
+                  {/* Preferred Contact */}
+                  <div>
+                    <label htmlFor="preferred_contact" className="block text-sm font-medium text-navy-900 mb-1.5">
+                      {t('quoteForm.fields.preferredContact')}
+                    </label>
+                    <select
+                      id="preferred_contact"
+                      name="preferred_contact"
+                      value={formState.preferred_contact}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-colors bg-white"
+                    >
+                      <option value="">{t('quoteForm.fields.preferredContactPlaceholder')}</option>
+                      <option value="Phone">{t('quoteForm.fields.preferredContactOptions.phone')}</option>
+                      <option value="WhatsApp">{t('quoteForm.fields.preferredContactOptions.whatsapp')}</option>
+                      <option value="Email">{t('quoteForm.fields.preferredContactOptions.email')}</option>
+                    </select>
                   </div>
                 </div>
 

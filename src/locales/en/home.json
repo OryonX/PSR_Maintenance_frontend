@@ -44,10 +44,22 @@
     "secondaryImageAlt": "Completed renovation project",
     "cta": "GET YOUR FREE QUOTE",
     "trustPoints": {
-      "insured": { "title": "Fully Insured", "description": "£5m public liability cover" },
-      "certified": { "title": "Certified Tradespeople", "description": "Part P, Gas Safe & more" },
-      "rated": { "title": "5-Star Rated", "description": "500+ happy customers" },
-      "emergency": { "title": "Emergency Call-Out", "description": "Available 7 days a week" }
+      "insured": {
+        "title": "Fully Insured",
+        "description": "£5m public liability cover"
+      },
+      "certified": {
+        "title": "Certified Tradespeople",
+        "description": "Part P, Gas Safe & more"
+      },
+      "rated": {
+        "title": "5-Star Rated",
+        "description": "500+ happy customers"
+      },
+      "emergency": {
+        "title": "Emergency Call-Out",
+        "description": "Available 7 days a week"
+      }
     }
   },
   "projects": {
@@ -77,10 +89,19 @@
     "titlePrefix": "REQUEST A ",
     "titleHighlight": "FREE QUOTE",
     "subtitle": "Fill in the form below, message us on WhatsApp, or find us on the map. We'll get back to you within 24 hours.",
-    "whatsappCard": { "title": "Chat on WhatsApp", "subtitle": "Fastest way to reach us" },
+    "whatsappCard": {
+      "title": "Chat on WhatsApp",
+      "subtitle": "Fastest way to reach us"
+    },
     "whatsappMessage": "Hi, I'd like to get a free quote for some work.",
-    "phoneCard": { "label": "Call us directly" },
-    "locationCard": { "label": "Based in", "address": "Manchester, UK", "coverage": "Covering all of Greater Manchester" },
+    "phoneCard": {
+      "label": "Call us directly"
+    },
+    "locationCard": {
+      "label": "Based in",
+      "address": "Manchester, UK",
+      "coverage": "Covering all of Greater Manchester"
+    },
     "mapTitle": "PSR Maintenance Location",
     "success": {
       "title": "Quote Request Sent!",
@@ -96,6 +117,23 @@
       "emailPlaceholder": "john@example.com",
       "serviceType": "Service Required",
       "serviceTypePlaceholder": "Select a service...",
+      "postcode": "Postcode",
+      "postcodePlaceholder": "M1 2AB",
+      "urgency": "How urgent is it?",
+      "urgencyPlaceholder": "Select urgency...",
+      "urgencyOptions": {
+        "emergency": "Emergency — ASAP",
+        "thisWeek": "This week",
+        "next2to4Weeks": "Next 2–4 weeks",
+        "flexible": "I'm flexible"
+      },
+      "preferredContact": "Preferred Contact Method",
+      "preferredContactPlaceholder": "Select...",
+      "preferredContactOptions": {
+        "phone": "Phone call",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
       "description": "Describe Your Project",
       "descriptionPlaceholder": "Tell us about the work you need — location, scope, any details..."
     },
@@ -105,7 +143,10 @@
       "phoneInvalid": "Please enter a valid phone number",
       "emailInvalid": "Please enter a valid email",
       "serviceTypeRequired": "Please select a service",
-      "descriptionRequired": "Please describe your project"
+      "descriptionRequired": "Please describe your project",
+      "postcodeRequired": "Postcode is required",
+      "postcodeInvalid": "Please enter a valid UK postcode",
+      "urgencyRequired": "Please select how urgent it is"
     },
     "submit": "SEND QUOTE REQUEST",
     "submitting": "Sending...",
