@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { navigate } from 'vike/client/router'
+import { Plus } from 'lucide-react'
 import HelmetSEO from '../../../seo/HelmetSEO.jsx'
 import { leadsApi } from '../../../adminpanel/lib/endpoints.js'
 import { LEAD_STATUSES, STATUS_TONE } from '../../../adminpanel/lib/constants.js'
@@ -9,6 +10,9 @@ import ReusableTable from '../../../adminpanel/components/Tables/ReusableTable.j
 import Pagination from '../../../ui/Pagination.jsx'
 import Badge from '../../../ui/Badge.jsx'
 import Card from '../../../ui/Card.jsx'
+import Button from '../../../ui/Button.jsx'
+import Modal from '../../../ui/Modal.jsx'
+import LeadForm from '../../../adminpanel/components/Forms/LeadForm.jsx'
 
 function formatDate(iso) {
   if (!iso) return '—'
@@ -21,16 +25,24 @@ function Page() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [statusFilter, setStatusFilter] = useState('all')
+  const [modalOpen, setModalOpen] = useState(false)
+  const [reloadKey, setReloadKey] = useState(0)
 
   useEffect(() => {
     let cancelled = false
     setLoading(true)
+    setError(null)
     leadsApi.list(statusFilter !== 'all' ? { status: statusFilter } : undefined)
       .then((data) => { if (!cancelled) setLeads(data) })
       .catch((err) => { if (!cancelled) setError(err) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
-  }, [statusFilter])
+  }, [statusFilter, reloadKey])
+
+  const handleCreated = () => {
+    setModalOpen(false)
+    setReloadKey((k) => k + 1)
+  }
 
   const { page, setPage, totalPages, total, pageItems } = usePagination(leads, 15)
 
@@ -47,7 +59,7 @@ function Page() {
       <HelmetSEO title={`${label('lead', true)} | PSR Operations`} description="Leads" noindex={true} />
 
       <div className="space-y-4">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {['all', ...LEAD_STATUSES].map((status) => (
             <button
               key={status}
@@ -59,6 +71,9 @@ function Page() {
               {status}
             </button>
           ))}
+          <Button className="ml-auto" onClick={() => setModalOpen(true)}>
+            <Plus className="w-4 h-4" /> New {label('lead')}
+          </Button>
         </div>
 
         <Card bodyClassName="p-0">
@@ -80,6 +95,10 @@ function Page() {
           )}
         </Card>
       </div>
+
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={`New ${label('lead')}`}>
+        <LeadForm onSubmit={handleCreated} onCancel={() => setModalOpen(false)} />
+      </Modal>
     </>
   )
 }

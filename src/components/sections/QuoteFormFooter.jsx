@@ -6,11 +6,15 @@ import { useContactPhone } from '../../hooks/useContactPhone.js'
 import { useTranslation } from '../../hooks/useTranslation.js'
 import { COMPANY_INFO } from '../../config/companyInfo.js'
 
-// CRM lead intake — public POST /api/leads resolves the tenant via
-// organization_slug (PublicTenantResolver). Env var overrides for staging/local.
-const CRM_LEADS_URL = import.meta.env.VITE_CRM_LEADS_URL
-  || 'https://oryonlabsdb-production.up.railway.app/api/leads'
+// n8n lead-intake workflow: Webhook -> data_enrichment -> Basic LLM Chain
+// -> Code in JavaScript -> Call 'send_to_customer'. data_enrichment reads
+// service_type/postcode/preferred_contact/urgency/utm_* as flat top-level
+// fields (not nested) — keep the payload shape in sync with that node.
+const N8N_WEBHOOK_URL = import.meta.env.VITE_QUOTE_WEBHOOK_URL
+  || 'https://n8n.diegoalejandrojs.com/webhook/26423563-21d8-435f-b52a-59f258afa49f'
 const ORGANIZATION_SLUG = 'psr-maintenance'
+
+
 
 const INITIAL_FORM = (defaultServiceType) => ({
   full_name: '',
@@ -25,6 +29,7 @@ const INITIAL_FORM = (defaultServiceType) => ({
 
 // UTM params survive SPA navigation via sessionStorage
 function getUtmParams() {
+
   try {
     const params = new URLSearchParams(window.location.search)
     const fromUrl = {
@@ -35,6 +40,7 @@ function getUtmParams() {
       sessionStorage.setItem('psr_utm', JSON.stringify(fromUrl))
       return fromUrl
     }
+
     const stored = JSON.parse(sessionStorage.getItem('psr_utm') || '{}')
     return { utm_source: stored.utm_source || '', utm_campaign: stored.utm_campaign || '' }
   } catch {
@@ -99,32 +105,27 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
     try {
       const utm = getUtmParams()
 
-      // Payload keyed to POST /api/leads (LeadController@store).
-      // Tenant routing + PSR-specific dynamic fields go into `details`
-      // (stored in leads.details JSON per the field_service vertical config).
+      // Flat payload — matches what the n8n `data_enrichment` node reads off
+      // `parsed` (service_type/postcode/preferred_contact/urgency/utm_* are
+      // top-level there, not nested under `details` like the CRM API wants).
       const payload = {
         organization_slug: ORGANIZATION_SLUG,
         lead_type: 'trade_job',
         name: formState.full_name.trim(),
         phone: formState.phone.trim(),
-        email: formState.email.trim() || null,
-        channel: 'form', // leads.channel enum: form|chatbot|whatsapp|phone|email|instagram|tikTok|other
+        email: formState.email.trim() || '',
+        channel: 'form',
         challenge: formState.description.trim(),
         urgency: formState.urgency,
-        language: (navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en',
-        details: {
-          service_type: formState.service_type,
-          postcode: formState.postcode.trim().toUpperCase(),
-          urgency: formState.urgency,
-          preferred_contact: formState.preferred_contact || null,
-          utm_source: utm.utm_source || null,
-          utm_campaign: utm.utm_campaign || null,
-          source: 'website_quote_form',
-          submitted_at: new Date().toISOString()
-        }
+        service_type: formState.service_type,
+        postcode: formState.postcode.trim().toUpperCase(),
+        preferred_contact: formState.preferred_contact || '',
+        utm_source: utm.utm_source || '',
+        utm_campaign: utm.utm_campaign || '',
+        language: (navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en'
       }
 
-      const response = await fetch(CRM_LEADS_URL, {
+      const response = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -427,5 +428,5 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
     </section>
   )
 }
-
 export default QuoteFormFooter
+

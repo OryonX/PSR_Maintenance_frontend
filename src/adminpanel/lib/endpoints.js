@@ -24,12 +24,15 @@ export const meApi = {
 // jobs, avg response time, jobs by service type. Not vertical-generic like
 // meApi.metrics; only meaningful for orgs on the trade-jobs flow.
 export const dashboardApi = {
-  psrMetrics: () => api.get('dashboard/psr-metrics')
+  psrMetrics: () => api.get('dashboard/trade-jobs-metrics')
 }
 
 export const leadsApi = {
   list: (params) => api.get('leads', params),
   get: (id) => api.get(`leads/${id}`),
+  // Sanctum → el backend atribuye el lead a la org del usuario (auth-first);
+  // nunca enviar organization_id/slug desde el panel.
+  create: (body) => api.post('leads', body),
   update: (id, body) => api.patch(`leads/${id}`, body),
   updateStatus: (id, status) => api.patch(`leads/${id}/status`, { status }),
   updateNotes: (id, notes) => api.patch(`leads/${id}/notes`, { notes }),
@@ -41,6 +44,7 @@ export const leadsApi = {
 export const clientsApi = {
   list: (params) => api.get('clients', params),
   get: (id) => api.get(`clients/${id}`),
+  create: (body) => api.post('clients', body),
   update: (id, body) => api.patch(`clients/${id}`, body),
   remove: (id) => api.delete(`clients/${id}`)
 }
