@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { X } from 'lucide-react'
 
-function Modal({ open, onClose, title, children, footer }) {
+const SIZES = { md: 'max-w-lg', xl: 'max-w-3xl' }
+
+function Modal({ open, onClose, title, children, footer, size = 'md' }) {
   useEffect(() => {
     if (!open) return
     const handleKeyDown = (e) => {
@@ -21,7 +23,7 @@ function Modal({ open, onClose, title, children, footer }) {
       aria-modal="true"
     >
       <div
-        className="w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto bg-white rounded-xl shadow-xl"
+        className={`w-full ${SIZES[size] || SIZES.md} mx-4 max-h-[90vh] overflow-y-auto bg-white rounded-xl shadow-xl`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">

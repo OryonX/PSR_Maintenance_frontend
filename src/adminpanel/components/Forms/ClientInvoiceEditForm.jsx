@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import Input from '../../../ui/Input.jsx'
 import Button from '../../../ui/Button.jsx'
 import { clientInvoicesApi } from '../../lib/endpoints.js'
-import { BILL_TO_FIELDS, FIELD_LABELS, fieldErrors, invoiceErrorMessage, toDateInput } from '../../lib/billing.js'
+import { BILL_TO_FIELDS, FIELD_LABELS, fieldErrors, formatGBP, invoiceErrorMessage, toDateInput } from '../../lib/billing.js'
+import { computeTotals, deserializeLines, serializeLines, totalsFromGross } from '../../lib/lineItems.js'
+import { useTenantConfig } from '../../hooks/useTenantConfig.js'
+import LineItemsEditor, { validateLines } from './LineItemsEditor.jsx'
 
 // Same fallback as ClientInvoiceController::resolveBillTo — the client's
 // billing details (plus contact), or the job's lead/address with no client.
@@ -25,6 +28,8 @@ function derivedBillTo(invoice) {
 // resolves it from the live client data at send time; with it, what's typed
 // here is what gets frozen on the invoice.
 function ClientInvoiceEditForm({ invoice, onSubmit, onCancel }) {
+  const { serviceInfo } = useTenantConfig()
+  const [lines, setLines] = useState(() => deserializeLines(invoice.line_items))
   const initialBillTo = invoice.bill_to || derivedBillTo(invoice)
   const [form, setForm] = useState({
     amount: invoice.amount ?? '',
@@ -53,7 +58,29 @@ function ClientInvoiceEditForm({ invoice, onSubmit, onCancel }) {
       due_date: form.due_date || null,
       payment_method: String(form.payment_method).trim() || null
     }
-    if (form.amount !== '') body.amount = Number(form.amount)
+    // amount_net is `sometimes|numeric` (can't be null), so it's always sent
+    // alongside amount to keep the PDF totals consistent.
+    if (lines.length > 0) {
+      const linesError = validateLines(lines)
+      if (linesError) { setErrors({ lines: linesError }); return }
+      const totals = computeTotals(lines, form.vat_rate)
+      Object.assign(body, {
+        line_items: serializeLines(lines),
+        amount: totals.gross,
+        amount_net: totals.net,
+        vat_amount: form.vat_rate === '' ? null : totals.vat
+      })
+    } else {
+      if (invoice.line_items?.length) body.line_items = null
+      if (form.amount !== '') {
+        const manual = totalsFromGross(form.amount, form.vat_rate)
+        Object.assign(body, {
+          amount: manual.gross,
+          amount_net: manual.net,
+          vat_amount: form.vat_rate === '' ? null : manual.vat
+        })
+      }
+    }
     if (override) {
       body.bill_to = Object.fromEntries(BILL_TO_FIELDS.map((k) => [k, String(billTo[k] ?? '').trim() || null]))
     } else if (invoice.bill_to) {
@@ -74,8 +101,26 @@ function ClientInvoiceEditForm({ invoice, onSubmit, onCancel }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <p className="block text-sm font-medium text-navy-900 mb-1.5">Lines</p>
+        <LineItemsEditor
+          lines={lines}
+          onChange={(next) => { setLines(next); if (errors.lines) setErrors((prev) => ({ ...prev, lines: undefined })) }}
+          vatRate={form.vat_rate}
+          serviceInfo={serviceInfo}
+          error={errors.lines}
+        />
+      </div>
+
       <div className="grid grid-cols-2 gap-3">
-        <Input id="amount" label="Amount (£)" type="number" min="0" step="0.01" value={form.amount} onChange={(e) => update('amount', e.target.value)} error={errors.amount} />
+        {lines.length === 0 ? (
+          <Input id="amount" label="Amount (£)" type="number" min="0" step="0.01" value={form.amount} onChange={(e) => update('amount', e.target.value)} error={errors.amount} />
+        ) : (
+          <div>
+            <p className="block text-sm font-medium text-navy-900 mb-1.5">Amount (£)</p>
+            <p className="px-3.5 py-2.5 rounded-lg border border-gray-100 bg-gray-50 text-sm text-navy-900">{formatGBP(computeTotals(lines, form.vat_rate).gross)} <span className="text-gray-400">· from lines</span></p>
+          </div>
+        )}
         <Input id="vat_rate" label="VAT (%)" type="number" min="0" max="100" step="0.01" placeholder="20" value={form.vat_rate} onChange={(e) => update('vat_rate', e.target.value)} error={errors.vat_rate} />
       </div>
       <div className="grid grid-cols-2 gap-3">

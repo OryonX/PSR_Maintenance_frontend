@@ -5,6 +5,7 @@ import HelmetSEO from '../../../seo/HelmetSEO.jsx'
 import { clientInvoicesApi, tradeJobsApi, clientsApi } from '../../../adminpanel/lib/endpoints.js'
 import { CLIENT_INVOICE_STATUSES, STATUS_TONE } from '../../../adminpanel/lib/constants.js'
 import { formatGBP, invoiceErrorMessage, invoiceRecipientName } from '../../../adminpanel/lib/billing.js'
+import { invoicedJobIdSet } from '../../../adminpanel/lib/lineItems.js'
 import { useTenantConfig } from '../../../adminpanel/hooks/useTenantConfig.js'
 import { usePagination } from '../../../adminpanel/hooks/usePagination.js'
 import ReusableTable from '../../../adminpanel/components/Tables/ReusableTable.jsx'
@@ -147,7 +148,7 @@ function Page() {
         </Card>
       </div>
 
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={`New ${label('invoice')}`}>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={`New ${label('invoice')}`} size="xl">
         {formError ? (
           <p className="text-sm text-red-500">Couldn't load {label('work_item', true).toLowerCase()}: {formError.message}</p>
         ) : !formData ? (
@@ -156,7 +157,7 @@ function Page() {
           <ClientInvoiceForm
             tradeJobs={formData.tradeJobs}
             clients={formData.clients}
-            invoicedJobIds={new Set((invoices || []).map((i) => String(i.trade_job_id)))}
+            invoicedJobIds={invoicedJobIdSet(invoices)}
             onSubmit={handleCreated}
             onCancel={() => setModalOpen(false)}
           />

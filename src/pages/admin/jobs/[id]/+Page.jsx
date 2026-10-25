@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
 import { ChevronLeft, CheckCircle2, XCircle, CalendarClock, Receipt, Pencil } from 'lucide-react'
 import HelmetSEO from '../../../../seo/HelmetSEO.jsx'
-import { tradeJobsApi, clientInvoicesApi, leadsApi } from '../../../../adminpanel/lib/endpoints.js'
+import { tradeJobsApi, clientInvoicesApi } from '../../../../adminpanel/lib/endpoints.js'
 import { jobDescription, jobTitle } from '../../../../adminpanel/lib/jobs.js'
 import { useTenantConfig } from '../../../../adminpanel/hooks/useTenantConfig.js'
 import Card from '../../../../ui/Card.jsx'
@@ -73,15 +73,13 @@ function Page() {
               <div>
                 <div className="flex items-center gap-2">
                   <h2 className="text-xl font-bold text-navy-900">{jobTitle(job, serviceInfo)}</h2>
-                  {job.lead_id && (
-                    <button
-                      onClick={() => setTitleOpen(true)}
-                      title="Edit title"
-                      className="p-1 rounded-md text-gray-400 hover:text-navy-900 hover:bg-gray-100 transition-colors"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => setTitleOpen(true)}
+                    title="Edit title"
+                    className="p-1 rounded-md text-gray-400 hover:text-navy-900 hover:bg-gray-100 transition-colors"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
                 </div>
                 {job.lead?.phone && <p className="text-sm text-gray-500">{job.lead.phone}</p>}
               </div>
@@ -189,26 +187,24 @@ function Page() {
   )
 }
 
-// The title is stored as the lead's project_name (TradeJobController accepts
-// no title/details field). PATCH /leads/{id} drops nulls, so it can be changed
-// but not cleared, and it's shared by every job of the same lead.
+// Saved on the job itself as details.title (merged server-side, so other
+// details keys survive). Empty → null clears it and the title falls back to
+// the lead's project name / service type again.
 function EditTitleModal({ open, onClose, job, currentDescription, onSaved }) {
   const [value, setValue] = useState('')
   const [error, setError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    if (open) { setValue(job?.lead?.project_name || currentDescription || ''); setError(null) }
+    if (open) { setValue(job?.details?.title || currentDescription || ''); setError(null) }
   }, [open, job, currentDescription])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const title = value.trim()
-    if (!title) { setError('Enter a title.'); return }
     setError(null)
     setSubmitting(true)
     try {
-      await leadsApi.update(job.lead_id, { project_name: title })
+      await tradeJobsApi.update(job.id, { details: { title: value.trim() || null } })
       onSaved()
     } catch (err) {
       setError(err.message)
@@ -229,8 +225,8 @@ function EditTitleModal({ open, onClose, job, currentDescription, onSaved }) {
           onChange={(e) => setValue(e.target.value)}
         />
         <p className="text-xs text-gray-400">
-          Shown as “{(value.trim() || 'Plumbing repair')} for {job?.lead?.name || 'the customer'}”. It's saved on the customer's request,
-          so other jobs for the same customer show it too, and it's used as the line description on the invoice PDF.
+          Shown as “{(value.trim() || 'Plumbing repair')} for {job?.lead?.name || 'the customer'}” — only on this job.
+          Leave it empty to go back to the automatic title.
         </p>
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <div className="flex justify-end gap-3 pt-2">

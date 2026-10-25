@@ -4,8 +4,10 @@ import Input from '../../../ui/Input.jsx'
 import Select from '../../../ui/Select.jsx'
 import Button from '../../../ui/Button.jsx'
 import { clientInvoicesApi, billingProfileApi } from '../../lib/endpoints.js'
-import { fieldErrors, fieldList, invoiceErrorMessage } from '../../lib/billing.js'
+import { fieldErrors, fieldList, formatGBP, invoiceErrorMessage } from '../../lib/billing.js'
 import { jobTitle, jobWhen } from '../../lib/jobs.js'
+import { computeTotals, defaultLineForJob, serializeLines, totalsFromGross } from '../../lib/lineItems.js'
+import LineItemsEditor, { validateLines } from './LineItemsEditor.jsx'
 import { useTenantConfig } from '../../hooks/useTenantConfig.js'
 
 function BlockingNotice({ children }) {
@@ -30,9 +32,14 @@ function jobLabel(job, serviceInfo) {
   return `${jobTitle(job, serviceInfo)} — ${details} (#${job.id})`
 }
 
-// ClientInvoiceController::store — only trade_job_id is required. amount falls
-// back to the linked quote (fixed → max → min); with no quote amount the
-// backend answers 422 { error: 'amount_required' }.
+// ClientInvoiceController::store — only trade_job_id is required. With line
+// items the amounts are computed here (net = Σ lines, VAT on top). Without
+// lines, amount falls back to the linked quote (fixed → max → min) and with
+// no quote amount the backend answers 422 { error: 'amount_required' }.
+//
+// An invoice links ONE job (trade_job_id; TradeJob hasOne ClientInvoice).
+// Further jobs are billed as extra lines tagged with their trade_job_id, so
+// they're excluded from future invoices (see invoicedJobIdSet).
 function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCancel }) {
   const { serviceInfo } = useTenantConfig()
   const [form, setForm] = useState({
@@ -43,6 +50,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
     due_date: '',
     payment_method: ''
   })
+  const [lines, setLines] = useState([])
   const [errors, setErrors] = useState({})
   const [error, setError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
@@ -66,6 +74,24 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
 
   // A trade job takes a single invoice.
   const availableJobs = (tradeJobs || []).filter((job) => !invoicedJobIds?.has(String(job.id)))
+  const jobsOnLines = new Set(lines.map((line) => String(line.trade_job_id)).filter((id) => id !== 'null'))
+  const extraJobs = availableJobs.filter((job) => String(job.id) !== form.trade_job_id && !jobsOnLines.has(String(job.id)))
+
+  // Picking the main job swaps its suggested line (quote amount, or the
+  // rate-card default for its service type); lines for other jobs and
+  // manually added lines are kept.
+  const handleJobChange = (value) => {
+    const previous = form.trade_job_id
+    const job = (tradeJobs || []).find((j) => String(j.id) === value)
+    setLines((prev) => {
+      const kept = prev.filter((line) => !previous || String(line.trade_job_id) !== previous)
+      const withoutNew = kept.filter((line) => String(line.trade_job_id) !== value)
+      return job ? [defaultLineForJob(job, serviceInfo), ...withoutNew] : withoutNew
+    })
+    update('trade_job_id', value)
+  }
+
+  const totals = computeTotals(lines, form.vat_rate)
 
   const update = (key, value) => {
     setForm((prev) => {
@@ -89,7 +115,19 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
 
     const body = { trade_job_id: Number(form.trade_job_id) }
     if (form.client_id) body.client_id = Number(form.client_id)
-    if (form.amount !== '') body.amount = Number(form.amount)
+    if (lines.length > 0) {
+      const linesError = validateLines(lines)
+      if (linesError) { setErrors({ lines: linesError }); return }
+      body.line_items = serializeLines(lines)
+      body.amount_net = totals.net
+      body.amount = totals.gross
+      if (form.vat_rate !== '') body.vat_amount = totals.vat
+    } else if (form.amount !== '') {
+      const manual = totalsFromGross(form.amount, form.vat_rate)
+      body.amount = manual.gross
+      body.amount_net = manual.net
+      if (form.vat_rate !== '') body.vat_amount = manual.vat
+    }
     if (form.vat_rate !== '') body.vat_rate = Number(form.vat_rate)
     if (form.due_date) body.due_date = form.due_date
     if (form.payment_method.trim()) body.payment_method = form.payment_method.trim()
@@ -126,7 +164,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
           label="Job"
           placeholder={availableJobs.length ? 'Select a job…' : 'No uninvoiced jobs'}
           value={form.trade_job_id}
-          onChange={(e) => update('trade_job_id', e.target.value)}
+          onChange={(e) => handleJobChange(e.target.value)}
           options={availableJobs.map((job) => ({ value: job.id, label: jobLabel(job, serviceInfo) }))}
           error={errors.trade_job_id}
           required
@@ -150,18 +188,37 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
         </BlockingNotice>
       )}
 
-      <div className="grid grid-cols-2 gap-3">
-        <Input
-          id="amount"
-          label="Amount (£)"
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="From the quote if empty"
-          value={form.amount}
-          onChange={(e) => update('amount', e.target.value)}
-          error={errors.amount}
+      <div>
+        <p className="block text-sm font-medium text-navy-900 mb-1.5">Lines</p>
+        <LineItemsEditor
+          lines={lines}
+          onChange={(next) => { setLines(next); if (errors.lines) setErrors((prev) => ({ ...prev, lines: undefined })) }}
+          vatRate={form.vat_rate}
+          extraJobs={form.trade_job_id ? extraJobs : []}
+          serviceInfo={serviceInfo}
+          error={errors.lines}
         />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        {lines.length === 0 ? (
+          <Input
+            id="amount"
+            label="Amount (£)"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="From the quote if empty"
+            value={form.amount}
+            onChange={(e) => update('amount', e.target.value)}
+            error={errors.amount}
+          />
+        ) : (
+          <div>
+            <p className="block text-sm font-medium text-navy-900 mb-1.5">Amount (£)</p>
+            <p className="px-3.5 py-2.5 rounded-lg border border-gray-100 bg-gray-50 text-sm text-navy-900">{formatGBP(totals.gross)} <span className="text-gray-400">· from lines</span></p>
+          </div>
+        )}
         <Input
           id="vat_rate"
           label="VAT (%)"

@@ -10,6 +10,7 @@ import { tradeJobsApi } from '../../lib/endpoints.js'
 // then immediately reschedules it so it's visible on both Kanban and Calendar.
 function WorkItemForm({ leads, quotes, teamMembers, onSubmit, onCancel }) {
   const [form, setForm] = useState({
+    title: '',
     lead_id: '',
     quote_id: '',
     assigned_team_member_id: '',
@@ -38,6 +39,7 @@ function WorkItemForm({ leads, quotes, teamMembers, onSubmit, onCancel }) {
         assigned_team_member_id: form.assigned_team_member_id || null,
         address: form.address || null,
         postcode: form.postcode || null,
+        ...(form.title.trim() ? { details: { title: form.title.trim() } } : {}),
         scheduled_date: form.date || null,
         scheduled_time_window: form.date ? `${form.startTime}-${form.endTime}` : null
       })
@@ -58,6 +60,15 @@ function WorkItemForm({ leads, quotes, teamMembers, onSubmit, onCancel }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
+        id="title"
+        label="Title (optional)"
+        placeholder="e.g. Plumbing repair"
+        maxLength={255}
+        value={form.title}
+        onChange={(e) => update('title', e.target.value)}
+      />
+
       <Select
         id="lead_id"
         label="Lead"

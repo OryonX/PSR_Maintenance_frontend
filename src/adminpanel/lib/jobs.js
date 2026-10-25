@@ -1,17 +1,18 @@
 // Display helpers for trade jobs ("work items").
 //
-// A trade job has no title column, and TradeJobController store/update drop
-// any `details` payload — so the title is derived, never stored on the job:
-//   1. lead.project_name — editable from the panel (PATCH /leads/{id}) and
-//      already used by the backend as the invoice PDF line description;
-//   2. otherwise the lead's service type, with the vertical's label.
-// Caveat: project_name lives on the lead, so every job of the same lead shares
-// it — jobWhen()/postcode are what tell those apart.
+// Title resolution, first match wins:
+//   1. job.details.title — the job's own name (TradeJobController accepts
+//      details.title on store/update and merges details on update);
+//   2. lead.project_name — older fallback, shared by every job of the lead;
+//   3. the lead's service type, with the vertical's label.
 
 const humanize = (value) => String(value).replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase())
 
 /** "Plumbing repair" — what the job is about, or null when nothing is known. */
 export function jobDescription(job, serviceInfo) {
+  const ownTitle = job?.details?.title?.trim()
+  if (ownTitle) return ownTitle
+
   const projectName = job?.lead?.project_name?.trim()
   if (projectName) return projectName
 

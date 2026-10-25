@@ -107,6 +107,43 @@ function Page() {
               </dl>
             </Card>
 
+            {invoice.line_items?.length > 0 && (
+              <Card title="Lines" bodyClassName="px-6 pb-6 pt-3">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-xs uppercase tracking-wide text-gray-400 border-b border-gray-100">
+                      <th className="py-2 font-semibold">Description</th>
+                      <th className="py-2 font-semibold text-right">Qty</th>
+                      <th className="py-2 font-semibold text-right">Unit</th>
+                      <th className="py-2 font-semibold text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {invoice.line_items.map((line, i) => (
+                      <tr key={i}>
+                        <td className="py-2 text-navy-900">
+                          {line.description}
+                          {line.trade_job_id && line.trade_job_id !== invoice.trade_job_id && (
+                            <a href={`/admin/jobs/${line.trade_job_id}`} className="ml-1 text-xs text-gray-400 hover:underline">(#{line.trade_job_id})</a>
+                          )}
+                        </td>
+                        <td className="py-2 text-right">{line.quantity}</td>
+                        <td className="py-2 text-right">{formatGBP(line.unit_price)}</td>
+                        <td className="py-2 text-right font-medium">{formatGBP(line.total)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <dl className="ml-auto w-full sm:w-56 text-sm space-y-1 pt-3 mt-2 border-t border-gray-100">
+                  <div className="flex justify-between text-gray-500"><dt>Subtotal</dt><dd>{formatGBP(invoice.amount_net ?? invoice.amount)}</dd></div>
+                  {invoice.vat_amount != null && Number(invoice.vat_amount) > 0 && (
+                    <div className="flex justify-between text-gray-500"><dt>VAT ({Number(invoice.vat_rate)}%)</dt><dd>{formatGBP(invoice.vat_amount)}</dd></div>
+                  )}
+                  <div className="flex justify-between font-semibold text-navy-900"><dt>Total</dt><dd>{formatGBP(invoice.amount)}</dd></div>
+                </dl>
+              </Card>
+            )}
+
             <Card title="Recipient">
               {billTo ? (
                 <dl className="grid sm:grid-cols-2 gap-4 text-sm">

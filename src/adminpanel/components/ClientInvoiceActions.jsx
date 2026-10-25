@@ -124,7 +124,7 @@ export function useClientInvoiceActions({ onDone, onError }) {
         )}
       </Modal>
 
-      <Modal open={action?.type === 'edit'} onClose={close} title={`Edit ${action?.invoice?.invoice_number ?? 'invoice'}`}>
+      <Modal open={action?.type === 'edit'} onClose={close} title={`Edit ${action?.invoice?.invoice_number ?? 'invoice'}`} size="xl">
         {action?.type === 'edit' && (
           <ClientInvoiceEditForm
             invoice={action.invoice}
