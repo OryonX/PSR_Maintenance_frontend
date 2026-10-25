@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
-import { ChevronLeft, CheckCircle2, XCircle, CalendarClock, Receipt } from 'lucide-react'
+import { ChevronLeft, CheckCircle2, XCircle, CalendarClock, Receipt, Pencil } from 'lucide-react'
 import HelmetSEO from '../../../../seo/HelmetSEO.jsx'
-import { tradeJobsApi, clientInvoicesApi } from '../../../../adminpanel/lib/endpoints.js'
+import { tradeJobsApi, clientInvoicesApi, leadsApi } from '../../../../adminpanel/lib/endpoints.js'
+import { jobDescription, jobTitle } from '../../../../adminpanel/lib/jobs.js'
 import { useTenantConfig } from '../../../../adminpanel/hooks/useTenantConfig.js'
 import Card from '../../../../ui/Card.jsx'
 import Badge from '../../../../ui/Badge.jsx'
@@ -20,13 +21,14 @@ function formatDateTime(iso) {
 
 function Page() {
   const { routeParams } = usePageContext()
-  const { label, states, stateInfo } = useTenantConfig()
+  const { label, states, stateInfo, serviceInfo } = useTenantConfig()
   const [job, setJob] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [actionError, setActionError] = useState(null)
   const [rescheduleOpen, setRescheduleOpen] = useState(false)
   const [invoiceOpen, setInvoiceOpen] = useState(false)
+  const [titleOpen, setTitleOpen] = useState(false)
 
   const load = () => {
     tradeJobsApi.get(routeParams.id).then(setJob).catch(setError).finally(() => setLoading(false))
@@ -56,7 +58,7 @@ function Page() {
 
   return (
     <>
-      <HelmetSEO title={`${job.lead?.name || 'Job'} | ${label('work_item', true)} | PSR Operations`} description="Job detail" noindex={true} />
+      <HelmetSEO title={`${jobTitle(job, serviceInfo)} | ${label('work_item', true)} | PSR Operations`} description="Job detail" noindex={true} />
 
       <div className="space-y-4">
         <a href="/admin/jobs" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-navy-900 transition-colors">
@@ -69,7 +71,18 @@ function Page() {
           <Card className="lg:col-span-2">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h2 className="text-xl font-bold text-navy-900">{job.lead?.name || 'Unnamed'}</h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-navy-900">{jobTitle(job, serviceInfo)}</h2>
+                  {job.lead_id && (
+                    <button
+                      onClick={() => setTitleOpen(true)}
+                      title="Edit title"
+                      className="p-1 rounded-md text-gray-400 hover:text-navy-900 hover:bg-gray-100 transition-colors"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
                 {job.lead?.phone && <p className="text-sm text-gray-500">{job.lead.phone}</p>}
               </div>
               <Badge color={state.color}>{state.label}</Badge>
@@ -165,7 +178,67 @@ function Page() {
         job={job}
         onSaved={() => { setInvoiceOpen(false); load() }}
       />
+      <EditTitleModal
+        open={titleOpen}
+        onClose={() => setTitleOpen(false)}
+        job={job}
+        currentDescription={jobDescription(job, serviceInfo)}
+        onSaved={() => { setTitleOpen(false); load() }}
+      />
     </>
+  )
+}
+
+// The title is stored as the lead's project_name (TradeJobController accepts
+// no title/details field). PATCH /leads/{id} drops nulls, so it can be changed
+// but not cleared, and it's shared by every job of the same lead.
+function EditTitleModal({ open, onClose, job, currentDescription, onSaved }) {
+  const [value, setValue] = useState('')
+  const [error, setError] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (open) { setValue(job?.lead?.project_name || currentDescription || ''); setError(null) }
+  }, [open, job, currentDescription])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const title = value.trim()
+    if (!title) { setError('Enter a title.'); return }
+    setError(null)
+    setSubmitting(true)
+    try {
+      await leadsApi.update(job.lead_id, { project_name: title })
+      onSaved()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <Modal open={open} onClose={onClose} title="Edit title">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          id="job_title"
+          label="What is this job?"
+          placeholder="e.g. Plumbing repair"
+          maxLength={255}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <p className="text-xs text-gray-400">
+          Shown as “{(value.trim() || 'Plumbing repair')} for {job?.lead?.name || 'the customer'}”. It's saved on the customer's request,
+          so other jobs for the same customer show it too, and it's used as the line description on the invoice PDF.
+        </p>
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        <div className="flex justify-end gap-3 pt-2">
+          <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button type="submit" disabled={submitting}>{submitting ? 'Saving…' : 'Save'}</Button>
+        </div>
+      </form>
+    </Modal>
   )
 }
 

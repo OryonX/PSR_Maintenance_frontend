@@ -1,17 +1,12 @@
 import React from 'react'
 import { MapPin, Clock } from 'lucide-react'
-
-function formatTime(job) {
-  if (job.starts_at) {
-    return new Date(job.starts_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-  }
-  if (job.scheduled_date) {
-    return `${new Date(job.scheduled_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}${job.scheduled_time_window ? ` · ${job.scheduled_time_window}` : ''}`
-  }
-  return 'Unscheduled'
-}
+import { jobDescription, jobWhen } from '../lib/jobs.js'
+import { useTenantConfig } from '../hooks/useTenantConfig.js'
 
 function WorkItemCard({ job, onClick, draggable, onDragStart }) {
+  const { serviceInfo } = useTenantConfig()
+  const description = jobDescription(job, serviceInfo)
+
   return (
     <div
       onClick={onClick}
@@ -19,13 +14,13 @@ function WorkItemCard({ job, onClick, draggable, onDragStart }) {
       onDragStart={onDragStart}
       className="bg-white rounded-lg p-3 border border-gray-100 shadow-sm hover:shadow-md cursor-pointer transition-shadow"
     >
-      <p className="font-semibold text-sm text-navy-900 truncate">{job.lead?.name || 'Unnamed'}</p>
-      {job.lead?.details?.service_type && (
-        <p className="text-xs text-gray-500 capitalize">{job.lead.details.service_type}</p>
+      <p className="font-semibold text-sm text-navy-900 truncate">{description || job.lead?.name || 'Unnamed'}</p>
+      {description && job.lead?.name && (
+        <p className="text-xs text-gray-500 truncate">for {job.lead.name}</p>
       )}
       <div className="flex items-center gap-1 text-xs text-gray-400 mt-2">
         <Clock className="w-3 h-3" />
-        {formatTime(job)}
+        {jobWhen(job)}
       </div>
       {job.address && (
         <div className="flex items-center gap-1 text-xs text-gray-400 mt-1 truncate">

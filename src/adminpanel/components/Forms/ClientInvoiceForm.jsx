@@ -5,6 +5,8 @@ import Select from '../../../ui/Select.jsx'
 import Button from '../../../ui/Button.jsx'
 import { clientInvoicesApi, billingProfileApi } from '../../lib/endpoints.js'
 import { fieldErrors, fieldList, invoiceErrorMessage } from '../../lib/billing.js'
+import { jobTitle, jobWhen } from '../../lib/jobs.js'
+import { useTenantConfig } from '../../hooks/useTenantConfig.js'
 
 function BlockingNotice({ children }) {
   return (
@@ -15,20 +17,24 @@ function BlockingNotice({ children }) {
   )
 }
 
-function jobLabel(job) {
+// "Plumbing repair for Jose — 12 Oct, 09:00 · SW1A 1AA · £240 (#12)"
+// Title first so it reads at a glance; when/where tells apart several jobs of
+// the same customer; the id stays at the end as a last-resort tiebreaker.
+function jobLabel(job, serviceInfo) {
   const quote = job.quote?.amount_fixed ?? job.quote?.amount_max ?? job.quote?.amount_min
-  return [
-    `#${job.id}`,
-    job.lead?.name,
-    job.scheduled_date ? String(job.scheduled_date).slice(0, 10) : null,
+  const details = [
+    jobWhen(job),
+    job.postcode,
     quote != null ? `£${Number(quote).toLocaleString()}` : null
   ].filter(Boolean).join(' · ')
+  return `${jobTitle(job, serviceInfo)} — ${details} (#${job.id})`
 }
 
 // ClientInvoiceController::store — only trade_job_id is required. amount falls
 // back to the linked quote (fixed → max → min); with no quote amount the
 // backend answers 422 { error: 'amount_required' }.
 function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCancel }) {
+  const { serviceInfo } = useTenantConfig()
   const [form, setForm] = useState({
     trade_job_id: '',
     client_id: '',
@@ -121,7 +127,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
           placeholder={availableJobs.length ? 'Select a job…' : 'No uninvoiced jobs'}
           value={form.trade_job_id}
           onChange={(e) => update('trade_job_id', e.target.value)}
-          options={availableJobs.map((job) => ({ value: job.id, label: jobLabel(job) }))}
+          options={availableJobs.map((job) => ({ value: job.id, label: jobLabel(job, serviceInfo) }))}
           error={errors.trade_job_id}
           required
         />
