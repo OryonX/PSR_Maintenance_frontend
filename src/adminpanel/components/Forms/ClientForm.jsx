@@ -4,7 +4,8 @@ import Select from '../../../ui/Select.jsx'
 import Button from '../../../ui/Button.jsx'
 import { clientsApi } from '../../lib/endpoints.js'
 import { CLIENT_STATUSES } from '../../lib/constants.js'
-import { BILLING_DETAILS_FIELDS, FIELD_LABELS, fieldErrors, fieldList } from '../../lib/billing.js'
+import { BILLING_DETAILS_FIELDS, FIELD_LABELS, fieldErrors } from '../../lib/billing.js'
+import BillingLegalNotice from '../BillingLegalNotice.jsx'
 
 const toBilling = (client) =>
   Object.fromEntries(BILLING_DETAILS_FIELDS.map((k) => [k, client?.billing_details?.[k] ?? '']))
@@ -113,11 +114,7 @@ function ClientForm({ client, onSubmit, onCancel }) {
         </button>
         {showBilling && (
           <div className="px-4 pb-4 pt-3 space-y-3 border-t border-gray-100">
-            {missing.length > 0 && (
-              <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-lg px-3 py-2">
-                Needed before this client can be invoiced: {fieldList(missing)}
-              </div>
-            )}
+            <BillingLegalNotice missing={missing} />
             <div className="grid grid-cols-2 gap-3">
               {BILLING_DETAILS_FIELDS.map((key) => (
                 <Input

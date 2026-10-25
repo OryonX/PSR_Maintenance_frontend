@@ -1,9 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { AlertTriangle } from 'lucide-react'
 import Input from '../../../ui/Input.jsx'
 import Select from '../../../ui/Select.jsx'
 import Button from '../../../ui/Button.jsx'
-import { clientInvoicesApi } from '../../lib/endpoints.js'
-import { fieldErrors, invoiceErrorMessage } from '../../lib/billing.js'
+import { clientInvoicesApi, billingProfileApi } from '../../lib/endpoints.js'
+import { fieldErrors, fieldList, invoiceErrorMessage } from '../../lib/billing.js'
+
+function BlockingNotice({ children }) {
+  return (
+    <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg px-3.5 py-3">
+      <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+      <div>{children}</div>
+    </div>
+  )
+}
 
 function jobLabel(job) {
   const quote = job.quote?.amount_fixed ?? job.quote?.amount_max ?? job.quote?.amount_min
@@ -30,6 +40,23 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
   const [errors, setErrors] = useState({})
   const [error, setError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
+  const [profile, setProfile] = useState(null) // { complete, missing } once loaded
+
+  // UX gate only: the backend accepts drafts without fiscal data and blocks
+  // at send time (422). Checked once per opening of the form. If the check
+  // itself fails we don't block — the send-time 422 still protects.
+  useEffect(() => {
+    let cancelled = false
+    billingProfileApi.get()
+      .then((d) => { if (!cancelled) setProfile({ complete: d.complete, missing: d.missing || [] }) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
+
+  const selectedClient = (clients || []).find((c) => String(c.id) === String(form.client_id))
+  const clientMissing = selectedClient?.billing_details_missing || []
+  const profileIncomplete = profile?.complete === false
+  const blocked = clientMissing.length > 0 || profileIncomplete
 
   // A trade job takes a single invoice.
   const availableJobs = (tradeJobs || []).filter((job) => !invoicedJobIds?.has(String(job.id)))
@@ -52,6 +79,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
     setError(null)
 
     if (!form.trade_job_id) { setErrors({ trade_job_id: 'Select a job.' }); return }
+    if (blocked) return
 
     const body = { trade_job_id: Number(form.trade_job_id) }
     if (form.client_id) body.client_id = Number(form.client_id)
@@ -78,6 +106,14 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {profileIncomplete && (
+        <BlockingNotice>
+          Complete your company's billing details in Settings first.
+          {profile.missing.length > 0 && <> Missing: {fieldList(profile.missing)}.</>}{' '}
+          <a href="/admin/settings?tab=Billing" className="font-semibold underline">Open Settings → Billing</a>
+        </BlockingNotice>
+      )}
+
       <div>
         <Select
           id="trade_job_id"
@@ -100,6 +136,13 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
         options={(clients || []).map((c) => ({ value: c.id, label: c.company ? `${c.name} (${c.company})` : c.name }))}
         error={errors.client_id}
       />
+
+      {clientMissing.length > 0 && (
+        <BlockingNotice>
+          This client's billing details are incomplete. Missing required for invoicing: {fieldList(clientMissing)}.{' '}
+          <a href={`/admin/clients/${selectedClient.id}`} className="font-semibold underline">Edit client</a>
+        </BlockingNotice>
+      )}
 
       <div className="grid grid-cols-2 gap-3">
         <Input
@@ -152,7 +195,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
 
       <div className="flex justify-end gap-3 pt-2">
         {onCancel && <Button type="button" variant="secondary" onClick={onCancel}>Cancel</Button>}
-        <Button type="submit" disabled={submitting || availableJobs.length === 0}>{submitting ? 'Creating…' : 'Create'}</Button>
+        <Button type="submit" disabled={submitting || blocked || availableJobs.length === 0}>{submitting ? 'Creating…' : 'Create'}</Button>
       </div>
     </form>
   )

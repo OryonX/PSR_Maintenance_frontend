@@ -66,10 +66,10 @@ export const invoiceRecipientEmail = (inv) =>
   inv.bill_to?.email || inv.client?.email || inv.trade_job?.lead?.email || null
 
 const ERROR_MESSAGES = {
-  billing_profile_incomplete: (missing) => `Complete your organisation's billing details in Settings → Billing. Missing: ${missing}`,
-  bill_to_incomplete: (missing) => `The client's billing details are incomplete: ${missing}`,
-  destination_email_missing: () => 'The recipient has no email',
-  send_failed: () => 'Sending failed, please try again',
+  billing_profile_incomplete: (missing) => `Complete your company's billing details in Settings: ${missing}`,
+  bill_to_incomplete: (missing) => `Client billing details are incomplete: ${missing}`,
+  destination_email_missing: () => 'The recipient has no email address',
+  send_failed: () => 'Failed to send, please try again',
   amount_required: () => "The job's quote has no amount — enter one.",
   invoice_not_draft: () => 'Only draft invoices can be deleted.',
   module_not_available: () => 'Client invoicing is not included in your plan.'

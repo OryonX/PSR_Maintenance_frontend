@@ -16,18 +16,6 @@ import {
   invoiceRecipientEmail
 } from '../lib/billing.js'
 
-async function downloadPdf(invoice) {
-  const blob = await clientInvoicesApi.pdf(invoice.id)
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `${invoice.invoice_number || `invoice-${invoice.id}`}.pdf`
-  document.body.appendChild(link)
-  link.click()
-  link.remove()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
-
 const CONFIRM = {
   send: { title: 'Send invoice', confirm: 'Send', busy: 'Sending…', variant: 'primary' },
   delete: { title: 'Delete invoice', confirm: 'Delete', busy: 'Deleting…', variant: 'danger' },
@@ -60,7 +48,7 @@ export function useClientInvoiceActions({ onDone, onError }) {
   const pdf = async (invoice) => {
     setPdfBusyId(invoice.id)
     try {
-      await downloadPdf(invoice)
+      await clientInvoicesApi.downloadPdf(invoice)
     } catch (err) {
       onError?.(`Couldn't download the PDF: ${invoiceErrorMessage(err)}`)
     } finally {

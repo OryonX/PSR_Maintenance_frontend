@@ -6,10 +6,11 @@ import Card from '../../../ui/Card.jsx'
 import Spinner from '../../../ui/Spinner.jsx'
 import { billingProfileApi } from '../../lib/endpoints.js'
 import { BILLING_PROFILE_SECTIONS, FIELD_LABELS, fieldErrors, fieldList } from '../../lib/billing.js'
+import BillingLegalNotice from '../BillingLegalNotice.jsx'
 
 const ALL_FIELDS = Object.values(BILLING_PROFILE_SECTIONS).flat()
 const WIDE_FIELDS = new Set(['legal_name', 'address_line1', 'account_name', 'iban', 'footer_notes'])
-const LOCKED_HINT = 'Managed by OryonX once the sending domain is verified'
+const LOCKED_HINT = 'Managed by OryonX after domain verification'
 
 const toForm = (profile) => Object.fromEntries(ALL_FIELDS.map((k) => [k, profile?.[k] ?? '']))
 
@@ -125,6 +126,8 @@ function BillingProfileForm() {
           <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" /> Missing before invoices can be sent: {fieldList(data.missing)}
         </div>
       )}
+
+      <BillingLegalNotice />
 
       {Object.entries(BILLING_PROFILE_SECTIONS).map(([section, fields]) => (
         <Card key={section} title={section}>

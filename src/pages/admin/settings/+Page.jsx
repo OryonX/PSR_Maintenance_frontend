@@ -137,6 +137,13 @@ function UsersTab() {
 function Page() {
   const [tab, setTab] = useState('Organization')
 
+  // Deep link (?tab=Billing) from the create-invoice form. Read after mount:
+  // the page is pre-rendered, so there's no window during SSG.
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get('tab')
+    if (TABS.includes(requested)) setTab(requested)
+  }, [])
+
   return (
     <>
       <HelmetSEO title="Settings | PSR Operations" description="Settings" noindex={true} />

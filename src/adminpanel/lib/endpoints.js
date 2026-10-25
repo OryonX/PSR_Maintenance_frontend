@@ -91,7 +91,20 @@ export const clientInvoicesApi = {
   // 422 { error: billing_profile_incomplete | bill_to_incomplete (+ missing[]) |
   // destination_email_missing } · 502 { error: send_failed }
   send: (id) => api.post(`client-invoices/${id}/send`),
-  pdf: (id) => api.blob(`client-invoices/${id}/pdf`)
+  pdf: (id) => api.blob(`client-invoices/${id}/pdf`),
+  // The PDF endpoint needs the Bearer token, so a plain <a href> would 401:
+  // fetch it as a Blob and trigger the download from an object URL.
+  downloadPdf: async (invoice) => {
+    const blob = await api.blob(`client-invoices/${invoice.id}/pdf`)
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${invoice.invoice_number || `invoice-${invoice.id}`}.pdf`
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+  }
 }
 
 // The authenticated org's own fiscal data (issuer on every invoice).

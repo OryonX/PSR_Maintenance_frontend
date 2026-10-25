@@ -122,7 +122,7 @@ function Page() {
             <Card title="Billing details" action={<Button size="sm" variant="secondary" onClick={() => setEditOpen(true)}><Pencil className="w-3.5 h-3.5" /> Edit</Button>}>
               {missing.length > 0 && (
                 <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg px-4 py-3 mb-4">
-                  Needed before this {label('client').toLowerCase()} can be invoiced: {fieldList(missing)}
+                  Missing required for invoicing: {fieldList(missing)}
                 </div>
               )}
               <dl className="grid sm:grid-cols-2 gap-4 text-sm">
