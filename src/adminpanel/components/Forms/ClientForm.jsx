@@ -7,6 +7,11 @@ import { CLIENT_STATUSES } from '../../lib/constants.js'
 import { BILLING_DETAILS_FIELDS, FIELD_LABELS, fieldErrors } from '../../lib/billing.js'
 import BillingLegalNotice from '../BillingLegalNotice.jsx'
 
+const BILLING_HINTS = {
+  legal_name: 'Name the invoice is addressed to — the person\'s full name, or the registered company name.',
+  vat_number: 'Only if the customer is a VAT-registered business.'
+}
+
 const toBilling = (client) =>
   Object.fromEntries(BILLING_DETAILS_FIELDS.map((k) => [k, client?.billing_details?.[k] ?? '']))
 
@@ -76,11 +81,11 @@ function ClientForm({ client, onSubmit, onCancel }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <Input id="name" label="Name" value={form.name} onChange={(e) => update('name', e.target.value)} error={errors.name} required />
-        <Input id="company" label="Company (optional)" value={form.company} onChange={(e) => update('company', e.target.value)} error={errors.company} />
+        <Input id="company" label="Company (optional)" value={form.company} onChange={(e) => update('company', e.target.value)} error={errors.company} hint="Only for business customers (landlords, agencies…)." />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <Input id="email" label="Email" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} error={errors.email} />
-        <Input id="phone" label="Phone" type="tel" value={form.phone} onChange={(e) => update('phone', e.target.value)} error={errors.phone} />
+        <Input id="email" label="Email" type="email" placeholder="jose@example.com" value={form.email} onChange={(e) => update('email', e.target.value)} error={errors.email} hint="Invoices are emailed here." />
+        <Input id="phone" label="Phone" type="tel" placeholder="07700 900123" value={form.phone} onChange={(e) => update('phone', e.target.value)} error={errors.phone} />
       </div>
       {isEdit && (
         <div className="grid grid-cols-2 gap-3">
@@ -125,6 +130,7 @@ function ClientForm({ client, onSubmit, onCancel }) {
                   value={billing[key]}
                   onChange={(e) => setBilling((prev) => ({ ...prev, [key]: e.target.value }))}
                   error={errors[`billing_details.${key}`]}
+                  hint={BILLING_HINTS[key]}
                 />
               ))}
             </div>

@@ -167,6 +167,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
           onChange={(e) => handleJobChange(e.target.value)}
           options={availableJobs.map((job) => ({ value: job.id, label: jobLabel(job, serviceInfo) }))}
           error={errors.trade_job_id}
+          hint="Only jobs without an invoice are listed. Picking one adds its price as the first line."
           required
         />
       </div>
@@ -179,6 +180,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
         onChange={(e) => update('client_id', e.target.value)}
         options={(clients || []).map((c) => ({ value: c.id, label: c.company ? `${c.name} (${c.company})` : c.name }))}
         error={errors.client_id}
+        hint="Who pays. Choose a customer to use their billing details; leave empty to bill the lead at the job's address."
       />
 
       {clientMissing.length > 0 && (
@@ -189,7 +191,11 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
       )}
 
       <div>
-        <p className="block text-sm font-medium text-navy-900 mb-1.5">Lines</p>
+        <p className="block text-sm font-medium text-navy-900">Lines</p>
+        <p className="text-gray-400 text-xs mb-2">
+          Each line appears on the invoice. Add extras from your rates (extra hours, emergency call-out…) or other jobs for the same customer.
+          “From” rates are a starting price — adjust them to the actual work.
+        </p>
         <LineItemsEditor
           lines={lines}
           onChange={(next) => { setLines(next); if (errors.lines) setErrors((prev) => ({ ...prev, lines: undefined })) }}
@@ -230,11 +236,12 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
           value={form.vat_rate}
           onChange={(e) => update('vat_rate', e.target.value)}
           error={errors.vat_rate}
+          hint="Leave empty if you're not VAT registered. Line prices are entered without VAT."
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <Input id="due_date" label="Due date" type="date" value={form.due_date} onChange={(e) => update('due_date', e.target.value)} error={errors.due_date} />
+        <Input id="due_date" label="Due date" type="date" value={form.due_date} onChange={(e) => update('due_date', e.target.value)} error={errors.due_date} hint="Payment deadline printed on the invoice." />
         <Input
           id="payment_method"
           label="Payment method"
@@ -244,6 +251,7 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
           value={form.payment_method}
           onChange={(e) => update('payment_method', e.target.value)}
           error={errors.payment_method}
+          hint="How you expect to be paid. Can be changed when marking it as paid."
         />
         <datalist id="client-invoice-payment-methods">
           <option value="bank_transfer" />

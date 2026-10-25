@@ -3,6 +3,20 @@ import Input from '../../../ui/Input.jsx'
 import Select from '../../../ui/Select.jsx'
 import Button from '../../../ui/Button.jsx'
 
+const NOTES_EXAMPLE = 'e.g. Replace the kitchen mixer tap and fix the leak under the sink. Includes parts and labour. If the pipework behind the unit needs replacing, we\'ll confirm the extra cost before starting.'
+
+const AMOUNT_HELP = {
+  range: 'Use a range when the final price depends on what you find on site. When invoicing, the maximum is used as the default — you can adjust it on the draft.',
+  fixed: 'Use a fixed price when the scope is clear. It becomes the default amount when the job is invoiced.'
+}
+
+const leadOptionLabel = (lead) => {
+  const contact = lead.phone || lead.email
+  return contact ? `${lead.name} · ${contact}` : lead.name
+}
+
+// A quote is the price offered to the customer BEFORE the work — not an
+// appointment (that's a job). Linking it to a job gives the job its price.
 function QuoteForm({ leads, initial, onSubmit, onCancel, submitLabel = 'Save' }) {
   const [amountType, setAmountType] = useState(initial?.amount_fixed ? 'fixed' : 'range')
   const [form, setForm] = useState({
@@ -21,6 +35,16 @@ function QuoteForm({ leads, initial, onSubmit, onCancel, submitLabel = 'Save' })
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
+
+    if (amountType === 'range') {
+      if (form.amount_min === '' && form.amount_max === '') { setError('Enter at least a minimum or a maximum price.'); return }
+      if (form.amount_min !== '' && form.amount_max !== '' && Number(form.amount_min) > Number(form.amount_max)) {
+        setError('The minimum price can\'t be higher than the maximum.'); return
+      }
+    } else if (form.amount_fixed === '') {
+      setError('Enter the price.'); return
+    }
+
     setSubmitting(true)
 
     const body = {
@@ -50,48 +74,66 @@ function QuoteForm({ leads, initial, onSubmit, onCancel, submitLabel = 'Save' })
           placeholder="Select a lead…"
           value={form.lead_id}
           onChange={(e) => update('lead_id', e.target.value)}
-          options={leads.map((l) => ({ value: l.id, label: l.name }))}
+          options={leads.map((l) => ({ value: l.id, label: leadOptionLabel(l) }))}
+          hint="Who the quote is for. Not listed? Create the lead first in Leads."
           required
         />
       )}
 
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => setAmountType('range')}
-          className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium border ${amountType === 'range' ? 'bg-navy-900 text-white border-navy-900' : 'border-gray-200 text-gray-600'}`}
-        >
-          Price range
-        </button>
-        <button
-          type="button"
-          onClick={() => setAmountType('fixed')}
-          className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium border ${amountType === 'fixed' ? 'bg-navy-900 text-white border-navy-900' : 'border-gray-200 text-gray-600'}`}
-        >
-          Fixed price
-        </button>
+      <div>
+        <p className="block text-sm font-medium text-navy-900 mb-1.5">Price</p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setAmountType('range')}
+            className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium border ${amountType === 'range' ? 'bg-navy-900 text-white border-navy-900' : 'border-gray-200 text-gray-600'}`}
+          >
+            Price range
+          </button>
+          <button
+            type="button"
+            onClick={() => setAmountType('fixed')}
+            className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium border ${amountType === 'fixed' ? 'bg-navy-900 text-white border-navy-900' : 'border-gray-200 text-gray-600'}`}
+          >
+            Fixed price
+          </button>
+        </div>
+        <p className="text-gray-400 text-xs mt-1.5">{AMOUNT_HELP[amountType]}</p>
       </div>
 
       {amountType === 'range' ? (
         <div className="grid grid-cols-2 gap-3">
-          <Input id="amount_min" label="Min (£)" type="number" min="0" value={form.amount_min} onChange={(e) => update('amount_min', e.target.value)} />
-          <Input id="amount_max" label="Max (£)" type="number" min="0" value={form.amount_max} onChange={(e) => update('amount_max', e.target.value)} />
+          <Input id="amount_min" label="Min (£)" type="number" min="0" step="0.01" placeholder="150" value={form.amount_min} onChange={(e) => update('amount_min', e.target.value)} />
+          <Input id="amount_max" label="Max (£)" type="number" min="0" step="0.01" placeholder="250" value={form.amount_max} onChange={(e) => update('amount_max', e.target.value)} />
         </div>
       ) : (
-        <Input id="amount_fixed" label="Amount (£)" type="number" min="0" value={form.amount_fixed} onChange={(e) => update('amount_fixed', e.target.value)} />
+        <Input id="amount_fixed" label="Amount (£)" type="number" min="0" step="0.01" placeholder="180" value={form.amount_fixed} onChange={(e) => update('amount_fixed', e.target.value)} />
       )}
 
-      <Input id="expires_at" label="Expires on" type="date" value={form.expires_at} onChange={(e) => update('expires_at', e.target.value)} />
+      <Input
+        id="expires_at"
+        label="Valid until (optional)"
+        type="date"
+        value={form.expires_at}
+        onChange={(e) => update('expires_at', e.target.value)}
+        hint="Until when this price stands. After that date, mark the quote as expired if the customer hasn't answered."
+      />
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-navy-900 mb-1.5">Notes</label>
+        <label htmlFor="notes" className="block text-sm font-medium text-navy-900 mb-1.5">
+          Notes <span className="text-xs font-normal text-gray-400">(recommended)</span>
+        </label>
         <textarea
           id="notes"
-          rows={3}
+          rows={4}
           value={form.notes}
           onChange={(e) => update('notes', e.target.value)}
-          className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10 text-sm"
+          placeholder={NOTES_EXAMPLE}
+          className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10 text-sm placeholder:text-gray-300"
         />
+        <p className="text-gray-400 text-xs mt-1">
+          What's included, what isn't, and any conditions. It's your record of what was agreed if the price is questioned later.
+        </p>
       </div>
 
       {error && <p className="text-red-500 text-sm">{error}</p>}

@@ -52,12 +52,14 @@ function TeamMemberForm({ initial, onSubmit, onCancel, submitLabel = 'Save' }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input id="tm_name" label="Name" value={form.name} onChange={(e) => update('name', e.target.value)} required />
       <div className="grid grid-cols-2 gap-3">
-        <Input id="tm_phone" label="Phone" value={form.phone} onChange={(e) => update('phone', e.target.value)} />
+        <Input id="tm_phone" label="Phone" placeholder="07700 900123" value={form.phone} onChange={(e) => update('phone', e.target.value)} />
         <Input id="tm_email" label="Email" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} />
       </div>
+      <p className="text-xs text-gray-400 -mt-2">Technicians are the people who do the jobs — they don't get a login to this panel.</p>
 
       <div>
         <label className="block text-sm font-medium text-navy-900 mb-1.5">Specialties</label>
+        <p className="text-gray-400 text-xs -mt-1 mb-2">The types of work this technician can do. Select at least one.</p>
         <div className="flex flex-wrap gap-2">
           {Object.entries(services).map(([key, meta]) => (
             <button
@@ -77,6 +79,7 @@ function TeamMemberForm({ initial, onSubmit, onCancel, submitLabel = 'Save' }) {
 
       <div>
         <label className="block text-sm font-medium text-navy-900 mb-1.5">Colour</label>
+        <p className="text-gray-400 text-xs -mt-1 mb-2">Identifies this technician's jobs on the calendar.</p>
         <div className="flex gap-2">
           {COLOR_OPTIONS.map((color) => (
             <button
@@ -94,6 +97,7 @@ function TeamMemberForm({ initial, onSubmit, onCancel, submitLabel = 'Save' }) {
       <label className="flex items-center gap-2 text-sm text-navy-900">
         <input type="checkbox" checked={form.is_active} onChange={(e) => update('is_active', e.target.checked)} className="rounded" />
         Active
+        <span className="text-xs text-gray-400">— untick for people who no longer work with you; they won't be offered for new jobs.</span>
       </label>
 
       {error && <p className="text-red-500 text-sm">{error}</p>}

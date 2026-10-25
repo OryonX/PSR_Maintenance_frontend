@@ -1,6 +1,7 @@
 import React from 'react'
 
-function Input({ label, error, id, className = '', ...props }) {
+// hint: optional helper text under the field (hidden while there's an error).
+function Input({ label, error, hint, id, className = '', ...props }) {
   return (
     <div className={className}>
       {label && (
@@ -10,10 +11,12 @@ function Input({ label, error, id, className = '', ...props }) {
       )}
       <input
         id={id}
+        aria-describedby={hint && !error ? `${id}-hint` : undefined}
         className={`w-full px-3.5 py-2.5 rounded-lg border text-sm ${error ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-navy-900'} focus:outline-none focus:ring-2 focus:ring-navy-900/10 transition-colors`}
         {...props}
       />
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+      {hint && !error && <p id={`${id}-hint`} className="text-gray-400 text-xs mt-1">{hint}</p>}
     </div>
   )
 }

@@ -59,9 +59,12 @@ function LeadForm({ onSubmit, onCancel }) {
         <Input id="name" label="Name" value={form.name} onChange={(e) => update('name', e.target.value)} error={errors.name} required />
         <Input id="company" label="Company (optional)" value={form.company} onChange={(e) => update('company', e.target.value)} error={errors.company} />
       </div>
-      <div className="grid grid-cols-2 gap-3">
-        <Input id="email" label="Email" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} error={errors.email} />
-        <Input id="phone" label="Phone" type="tel" value={form.phone} onChange={(e) => update('phone', e.target.value)} error={errors.phone} />
+      <div>
+        <div className="grid grid-cols-2 gap-3">
+          <Input id="email" label="Email" type="email" placeholder="jose@example.com" value={form.email} onChange={(e) => update('email', e.target.value)} error={errors.email} />
+          <Input id="phone" label="Phone" type="tel" placeholder="07700 900123" value={form.phone} onChange={(e) => update('phone', e.target.value)} error={errors.phone} />
+        </div>
+        <p className="text-gray-400 text-xs mt-1">At least one is required so you can get back to them. Leads are matched by phone or email when they convert.</p>
       </div>
       <Select
         id="priority"
@@ -70,17 +73,25 @@ function LeadForm({ onSubmit, onCancel }) {
         onChange={(e) => update('priority', e.target.value)}
         options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]}
         error={errors.priority}
+        hint="How urgently to follow up. High = emergencies or customers waiting for a call back."
       />
       <div>
-        <label htmlFor="challenge" className="block text-sm font-medium text-navy-900 mb-1.5">What do they need? (optional)</label>
+        <label htmlFor="challenge" className="block text-sm font-medium text-navy-900 mb-1.5">
+          What do they need? <span className="text-xs font-normal text-gray-400">(recommended)</span>
+        </label>
         <textarea
           id="challenge"
           rows={3}
           value={form.challenge}
           onChange={(e) => update('challenge', e.target.value)}
-          className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10 transition-colors resize-none"
+          placeholder="e.g. Leaking pipe under the bathroom sink, started yesterday. Prefers mornings."
+          className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-navy-900 focus:outline-none focus:ring-2 focus:ring-navy-900/10 transition-colors resize-none placeholder:text-gray-300"
         />
+        <p className="text-gray-400 text-xs mt-1">The request in their words — helps whoever prepares the quote.</p>
       </div>
+      <p className="text-xs text-gray-400">
+        A lead is someone asking for work. Once they agree, convert them into a customer from the lead's page.
+      </p>
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
