@@ -3,6 +3,7 @@ import Input from '../../../ui/Input.jsx'
 import Select from '../../../ui/Select.jsx'
 import Button from '../../../ui/Button.jsx'
 import { clientInvoicesApi } from '../../lib/endpoints.js'
+import { fieldErrors, invoiceErrorMessage } from '../../lib/billing.js'
 
 function jobLabel(job) {
   const quote = job.quote?.amount_fixed ?? job.quote?.amount_max ?? job.quote?.amount_min
@@ -67,8 +68,8 @@ function ClientInvoiceForm({ tradeJobs, clients, invoicedJobIds, onSubmit, onCan
       if (err.body?.error === 'amount_required') {
         setErrors({ amount: "The job's quote has no amount — enter one." })
       } else {
-        setErrors(err.errors ? Object.fromEntries(Object.entries(err.errors).map(([k, v]) => [k, v[0]])) : {})
-        setError(err.message)
+        setErrors(fieldErrors(err))
+        setError(invoiceErrorMessage(err))
       }
     } finally {
       setSubmitting(false)

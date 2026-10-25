@@ -10,8 +10,9 @@ import Button from '../../../ui/Button.jsx'
 import Input from '../../../ui/Input.jsx'
 import Modal from '../../../ui/Modal.jsx'
 import Spinner from '../../../ui/Spinner.jsx'
+import BillingProfileForm from '../../../adminpanel/components/Forms/BillingProfileForm.jsx'
 
-const TABS = ['Organization', 'Service Types', 'Users']
+const TABS = ['Organization', 'Billing', 'Service Types', 'Users']
 
 function OrganizationTab() {
   const { organization } = useAuth()
@@ -156,6 +157,7 @@ function Page() {
         </div>
 
         {tab === 'Organization' && <OrganizationTab />}
+        {tab === 'Billing' && <BillingProfileForm />}
         {tab === 'Service Types' && <ServiceTypesTab />}
         {tab === 'Users' && <UsersTab />}
       </div>

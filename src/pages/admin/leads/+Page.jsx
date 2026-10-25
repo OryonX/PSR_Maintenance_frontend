@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { navigate } from 'vike/client/router'
-import { Plus } from 'lucide-react'
+import { Plus, Pencil } from 'lucide-react'
 import HelmetSEO from '../../../seo/HelmetSEO.jsx'
 import { leadsApi } from '../../../adminpanel/lib/endpoints.js'
 import { LEAD_STATUSES, STATUS_TONE } from '../../../adminpanel/lib/constants.js'
@@ -13,6 +13,7 @@ import Card from '../../../ui/Card.jsx'
 import Button from '../../../ui/Button.jsx'
 import Modal from '../../../ui/Modal.jsx'
 import LeadForm from '../../../adminpanel/components/Forms/LeadForm.jsx'
+import LeadEditForm from '../../../adminpanel/components/Forms/LeadEditForm.jsx'
 
 function formatDate(iso) {
   if (!iso) return '—'
@@ -27,6 +28,7 @@ function Page() {
   const [statusFilter, setStatusFilter] = useState('all')
   const [modalOpen, setModalOpen] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
+  const [editTarget, setEditTarget] = useState(null)
 
   useEffect(() => {
     let cancelled = false
@@ -44,6 +46,11 @@ function Page() {
     setReloadKey((k) => k + 1)
   }
 
+  const handleEdited = () => {
+    setEditTarget(null)
+    setReloadKey((k) => k + 1)
+  }
+
   const { page, setPage, totalPages, total, pageItems } = usePagination(leads, 15)
 
   const columns = [
@@ -51,7 +58,16 @@ function Page() {
     { key: 'contact', label: 'Contact', hideBelow: 'sm', render: (row) => row.phone || row.email || '—' },
     { key: 'channel', label: 'Channel', hideBelow: 'md', render: (row) => <span className="capitalize">{row.channel || '—'}</span> },
     { key: 'status', label: 'Status', render: (row) => <Badge tone={STATUS_TONE[row.status] || 'grey'}>{row.status}</Badge> },
-    { key: 'created_at', label: 'Created', hideBelow: 'lg', render: (row) => formatDate(row.created_at) }
+    { key: 'created_at', label: 'Created', hideBelow: 'lg', render: (row) => formatDate(row.created_at) },
+    { key: 'actions', label: '', render: (row) => (
+      <button
+        title="Edit"
+        onClick={(e) => { e.stopPropagation(); setEditTarget(row) }}
+        className="p-1.5 rounded-lg text-gray-400 hover:text-navy-900 hover:bg-gray-100 transition-colors"
+      >
+        <Pencil className="w-4 h-4" />
+      </button>
+    ) }
   ]
 
   return (
@@ -98,6 +114,10 @@ function Page() {
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={`New ${label('lead')}`}>
         <LeadForm onSubmit={handleCreated} onCancel={() => setModalOpen(false)} />
+      </Modal>
+
+      <Modal open={Boolean(editTarget)} onClose={() => setEditTarget(null)} title={`Edit ${label('lead').toLowerCase()}`}>
+        {editTarget && <LeadEditForm lead={editTarget} onSubmit={handleEdited} onCancel={() => setEditTarget(null)} />}
       </Modal>
     </>
   )

@@ -68,8 +68,26 @@ async function request(method, path, { params, body, signal } = {}) {
   return data
 }
 
+// Binary GET (e.g. PDFs). The endpoint still needs the Bearer token, so a
+// plain <a href> can't be used — callers turn the Blob into an object URL.
+async function requestBlob(path) {
+  const token = getAuthToken()
+  const response = await fetch(buildUrl(path), {
+    headers: { Accept: 'application/pdf', ...(token ? { Authorization: `Bearer ${token}` } : {}) }
+  })
+
+  if (!response.ok) {
+    let data = null
+    try { data = await response.json() } catch { data = null }
+    throw new ApiError(response.status, data)
+  }
+
+  return response.blob()
+}
+
 export const api = {
   get: (path, params) => request('GET', path, { params }),
+  blob: (path) => requestBlob(path),
   post: (path, body, params) => request('POST', path, { body, params }),
   put: (path, body) => request('PUT', path, { body }),
   patch: (path, body) => request('PATCH', path, { body }),

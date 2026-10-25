@@ -87,7 +87,19 @@ export const clientInvoicesApi = {
   create: (body) => api.post('client-invoices', body),
   update: (id, body) => api.patch(`client-invoices/${id}`, body),
   markPaid: (id, body) => api.patch(`client-invoices/${id}/mark-paid`, body),
-  remove: (id) => api.delete(`client-invoices/${id}`)
+  remove: (id) => api.delete(`client-invoices/${id}`),
+  // 422 { error: billing_profile_incomplete | bill_to_incomplete (+ missing[]) |
+  // destination_email_missing } · 502 { error: send_failed }
+  send: (id) => api.post(`client-invoices/${id}/send`),
+  pdf: (id) => api.blob(`client-invoices/${id}/pdf`)
+}
+
+// The authenticated org's own fiscal data (issuer on every invoice).
+// PUT is a partial merge: null clears a key, unknown keys are a 422, and
+// from_email is rejected unless the caller is OryonX (from_email_locked).
+export const billingProfileApi = {
+  get: () => api.get('me/billing-profile'),
+  update: (body) => api.put('me/billing-profile', body)
 }
 
 export const usersApi = {

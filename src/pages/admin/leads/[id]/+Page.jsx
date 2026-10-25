@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
 import { navigate } from 'vike/client/router'
-import { ChevronLeft, Trash2, UserPlus } from 'lucide-react'
+import { ChevronLeft, Pencil, Trash2, UserPlus } from 'lucide-react'
 import HelmetSEO from '../../../../seo/HelmetSEO.jsx'
 import { leadsApi } from '../../../../adminpanel/lib/endpoints.js'
 import { LEAD_STATUSES, LEAD_PIPELINE_STAGES, STATUS_TONE } from '../../../../adminpanel/lib/constants.js'
@@ -10,8 +10,10 @@ import Card from '../../../../ui/Card.jsx'
 import Badge from '../../../../ui/Badge.jsx'
 import Select from '../../../../ui/Select.jsx'
 import Button from '../../../../ui/Button.jsx'
+import Modal from '../../../../ui/Modal.jsx'
 import Spinner from '../../../../ui/Spinner.jsx'
 import EmptyState from '../../../../ui/EmptyState.jsx'
+import LeadEditForm from '../../../../adminpanel/components/Forms/LeadEditForm.jsx'
 
 function Page() {
   const { routeParams } = usePageContext()
@@ -23,16 +25,24 @@ function Page() {
   const [savingNotes, setSavingNotes] = useState(false)
   const [actionMessage, setActionMessage] = useState(null)
   const [actionError, setActionError] = useState(null)
+  const [editOpen, setEditOpen] = useState(false)
 
-  const load = () => {
-    setLoading(true)
+  const load = ({ silent = false } = {}) => {
+    if (!silent) setLoading(true)
     leadsApi.get(routeParams.id)
       .then((data) => { setLead(data); setNotes(data.notes || '') })
       .catch((err) => setError(err))
       .finally(() => setLoading(false))
   }
 
-  useEffect(load, [routeParams.id])
+  useEffect(() => { load() }, [routeParams.id])
+
+  // PATCH responses don't carry relations (client, quotes) — re-fetch.
+  const handleEdited = () => {
+    setEditOpen(false)
+    setActionMessage(`${label('lead')} updated.`)
+    load({ silent: true })
+  }
 
   const runAction = async (fn) => {
     setActionError(null)
@@ -191,6 +201,9 @@ function Page() {
 
             <Card>
               <div className="space-y-2">
+                <Button variant="secondary" className="w-full" onClick={() => setEditOpen(true)}>
+                  <Pencil className="w-4 h-4" /> Edit
+                </Button>
                 {lead.status !== 'converted' && (
                   <Button variant="secondary" className="w-full" onClick={handleConvert}>
                     <UserPlus className="w-4 h-4" /> Convert to {label('client').toLowerCase()}
@@ -204,6 +217,10 @@ function Page() {
           </div>
         </div>
       </div>
+
+      <Modal open={editOpen} onClose={() => setEditOpen(false)} title={`Edit ${label('lead').toLowerCase()}`}>
+        {editOpen && <LeadEditForm lead={lead} onSubmit={handleEdited} onCancel={() => setEditOpen(false)} />}
+      </Modal>
     </>
   )
 }
