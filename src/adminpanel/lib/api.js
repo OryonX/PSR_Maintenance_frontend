@@ -85,9 +85,24 @@ async function requestBlob(path) {
   return response.blob()
 }
 
+// Authenticated file download: fetch as Blob (Bearer required, so no plain
+// <a href>), then trigger the browser download from an object URL.
+async function downloadFile(path, filename) {
+  const blob = await requestBlob(path)
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+
 export const api = {
   get: (path, params) => request('GET', path, { params }),
   blob: (path) => requestBlob(path),
+  download: (path, filename) => downloadFile(path, filename),
   post: (path, body, params) => request('POST', path, { body, params }),
   put: (path, body) => request('PUT', path, { body }),
   patch: (path, body) => request('PATCH', path, { body }),

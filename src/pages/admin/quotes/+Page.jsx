@@ -8,6 +8,7 @@ import { useTenantConfig } from '../../../adminpanel/hooks/useTenantConfig.js'
 import { usePagination } from '../../../adminpanel/hooks/usePagination.js'
 import QuoteForm from '../../../adminpanel/components/Forms/QuoteForm.jsx'
 import ReusableTable from '../../../adminpanel/components/Tables/ReusableTable.jsx'
+import { useQuoteActions, QuoteRowActions, quoteSentLabel } from '../../../adminpanel/components/QuoteActions.jsx'
 import Pagination from '../../../ui/Pagination.jsx'
 import Badge from '../../../ui/Badge.jsx'
 import Card from '../../../ui/Card.jsx'
@@ -27,13 +28,20 @@ function Page() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
+  const [notice, setNotice] = useState(null) // { tone, text }
 
-  const load = () => {
-    setLoading(true)
+  const load = ({ silent = false } = {}) => {
+    if (!silent) setLoading(true)
     quotesApi.list().then(setQuotes).catch(setError).finally(() => setLoading(false))
   }
 
-  useEffect(load, [])
+  useEffect(() => { load() }, [])
+
+  const actions = useQuoteActions({
+    label,
+    onDone: () => { setNotice({ tone: 'success', text: `${label('quote')} sent.` }); load({ silent: true }) },
+    onError: (text) => setNotice({ tone: 'error', text })
+  })
   useEffect(() => { leadsApi.list().then(setLeads).catch(() => setLeads([])) }, [])
 
   const { page, setPage, totalPages, total, pageItems } = usePagination(quotes, 15)
@@ -42,7 +50,13 @@ function Page() {
     { key: 'quote_number', label: label('quote'), render: (row) => <span className="font-medium">{row.quote_number}</span> },
     { key: 'lead', label: label('lead'), hideBelow: 'sm', render: (row) => row.lead?.name || '—' },
     { key: 'amount', label: 'Amount', hideBelow: 'md', render: formatAmount },
-    { key: 'status', label: 'Status', render: (row) => <Badge tone={STATUS_TONE[row.status] || 'grey'}>{row.status}</Badge> }
+    { key: 'status', label: 'Status', render: (row) => (
+      <div>
+        <Badge tone={STATUS_TONE[row.status] || 'grey'}>{row.status}</Badge>
+        {quoteSentLabel(row) && <p className="text-xs text-gray-400 mt-1">{quoteSentLabel(row)}</p>}
+      </div>
+    ) },
+    { key: 'actions', label: '', render: (row) => <QuoteRowActions quote={row} actions={actions} /> }
   ]
 
   const handleCreate = async (body) => {
@@ -61,6 +75,15 @@ function Page() {
             <Plus className="w-4 h-4" /> New {label('quote')}
           </Button>
         </div>
+
+        {notice && (
+          <div className={`flex items-start justify-between gap-3 text-sm rounded-lg px-4 py-3 border ${
+            notice.tone === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-600'
+          }`}>
+            <span>{notice.text}</span>
+            <button onClick={() => setNotice(null)} className="opacity-60 hover:opacity-100" aria-label="Dismiss">×</button>
+          </div>
+        )}
 
         <Card bodyClassName="p-0">
           {error ? (
@@ -85,6 +108,8 @@ function Page() {
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={`New ${label('quote')}`}>
         <QuoteForm leads={leads || []} onSubmit={handleCreate} onCancel={() => setModalOpen(false)} submitLabel="Create" />
       </Modal>
+
+      {actions.modals}
     </>
   )
 }

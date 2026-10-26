@@ -55,8 +55,12 @@ export const quotesApi = {
   create: (body) => api.post('quotes', body),
   update: (id, body) => api.patch(`quotes/${id}`, body),
   updateStatus: (id, status) => api.patch(`quotes/${id}/status`, { status }),
-  // QuoteController::send() takes no request body — it just stamps sent_at.
+  // Emails the quote PDF to the lead. Same error contract as invoices:
+  // 422 billing_profile_incomplete (+ missing[]) | amount_required |
+  // destination_email_missing · 502 send_failed.
   send: (id) => api.post(`quotes/${id}/send`),
+  downloadPdf: (quote) =>
+    api.download(`quotes/${quote.id}/pdf`, `${quote.quote_number || `quote-${quote.id}`}.pdf`),
   remove: (id) => api.delete(`quotes/${id}`)
 }
 
@@ -92,19 +96,8 @@ export const clientInvoicesApi = {
   // destination_email_missing } · 502 { error: send_failed }
   send: (id) => api.post(`client-invoices/${id}/send`),
   pdf: (id) => api.blob(`client-invoices/${id}/pdf`),
-  // The PDF endpoint needs the Bearer token, so a plain <a href> would 401:
-  // fetch it as a Blob and trigger the download from an object URL.
-  downloadPdf: async (invoice) => {
-    const blob = await api.blob(`client-invoices/${invoice.id}/pdf`)
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `${invoice.invoice_number || `invoice-${invoice.id}`}.pdf`
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-    setTimeout(() => URL.revokeObjectURL(url), 1000)
-  }
+  downloadPdf: (invoice) =>
+    api.download(`client-invoices/${invoice.id}/pdf`, `${invoice.invoice_number || `invoice-${invoice.id}`}.pdf`)
 }
 
 // The authenticated org's own fiscal data (issuer on every invoice).

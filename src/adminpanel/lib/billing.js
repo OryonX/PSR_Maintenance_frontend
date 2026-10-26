@@ -75,11 +75,23 @@ const ERROR_MESSAGES = {
   module_not_available: () => 'Client invoicing is not included in your plan.'
 }
 
-/** ApiError → readable message, using the backend `error` code when there is one. */
-export function invoiceErrorMessage(err) {
-  const build = ERROR_MESSAGES[err?.body?.error]
+// Quotes share the send error contract with invoices; only the wording that
+// differs for a quote is overridden here.
+const QUOTE_ERROR_MESSAGES = {
+  ...ERROR_MESSAGES,
+  billing_profile_incomplete: (missing) => `Complete your company's billing details in Settings first: ${missing}`,
+  amount_required: () => 'Set a price or an estimate before sending this quote',
+  destination_email_missing: () => 'This lead has no email address'
+}
+
+function apiErrorMessage(err, messages) {
+  const build = messages[err?.body?.error]
   return build ? build(fieldList(err.body.missing)) : (err?.message || 'Something went wrong.')
 }
+
+/** ApiError → readable message, using the backend `error` code when there is one. */
+export const invoiceErrorMessage = (err) => apiErrorMessage(err, ERROR_MESSAGES)
+export const quoteErrorMessage = (err) => apiErrorMessage(err, QUOTE_ERROR_MESSAGES)
 
 export const fieldErrors = (err) =>
   err?.errors ? Object.fromEntries(Object.entries(err.errors).map(([k, v]) => [k, v[0]])) : {}
