@@ -16,6 +16,10 @@ export class ApiError extends Error {
 }
 
 function buildUrl(path, params) {
+  if (!BASE_URL) {
+    // Vite inlines env vars at build time, so a missing var means the build ran without it
+    throw new Error('Admin API is not configured: VITE_API_BASE_URL was not set when the site was built.')
+  }
   const url = new URL(BASE_URL.replace(/\/$/, '') + '/' + path.replace(/^\//, ''))
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
