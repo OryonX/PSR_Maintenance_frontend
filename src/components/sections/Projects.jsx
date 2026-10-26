@@ -1,9 +1,8 @@
 import React from 'react'
 import { ArrowRight } from 'lucide-react'
 import AnimatedSection from '../ui/AnimatedSection.jsx'
-import StaggerContainer from '../ui/StaggerContainer.jsx'
-import ProjectCard from '../ui/ProjectCard.jsx'
-import { projects } from '../../config/projects.js'
+import ProjectGallery from '../ui/ProjectGallery.jsx'
+import { albums } from '../../config/projects.js'
 import { useContactPhone } from '../../hooks/useContactPhone.js'
 import { useTranslation } from '../../hooks/useTranslation.js'
 
@@ -27,12 +26,14 @@ function Projects() {
           </p>
         </AnimatedSection>
 
-        {/* Projects Grid */}
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+        {/* Project Galleries */}
+        <div className="space-y-16">
+          {albums.map((album) => (
+            <AnimatedSection key={album.id}>
+              <ProjectGallery album={album} />
+            </AnimatedSection>
           ))}
-        </StaggerContainer>
+        </div>
 
         {/* CTA */}
         <AnimatedSection delay={600} className="text-center mt-12">

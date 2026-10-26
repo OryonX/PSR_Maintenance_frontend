@@ -1,5 +1,6 @@
 import { services } from './services.js'
 import detailContent from '../locales/en/servicesDetail.json'
+import { STOCK_GALLERY_IMAGES } from './stockGalleryImages.js'
 
 // Compressed gallery images land here once scripts/compress-images.js has run
 // (see src/scripts/compress-images.js). Falls back to an empty map — and the
@@ -64,11 +65,17 @@ export const SERVICES_DETAIL = services.reduce((acc, service) => {
     description: service.description,
     heroBadges: HERO_BADGE_KEYS[service.id].map((key) => ({ key, ...BADGES[key] })),
     subServices: content.subServices,
-    gallery: filenames.map((filename, index) => ({
-      image: resolveGalleryImage(service.id, filename),
-      filename,
-      caption: content.galleryCaptions[index]
-    })),
+    gallery: filenames.map((filename, index) => {
+      const localImage = resolveGalleryImage(service.id, filename)
+      const stock = localImage ? null : STOCK_GALLERY_IMAGES[filename]
+      return {
+        image: localImage || stock?.url || null,
+        filename,
+        // Stock photos aren't our jobs, so drop the "— Area" project location
+        caption: stock ? content.galleryCaptions[index].split(' — ')[0] : content.galleryCaptions[index],
+        credit: stock ? { author: stock.author, authorUrl: stock.authorUrl } : null
+      }
+    }),
     whyChooseUs: content.whyChooseUs,
     testimonial: content.testimonial,
     faq: content.faq

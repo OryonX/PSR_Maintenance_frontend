@@ -1,40 +1,38 @@
 {
-  "items": {
-    "1": {
-      "title": "Full Bathroom Refit",
-      "location": "Didsbury",
-      "category": "Plumbing & Tiling",
-      "description": "Complete bathroom renovation with modern fixtures and tiling"
+  "albums": {
+    "bathroom-after": {
+      "title": "Luxury Bathroom Transformation",
+      "location": "Greater Manchester",
+      "category": "Full Bathroom Refit",
+      "description": "Large-format marble-effect porcelain, freestanding copper bath, walk-in rain shower and bespoke LED-lit stone niches.",
+      "photos": [
+        "Finished bathroom with floating marble vanity, copper basin and freestanding bath",
+        "Copper freestanding bath, rimless toilet and copper heated towel rail",
+        "Walk-in shower with copper-framed glass screen and LED ceiling light",
+        "Floating marble-effect vanity with hammered copper vessel basin",
+        "Copper heated towel rail beside the window and illuminated stone column",
+        "Concealed thermostatic shower valve with lit stone niches and linear drain",
+        "Back-lit textured stone feature column next to the toilet",
+        "Ceiling rain shower head with perimeter LED strip lighting",
+        "Window wall with lit stone niche, copper bath filler and freestanding bath",
+        "Marble-effect porcelain floor running to the freestanding bath",
+        "Vanity area with illuminated mirror cabinet and stone niche"
+      ]
     },
-    "2": {
-      "title": "Kitchen Renovation",
-      "location": "Chorlton",
-      "category": "Full Renovation",
-      "description": "Full kitchen redesign and installation"
-    },
-    "3": {
-      "title": "Modern Bathroom",
-      "location": "Trafford",
-      "category": "Plumbing & Plastering",
-      "description": "Contemporary bathroom with premium finishes"
-    },
-    "4": {
-      "title": "Interior Painting",
-      "location": "Salford",
-      "category": "Painting & Decorating",
-      "description": "Full interior repaint with feature walls"
-    },
-    "5": {
-      "title": "Property Refurb",
-      "location": "Stockport",
-      "category": "Full Renovation",
-      "description": "Complete property refurbishment"
-    },
-    "6": {
-      "title": "Lounge Makeover",
-      "location": "Eccles",
-      "category": "Plastering & Painting",
-      "description": "Lounge renovation with plastering and decorating"
+    "bathroom-before": {
+      "title": "Before the Refit",
+      "location": "Greater Manchester",
+      "category": "Before",
+      "description": "The same space before we started: dated laminate, striped wallpaper and tired fittings.",
+      "photos": [
+        "Original toilet room with striped wallpaper and frosted window",
+        "Original toilet and laminate flooring",
+        "Close-up of the original toilet beneath the window",
+        "View into the original toilet room through the doorway",
+        "Original corner basin with brass taps",
+        "Original room with dado rail and white radiator",
+        "Original bathroom with half-height tiling and roll-top bath"
+      ]
     }
   }
 }
