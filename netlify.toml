@@ -1,9 +1,17 @@
 [build]
   command = "npm run build"
-  publish = "dist"
+  # Vike emits prerendered pages + public assets to dist/client, not dist
+  publish = "dist/client"
 
 [build.environment]
   NODE_VERSION = "20"
+
+# /admin is client-rendered (prerender:false) — boot it from the prerendered
+# client-only shell at /admin/login. Non-forced 200: real files still win.
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/login/index.html"
+  status = 200
 
 [[redirects]]
   from = "/*"
