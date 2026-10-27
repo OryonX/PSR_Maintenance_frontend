@@ -1,5 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { X, ChevronLeft, ChevronRight, ImageOff, MapPin } from 'lucide-react'
+import { UNSPLASH_URL } from '../../config/stockGalleryImages.js'
+
+function PhotoCredit({ credit, className = '' }) {
+  return (
+    <p className={`text-xs ${className}`}>
+      Photo by{' '}
+      <a href={credit.authorUrl} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
+        {credit.author}
+      </a>{' '}
+      on{' '}
+      <a href={UNSPLASH_URL} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
+        Unsplash
+      </a>
+    </p>
+  )
+}
 
 function GalleryThumb({ item, onOpen }) {
   return (
@@ -20,7 +36,7 @@ function GalleryThumb({ item, onOpen }) {
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 via-navy-900/10 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-4 flex items-center gap-1 text-white text-sm font-medium">
-        <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+        {!item.credit && <MapPin className="w-3.5 h-3.5 flex-shrink-0" />}
         <span>{item.caption}</span>
       </div>
     </button>
@@ -58,7 +74,10 @@ function ServiceGallery({ items }) {
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {items.map((item, index) => (
-          <GalleryThumb key={item.filename} item={item} onOpen={() => setOpenIndex(index)} />
+          <div key={item.filename}>
+            <GalleryThumb item={item} onOpen={() => setOpenIndex(index)} />
+            {item.credit && <PhotoCredit credit={item.credit} className="text-gray-500 mt-2" />}
+          </div>
         ))}
       </div>
 
@@ -96,9 +115,10 @@ function ServiceGallery({ items }) {
               )}
             </div>
             <p className="text-white/80 text-sm mt-4 flex items-center justify-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5" />
+              {!active.credit && <MapPin className="w-3.5 h-3.5" />}
               {active.caption}
             </p>
+            {active.credit && <PhotoCredit credit={active.credit} className="text-white/50 text-center mt-1" />}
           </div>
 
           <button

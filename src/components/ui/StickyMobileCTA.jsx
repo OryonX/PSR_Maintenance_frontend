@@ -17,7 +17,7 @@ function StickyMobileCTA() {
         {t('cta.whatsapp')}
       </button>
       <button
-        onClick={callPhone}
+        onClick={callPhone}uotequote
         className="flex-1 flex items-center justify-center gap-2 py-3 bg-navy-900 text-white font-semibold rounded-lg"
       >
         <Phone className="w-5 h-5" />
@@ -28,3 +28,6 @@ function StickyMobileCTA() {
 }
 
 export default StickyMobileCTA
+
+
+
