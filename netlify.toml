@@ -29,9 +29,11 @@
   status = 200
   force = true
 
+# The active chat workflow listens on the named path psr-webhook-chat; the
+# UUID webhook (9e2112bc-…) is not registered in n8n and returns 404.
 [[redirects]]
   from = "/n8n/chat"
-  to = "https://n8n.diegoalejandrojs.com/webhook/9e2112bc-a4b1-407a-97d0-840f1dce6f06"
+  to = "https://n8n.diegoalejandrojs.com/webhook/psr-webhook-chat"
   status = 200
   force = true
 
