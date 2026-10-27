@@ -10,8 +10,8 @@ try {
 }
 
 export const homeSEO = {
-  title: 'PSR Maintenance Services | Professional Trades & Renovations in Manchester',
-  description: 'Trusted tradespeople in Greater Manchester for 12+ years. Kitchen & bathroom renovations, plumbing, electrics, painting, and general repairs. Free quotes, fully insured.',
+  title: 'PSR Maintenance Services | Professional Trades & Renovations in Chorley & Manchester',
+  description: 'Trusted tradespeople based in Chorley, serving Chorley, Manchester and surrounding areas. Kitchen & bathroom renovations, plumbing, electrics, painting, and general repairs. Free quotes, fully insured.',
   canonical: `${siteUrl}/`,
   schema: {
     '@context': 'https://schema.org',
@@ -24,23 +24,25 @@ export const homeSEO = {
     email: COMPANY_INFO.email,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Manchester',
-      addressRegion: 'Greater Manchester',
+      // TODO(PSR): add streetAddress + postalCode once PSR confirms them.
+      addressLocality: 'Chorley',
+      addressRegion: 'Lancashire',
       addressCountry: 'GB'
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 53.4808,
-      longitude: -2.2426
+      latitude: 53.653,
+      longitude: -2.632
     },
+    // 40 km around Chorley reaches Manchester city centre (~30 km away).
     areaServed: {
       '@type': 'GeoCircle',
       geoMidpoint: {
         '@type': 'GeoCoordinates',
-        latitude: 53.4808,
-        longitude: -2.2426
+        latitude: 53.653,
+        longitude: -2.632
       },
-      geoRadius: '25000'
+      geoRadius: '40000'
     },
     serviceType: [
       'General Repairs',
@@ -104,8 +106,8 @@ export const homeSEO = {
 }
 
 export const servicesSEO = {
-  title: 'Our Services | PSR Maintenance - Trades & Renovations Manchester',
-  description: 'Complete range of maintenance services: general repairs, renovations, plumbing, electrical, painting, tiling, plastering. Professional tradespeople across Greater Manchester.',
+  title: 'Our Services | PSR Maintenance - Trades & Renovations Chorley & Manchester',
+  description: 'Complete range of maintenance services: general repairs, renovations, plumbing, electrical, painting, tiling, plastering. Professional tradespeople across Chorley, Manchester and surrounding areas.',
   canonical: `${siteUrl}/servicios`
 }
 
@@ -117,7 +119,7 @@ export const notFoundSEO = {
 
 export function serviceSEO(service) {
   return {
-    title: `${service.title} | PSR Maintenance Services Manchester`,
+    title: `${service.title} | PSR Maintenance Services Chorley & Manchester`,
     description: service.tagline,
     canonical: `${siteUrl}/services/${service.slug}`
   }

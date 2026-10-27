@@ -14,11 +14,11 @@
     },
     "emergency-callouts": {
       "question": "Do you offer emergency call-outs?",
-      "answer": "Yes, we offer 24/7 emergency call-outs for urgent issues like leaks, electrical faults, and heating failures. Our emergency response team covers all of Greater Manchester with an average arrival time of under 2 hours. Call us directly or message us on WhatsApp for the fastest response."
+      "answer": "Yes, we offer 24/7 emergency call-outs for urgent issues like leaks, electrical faults, and heating failures. Our emergency response team covers Chorley, Manchester and surrounding areas, with an average arrival time of under 2 hours. Call us directly or message us on WhatsApp for the fastest response."
     },
     "coverage": {
-      "question": "Do you cover all of Greater Manchester?",
-      "answer": "Yes, we cover the entire Greater Manchester area including Manchester city centre, Salford, Trafford, Stockport, Tameside, Oldham, Rochdale, Bury, Bolton, and Wigan. We also work in surrounding areas like Cheshire and Lancashire for larger projects. If you're unsure whether we cover your area, just ask!"
+      "question": "Which areas do you cover?",
+      "answer": "We're based in Chorley, Lancashire, and work across Chorley, Manchester and surrounding areas. If you're unsure whether we cover your area, just ask!"
     },
     "whatsapp-quote": {
       "question": "How do I get a quote via WhatsApp?",

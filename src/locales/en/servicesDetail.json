@@ -23,7 +23,7 @@
     "viewAllServices": "View All Services"
   },
   "general-repairs": {
-    "tagline": "No job too small. Fast, reliable repairs across Greater Manchester.",
+    "tagline": "No job too small. Fast, reliable repairs across Chorley, Manchester and surrounding areas.",
     "subServices": [
       { "name": "Door & Window Repairs", "description": "Sticking doors, broken hinges, warped frames, draughty windows — fixed right the first time." },
       { "name": "Shelving & Fixtures", "description": "Secure wall fixings, floating shelves, TV brackets, and picture rails installed to spec." },
@@ -62,7 +62,7 @@
     "whyChooseUs": [
       "One dedicated project manager from quote to completion",
       "Fixed-price contracts — no surprise costs mid-project",
-      "12+ years coordinating multi-trade renovations across Manchester",
+      "12+ years coordinating multi-trade renovations across Chorley and Manchester",
       "Every trade — plumbing, electrics, plastering — under one team"
     ],
     "testimonial": {
@@ -100,7 +100,7 @@
       "rating": 5
     },
     "faq": [
-      { "question": "Do you offer emergency plumbing call-outs?", "answer": "Yes, 7 days a week for urgent issues like leaks, burst pipes, and no-heating emergencies, with an average response time under 2 hours across Greater Manchester." },
+      { "question": "Do you offer emergency plumbing call-outs?", "answer": "Yes, 7 days a week for urgent issues like leaks, burst pipes, and no-heating emergencies, with an average response time under 2 hours across Chorley, Manchester and surrounding areas." },
       { "question": "Can you fit a new bathroom suite?", "answer": "Yes, we handle full bathroom plumbing from first fix through to final connections, and can coordinate the tiling and finishing work as part of a complete renovation." }
     ]
   },
@@ -134,10 +134,10 @@
     ]
   },
   "painting-decorating": {
-    "tagline": "Clean, lasting paintwork for homes and commercial spaces across Manchester.",
+    "tagline": "Clean, lasting paintwork for homes and commercial spaces across Chorley and Manchester.",
     "subServices": [
       { "name": "Interior Painting", "description": "Walls, ceilings, and woodwork painted with proper prep — filling, sanding, and priming before a single coat goes on." },
-      { "name": "Exterior Painting", "description": "Weather-resistant exterior paintwork for render, brick, and woodwork, prepped to last through Manchester winters." },
+      { "name": "Exterior Painting", "description": "Weather-resistant exterior paintwork for render, brick, and woodwork, prepped to last through North West winters." },
       { "name": "Feature Walls", "description": "Bold colour or textured feature walls, precisely masked and finished for a sharp, professional edge." },
       { "name": "Wallpaper Hanging", "description": "Pattern-matched wallpaper hanging, from a single feature wall to a full room." }
     ],

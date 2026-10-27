@@ -3,7 +3,7 @@
     "badge": "What We Do",
     "titlePrefix": "OUR ",
     "titleHighlight": "SERVICES",
-    "subtitle": "From emergency repairs to complete property transformations, PSR delivers professional trades services across Greater Manchester. Every job, every trade, one trusted team.",
+    "subtitle": "From emergency repairs to complete property transformations, PSR delivers professional trades services across Chorley, Manchester and surrounding areas. Every job, every trade, one trusted team.",
     "ctaHeading": "Need Something Else?",
     "ctaSubtitle": "Can't see what you're looking for? We handle all types of maintenance and renovation work. Get in touch and let's discuss your project.",
     "ctaButton": "Get a Free Quote",
@@ -20,12 +20,12 @@
     },
     "full-renovations": {
       "title": "Full Renovations",
-      "description": "Whether it's a full kitchen refit, a loft conversion, or a whole-house renovation, PSR manages every stage — design, trades coordination, materials, and finish. One point of contact, one team, zero stress. We've transformed properties across Greater Manchester for over 12 years.",
+      "description": "Whether it's a full kitchen refit, a loft conversion, or a whole-house renovation, PSR manages every stage — design, trades coordination, materials, and finish. One point of contact, one team, zero stress. We've transformed properties across Chorley, Manchester and surrounding areas for over 12 years.",
       "bullets": ["Kitchen Refits", "Bathroom Renovations", "Extension Works", "Loft Conversions"]
     },
     "plumbing": {
       "title": "Plumbing",
-      "description": "PSR's plumbing team covers everything from a dripping tap to radiator fitting and full bathroom plumbing. All our plumbers are fully qualified. We offer emergency call-outs across Greater Manchester, 7 days a week, with a response target of under 2 hours.",
+      "description": "PSR's plumbing team covers everything from a dripping tap to radiator fitting and full bathroom plumbing. All our plumbers are fully qualified. We offer emergency call-outs across Chorley, Manchester and surrounding areas, 7 days a week, with a response target of under 2 hours.",
       "bullets": ["Leak Detection & Repair", "Radiator Fitting", "Bathroom Plumbing"]
     },
     "electrical": {
@@ -35,7 +35,7 @@
     },
     "painting-decorating": {
       "title": "Painting & Decorating",
-      "description": "PSR's decorating team delivers clean, lasting paintwork on new builds, period properties, and commercial spaces across Greater Manchester. We prep properly — filling, sanding, priming — so the finish holds. No runs, no missed patches, no shortcuts.",
+      "description": "PSR's decorating team delivers clean, lasting paintwork on new builds, period properties, and commercial spaces across Chorley, Manchester and surrounding areas. We prep properly — filling, sanding, priming — so the finish holds. No runs, no missed patches, no shortcuts.",
       "bullets": ["Interior Painting", "Exterior Painting", "Feature Walls", "Wallpaper Hanging"]
     },
     "tiling-flooring": {

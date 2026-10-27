@@ -212,10 +212,11 @@ function QuoteFormFooter({ defaultServiceType = '', titlePrefix, titleHighlight,
               </div>
             </div>
 
-            {/* Map Embed */}
+            {/* Map Embed — town-level (Chorley); swap for the exact business
+                address once PSR confirms it. Keyless embed URL. */}
             <div className="rounded-xl overflow-hidden border border-gray-200 aspect-video bg-gray-100">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d152515.3654478067!2d-2.321782553437491!3d53.47224516273675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487a4d4c5226f5db%3A0xd9be143804fe6baa!2sManchester!5e0!3m2!1sen!2suk!4v1651234567890!5m2!1sen!2suk"
+                src="https://maps.google.com/maps?q=Chorley%2C%20Lancashire%2C%20UK&z=11&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

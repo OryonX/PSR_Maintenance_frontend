@@ -1,12 +1,12 @@
 {
   "hero": {
-    "locationBadge": "Manchester & Greater Manchester",
+    "locationBadge": "Chorley & Manchester",
     "headline": {
       "line1": "YOUR HOME.",
       "line2": "OUR CRAFT.",
       "line3": "EVERY JOB."
     },
-    "description": "From a dripping tap to a full home renovation — Manchester's trusted trades team delivers quality workmanship, on time and on budget. Over 12 years serving Greater Manchester.",
+    "description": "From a dripping tap to a full home renovation — Chorley's trusted trades team delivers quality workmanship, on time and on budget. Over 12 years serving Chorley, Manchester and surrounding areas.",
     "ctaQuote": "GET FREE QUOTE",
     "ctaWhatsapp": "WhatsApp Now",
     "whatsappMessage": "Hi, I saw your website and would like to discuss a project.",
@@ -31,14 +31,14 @@
   },
   "about": {
     "badge": "About PSR",
-    "titlePrefix": "MANCHESTER'S ",
+    "titlePrefix": "CHORLEY'S ",
     "titleHighlight": "TRUSTED TRADES",
     "titleSuffix": " PROFESSIONALS",
-    "paragraph1": "Founded right here in Manchester, PSR Maintenance Services has been transforming homes and properties across Greater Manchester for over a decade. Our team of fully qualified tradespeople takes pride in every project — big or small.",
+    "paragraph1": "Based in Chorley, PSR Maintenance Services has been transforming homes and properties across Chorley, Manchester and surrounding areas for over a decade. Our team of fully qualified tradespeople takes pride in every project — big or small.",
     "paragraph2": "We believe in honest pricing, clear communication, and workmanship that speaks for itself. No hidden costs. No cowboys. Just quality tradespeople who genuinely care about your home.",
     "experienceBadge": {
       "years": "12+",
-      "label": "Years Serving Manchester"
+      "label": "Years of Experience"
     },
     "mainImageAlt": "PSR Maintenance team at work",
     "secondaryImageAlt": "Completed renovation project",
@@ -66,7 +66,7 @@
     "badge": "Our Work",
     "titlePrefix": "RECENT ",
     "titleHighlight": "PROJECTS",
-    "subtitle": "Real work. Real homes. Across Greater Manchester.",
+    "subtitle": "Real work. Real homes. Across Chorley & Manchester.",
     "cta": "START YOUR PROJECT TODAY",
     "whatsappMessage": "Hi, I saw your recent projects and would like to discuss starting my own project."
   },
@@ -99,8 +99,8 @@
     },
     "locationCard": {
       "label": "Based in",
-      "address": "Manchester, UK",
-      "coverage": "Covering all of Greater Manchester"
+      "address": "Chorley, Lancashire, UK",
+      "coverage": "Covering Chorley, Manchester & surrounding areas"
     },
     "mapTitle": "PSR Maintenance Location",
     "success": {
@@ -118,7 +118,7 @@
       "serviceType": "Service Required",
       "serviceTypePlaceholder": "Select a service...",
       "postcode": "Postcode",
-      "postcodePlaceholder": "M1 2AB",
+      "postcodePlaceholder": "PR7 1AB",
       "urgency": "How urgent is it?",
       "urgencyPlaceholder": "Select urgency...",
       "urgencyOptions": {
