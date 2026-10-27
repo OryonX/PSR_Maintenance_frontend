@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   LayoutDashboard, Users, UserSquare2, FileText, CalendarClock,
-  HardHat, Receipt, Settings, BarChart3, ChevronsLeft, X
+  HardHat, Receipt, Settings, BarChart3, ChevronsLeft, X, PhoneCall, Wallet
 } from 'lucide-react'
 import { useTenantConfig } from '../../hooks/useTenantConfig.js'
 import logo from '../../../../public/img/rsr.png'
@@ -11,9 +11,11 @@ export const NAV_ITEMS = [
   { href: '/admin/leads', icon: Users, entity: 'lead', module: 'leads' },
   { href: '/admin/clients', icon: UserSquare2, entity: 'client', module: 'clients' },
   { href: '/admin/quotes', icon: FileText, entity: 'quote', module: 'quotes' },
+  { href: '/admin/follow-up', icon: PhoneCall, staticLabel: 'Quote follow-up', module: 'quotes' },
   { href: '/admin/jobs', icon: CalendarClock, entity: 'work_item', module: 'trade_jobs' },
   { href: '/admin/team', icon: HardHat, entity: 'team', module: 'team_members' },
   { href: '/admin/invoices', icon: Receipt, entity: 'invoice', module: 'client_invoices' },
+  { href: '/admin/receivables', icon: Wallet, staticLabel: 'Receivables', module: 'client_invoices' },
   { href: '/admin/settings', icon: Settings, staticLabel: 'Settings', module: null },
   { href: '/admin/reports', icon: BarChart3, staticLabel: 'Reports', module: null }
 ]

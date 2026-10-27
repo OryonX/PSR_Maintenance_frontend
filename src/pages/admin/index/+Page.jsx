@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { navigate } from 'vike/client/router'
 import { Users, UserCheck, TrendingUp, Wrench, XCircle, Gauge, Clock, PoundSterling, CheckCircle2, ArrowRight } from 'lucide-react'
 import HelmetSEO from '../../../seo/HelmetSEO.jsx'
-import { meApi, dashboardApi, leadsApi } from '../../../adminpanel/lib/endpoints.js'
+import { meApi, dashboardApi, leadsApi, clientInvoicesApi, quotesApi } from '../../../adminpanel/lib/endpoints.js'
+import { agingBucket, awaitingReply, daysToExpiry, isUnpaid, quoteValue, sumAmounts, todayISO } from '../../../adminpanel/lib/followUp.js'
+import StatTile from '../../../adminpanel/components/StatTile.jsx'
 import { STATUS_TONE } from '../../../adminpanel/lib/constants.js'
 import { useTenantConfig } from '../../../adminpanel/hooks/useTenantConfig.js'
 import KPICard from '../../../ui/KPICard.jsx'
@@ -26,7 +28,8 @@ function timeAgo(iso) {
 }
 
 function Page() {
-  const { label } = useTenantConfig()
+  const { label, hasModule } = useTenantConfig()
+  const [attention, setAttention] = useState(null) // { invoices, quotes } for the "Needs attention" row
   const [metrics, setMetrics] = useState(null)
   const [psr, setPsr] = useState(null)
   const [leads, setLeads] = useState(null)
@@ -48,16 +51,62 @@ function Page() {
     return () => { cancelled = true }
   }, [])
 
+  // Follow-up shortcuts — optional: a failure here never blocks the dashboard.
+  useEffect(() => {
+    let cancelled = false
+    Promise.allSettled([
+      hasModule('client_invoices') ? clientInvoicesApi.list() : Promise.resolve(null),
+      hasModule('quotes') ? quotesApi.list() : Promise.resolve(null)
+    ]).then(([inv, q]) => {
+      if (cancelled) return
+      setAttention({
+        invoices: inv.status === 'fulfilled' ? inv.value : null,
+        quotes: q.status === 'fulfilled' ? q.value : null
+      })
+    })
+    return () => { cancelled = true }
+  }, [hasModule])
+
   if (loading) return <Spinner label="Loading dashboard…" />
   if (error) return <EmptyState message={`Couldn't load dashboard metrics: ${error.message}`} />
 
   const kpis = metrics?.metrics || {}
+
+  const today = todayISO()
+  const unpaid = (attention?.invoices || []).filter(isUnpaid)
+  const overdue = unpaid.filter((inv) => agingBucket(inv, today) !== 'current')
+  const awaiting = (attention?.quotes || []).filter(awaitingReply)
+  const expiring = awaiting.filter((q) => { const d = daysToExpiry(q, today); return d != null && d >= 0 && d <= 7 })
 
   return (
     <>
       <HelmetSEO title="Dashboard | PSR Operations" description="PSR Operations dashboard" noindex={true} />
 
       <div className="space-y-6">
+        {(attention?.invoices || attention?.quotes) && (
+          <section aria-labelledby="needs-attention">
+            <h2 id="needs-attention" className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-2">Needs attention</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              {attention.invoices && (
+                <>
+                  <StatTile label="Overdue" tone="red" href="/admin/receivables" value={formatGBP(sumAmounts(overdue))}
+                    sub={overdue.length ? `${overdue.length} ${label('invoice', overdue.length !== 1).toLowerCase()} to chase` : 'Nothing overdue'} />
+                  <StatTile label="Outstanding" href="/admin/receivables" value={formatGBP(sumAmounts(unpaid))}
+                    sub={`${unpaid.length} unpaid`} />
+                </>
+              )}
+              {attention.quotes && (
+                <>
+                  <StatTile label={`${label('quote', true)} awaiting reply`} tone="amber" href="/admin/follow-up" value={awaiting.length}
+                    sub={`${formatGBP(awaiting.reduce((s, q) => s + quoteValue(q), 0))} potential`} />
+                  <StatTile label="Expiring this week" tone="blue" href="/admin/follow-up" value={expiring.length}
+                    sub={expiring.length ? 'Call before they lapse' : 'None expiring'} />
+                </>
+              )}
+            </div>
+          </section>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {psr && (
             <>

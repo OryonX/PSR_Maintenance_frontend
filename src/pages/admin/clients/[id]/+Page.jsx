@@ -8,6 +8,7 @@ import { CLIENT_STATUSES, STATUS_TONE } from '../../../../adminpanel/lib/constan
 import { BILLING_DETAILS_FIELDS, FIELD_LABELS, fieldList } from '../../../../adminpanel/lib/billing.js'
 import { useTenantConfig } from '../../../../adminpanel/hooks/useTenantConfig.js'
 import ClientForm from '../../../../adminpanel/components/Forms/ClientForm.jsx'
+import ClientHistory from '../../../../adminpanel/components/ClientHistory.jsx'
 import Card from '../../../../ui/Card.jsx'
 import Badge from '../../../../ui/Badge.jsx'
 import Button from '../../../../ui/Button.jsx'
@@ -112,11 +113,6 @@ function Page() {
                 <div><dt className="text-gray-400 text-xs uppercase tracking-wide mb-0.5">Phone</dt><dd className="text-navy-900">{client.phone || '—'}</dd></div>
                 <div><dt className="text-gray-400 text-xs uppercase tracking-wide mb-0.5">Language</dt><dd className="text-navy-900 uppercase">{client.language || '—'}</dd></div>
               </dl>
-              {/* Client::projects()/invoices() point at the agency-billing models
-                  (Project/Invoice), not this vertical's Lead→Quote→TradeJob→
-                  ClientInvoice chain — Client has no relation to those, and the
-                  API has no client_id filter on leads/trade-jobs either, so a
-                  customer's actual service history isn't fetchable yet. */}
             </Card>
 
             <Card title="Billing details" action={<Button size="sm" variant="secondary" onClick={() => setEditOpen(true)}><Pencil className="w-3.5 h-3.5" /> Edit</Button>}>
@@ -157,6 +153,12 @@ function Page() {
             </Card>
           </div>
         </div>
+
+        {/* Customer 360 — history joined client-side (see ClientHistory). */}
+        <section className="space-y-3 pt-2">
+          <h2 className="text-lg font-bold text-navy-900">History</h2>
+          <ClientHistory clientId={client.id} />
+        </section>
       </div>
 
       <Modal open={editOpen} onClose={() => setEditOpen(false)} title={`Edit ${label('client').toLowerCase()}`}>
