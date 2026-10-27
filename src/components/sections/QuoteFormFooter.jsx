@@ -10,8 +10,9 @@ import { COMPANY_INFO } from '../../config/companyInfo.js'
 // -> Code in JavaScript -> Call 'send_to_customer'. data_enrichment reads
 // service_type/postcode/preferred_contact/urgency/utm_* as flat top-level
 // fields (not nested) — keep the payload shape in sync with that node.
-const N8N_WEBHOOK_URL = import.meta.env.VITE_QUOTE_WEBHOOK_URL
-  || 'https://n8n.diegoalejandrojs.com/webhook/26423563-21d8-435f-b52a-59f258afa49f'
+// Same-origin path proxied to n8n by netlify.toml (no CORS preflight). For
+// local dev, set VITE_QUOTE_WEBHOOK_URL to the absolute webhook URL.
+const N8N_WEBHOOK_URL = import.meta.env.VITE_QUOTE_WEBHOOK_URL || '/n8n/quote'
 const ORGANIZATION_SLUG = 'psr-maintenance'
 
 

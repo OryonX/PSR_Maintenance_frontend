@@ -8,8 +8,9 @@ import { buildSystemPrompt } from '../../config/chatPrompt.js'
 // n8n chat workflow: the widget sends chatInput + sessionId + systemPrompt and
 // n8n answers with { respuesta, create_lead, datos_suficientes_para_crm, lead, ... }.
 // The lead itself is created server-side by n8n — the widget only reads the flags.
-const CHAT_WEBHOOK_URL = import.meta.env.VITE_CHAT_WEBHOOK_URL
-  || 'https://n8n.diegoalejandrojs.com/webhook/psr-webhook-chat'
+// Same-origin path proxied to n8n by netlify.toml (no CORS preflight). For
+// local dev, set VITE_CHAT_WEBHOOK_URL to the absolute webhook URL.
+const CHAT_WEBHOOK_URL = import.meta.env.VITE_CHAT_WEBHOOK_URL || '/n8n/chat'
 const ORGANIZATION_SLUG = 'psr-maintenance'
 const LANG = 'en'
 

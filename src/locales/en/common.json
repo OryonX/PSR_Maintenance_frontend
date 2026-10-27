@@ -22,7 +22,6 @@
     "instantQuoteMessage": "Hi, I'd like to get an instant quote."
   },
   "trustBadges": {
-    "gasSafe": "Gas Safe",
     "partP": "Part P Certified",
     "insured": "Fully Insured",
     "trustmark": "TrustMark",

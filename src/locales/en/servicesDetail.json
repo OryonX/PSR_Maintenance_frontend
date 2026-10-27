@@ -26,7 +26,6 @@
     "tagline": "No job too small. Fast, reliable repairs across Greater Manchester.",
     "subServices": [
       { "name": "Door & Window Repairs", "description": "Sticking doors, broken hinges, warped frames, draughty windows — fixed right the first time." },
-      { "name": "Furniture Assembly", "description": "Flat-pack nightmares sorted quickly and correctly, from wardrobes to office shelving." },
       { "name": "Shelving & Fixtures", "description": "Secure wall fixings, floating shelves, TV brackets, and picture rails installed to spec." },
       { "name": "Minor Structural Fixes", "description": "Small cracks, loose bricks, damaged skirting boards and architraves repaired to a finish." }
     ],
@@ -81,16 +80,14 @@
     ]
   },
   "plumbing": {
-    "tagline": "Gas Safe registered plumbers, emergency call-outs, 7 days a week.",
+    "tagline": "Qualified plumbers, emergency call-outs, 7 days a week.",
     "subServices": [
       { "name": "Leak Detection & Repair", "description": "Fast diagnosis of hidden leaks using proven methods, with repairs completed the same visit wherever possible." },
-      { "name": "Boiler Installation & Servicing", "description": "New boiler installations, annual servicing, and breakdown repairs — all Gas Safe registered work." },
       { "name": "Radiator Fitting", "description": "New radiator installation, replacement, and power flushing to keep your heating system running efficiently." },
       { "name": "Bathroom Plumbing", "description": "First and second fix plumbing for bathroom renovations, from rough-in to final connections." }
     ],
-    "galleryCaptions": ["Pipe Repair — Bolton", "Boiler Service — Trafford", "Leak Detection — Salford"],
+    "galleryCaptions": ["Pipe Repair — Bolton", "Leak Detection — Salford"],
     "whyChooseUs": [
-      "Gas Safe registered on every job — certificates provided",
       "Emergency call-outs 7 days a week, under 2-hour response target",
       "Upfront pricing before any work begins",
       "Clean, careful work in occupied homes — no mess left behind"
@@ -103,9 +100,7 @@
       "rating": 5
     },
     "faq": [
-      { "question": "Are your plumbers Gas Safe registered?", "answer": "Yes, all gas work is carried out by Gas Safe registered engineers, and we provide the relevant certificate on completion of any gas-related job." },
       { "question": "Do you offer emergency plumbing call-outs?", "answer": "Yes, 7 days a week for urgent issues like leaks, burst pipes, and no-heating emergencies, with an average response time under 2 hours across Greater Manchester." },
-      { "question": "How much does a boiler service cost?", "answer": "Boiler servicing is priced at a flat rate confirmed when you book — no hidden extras unless we find a fault that needs separate parts, which we'll always discuss with you first." },
       { "question": "Can you fit a new bathroom suite?", "answer": "Yes, we handle full bathroom plumbing from first fix through to final connections, and can coordinate the tiling and finishing work as part of a complete renovation." }
     ]
   },

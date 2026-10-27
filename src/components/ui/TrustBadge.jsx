@@ -1,14 +1,8 @@
 import React from 'react'
-import { Shield, Zap, Award, Star } from 'lucide-react'
+import { Shield, Award, Star } from 'lucide-react'
 import { useTranslation } from '../../hooks/useTranslation.js'
 
 const badgeConfig = {
-  'gas-safe': {
-    icon: Zap,
-    labelKey: 'trustBadges.gasSafe',
-    color: 'bg-red-100 text-red-700 border-red-200',
-    iconColor: 'text-red-600'
-  },
   'part-p': {
     icon: Award,
     labelKey: 'trustBadges.partP',

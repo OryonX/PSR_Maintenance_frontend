@@ -106,7 +106,6 @@ function WhyPSR() {
             {/* Trust Badges */}
             <AnimatedSection delay={300}>
               <div className="flex flex-wrap gap-2">
-                <TrustBadge type="gas-safe" size="md" />
                 <TrustBadge type="part-p" size="md" />
                 <TrustBadge type="insured" size="md" />
                 <TrustBadge type="trustmark" size="md" />

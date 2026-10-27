@@ -16,7 +16,7 @@
     "general-repairs": {
       "title": "General Repairs",
       "description": "From a sticking door to a crumbling plaster wall — PSR's general repair team handles every small job with the same care as a full renovation. We show up on time, bring the right tools, and leave your home better than we found it. No call-out fees, no hidden charges.",
-      "bullets": ["Door & Window Repairs", "Furniture Assembly", "Shelving & Fixtures", "Minor Structural Fixes"]
+      "bullets": ["Door & Window Repairs", "Shelving & Fixtures", "Minor Structural Fixes"]
     },
     "full-renovations": {
       "title": "Full Renovations",
@@ -25,8 +25,8 @@
     },
     "plumbing": {
       "title": "Plumbing",
-      "description": "PSR's plumbing team covers everything from a dripping tap to a full heating system installation. All our plumbers are fully qualified and Gas Safe registered where applicable. We offer emergency call-outs across Greater Manchester, 7 days a week, with a response target of under 2 hours.",
-      "bullets": ["Leak Detection & Repair", "Boiler Installation & Servicing", "Radiator Fitting", "Bathroom Plumbing"]
+      "description": "PSR's plumbing team covers everything from a dripping tap to radiator fitting and full bathroom plumbing. All our plumbers are fully qualified. We offer emergency call-outs across Greater Manchester, 7 days a week, with a response target of under 2 hours.",
+      "bullets": ["Leak Detection & Repair", "Radiator Fitting", "Bathroom Plumbing"]
     },
     "electrical": {
       "title": "Electrical Work",

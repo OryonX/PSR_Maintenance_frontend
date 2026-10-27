@@ -1,9 +1,46 @@
 [build]
   command = "npm run build"
-  publish = "dist"
+  # Vike emits prerendered pages + public assets to dist/client, not dist
+  publish = "dist/client"
 
+# Build-time env for every tenant deploy. Vite inlines VITE_* vars into the
+# client bundle at build time, so they must exist here (not only in a local
+# .env, which Netlify never sees) — otherwise /admin can't reach the API.
+# These values are public by nature (shipped to the browser); never put
+# secrets here. Values set here override the Netlify UI.
 [build.environment]
   NODE_VERSION = "20"
+  # oryonLabsDB backend (admin CRM panel under /admin)
+  VITE_API_BASE_URL = "https://oryonlabsdb-production.up.railway.app/api"
+  # n8n webhooks: quote form and AI chat widget. Same-origin paths resolved by
+  # the /n8n/* proxy redirects below — n8n sends no CORS headers, so calling it
+  # directly from the browser fails the preflight. The real webhook URLs live
+  # only in the redirects, not in the client bundle.
+  VITE_QUOTE_WEBHOOK_URL = "/n8n/quote"
+  VITE_CHAT_WEBHOOK_URL = "/n8n/chat"
+  # Canonical site URL for SEO tags
+  VITE_SITE_URL = "https://psrmaintenance.co.uk"
+
+# n8n webhooks via same-origin proxy (avoids browser CORS preflight).
+# Must stay above /admin/* and the /* catch-all: Netlify applies the first match.
+[[redirects]]
+  from = "/n8n/quote"
+  to = "https://n8n.diegoalejandrojs.com/webhook/26423563-21d8-435f-b52a-59f258afa49f"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/n8n/chat"
+  to = "https://n8n.diegoalejandrojs.com/webhook/9e2112bc-a4b1-407a-97d0-840f1dce6f06"
+  status = 200
+  force = true
+
+# /admin is client-rendered (prerender:false) — boot it from the prerendered
+# client-only shell at /admin/login. Non-forced 200: real files still win.
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/login/index.html"
+  status = 200
 
 [[redirects]]
   from = "/*"

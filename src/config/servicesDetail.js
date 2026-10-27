@@ -21,7 +21,6 @@ const BADGES = {
   insured: { labelKey: 'trustBadges.insured', tone: 'green' },
   liability5m: { labelKey: 'trustBadges.liability5m', tone: 'blue' },
   sameDay: { labelKey: 'trustBadges.sameDayAvailable', tone: 'amber' },
-  gasSafe: { labelKey: 'trustBadges.gasSafe', tone: 'red' },
   partP: { labelKey: 'trustBadges.partP', tone: 'blue' },
   trustmark: { labelKey: 'trustBadges.trustmark', tone: 'amber' }
 }
@@ -31,7 +30,7 @@ const BADGES = {
 const HERO_BADGE_KEYS = {
   'general-repairs': ['insured', 'liability5m', 'sameDay'],
   'full-renovations': ['trustmark', 'insured', 'liability5m'],
-  plumbing: ['gasSafe', 'insured', 'sameDay'],
+  plumbing: ['insured', 'liability5m', 'sameDay'],
   electrical: ['partP', 'insured', 'liability5m'],
   'painting-decorating': ['insured', 'liability5m', 'sameDay'],
   'tiling-flooring': ['insured', 'liability5m', 'sameDay'],
@@ -44,7 +43,7 @@ const HERO_BADGE_KEYS = {
 const GALLERY_FILES = {
   'general-repairs': ['general-repairs-door-fix.jpg', 'general-repairs-shelving-install.jpg', 'general-repairs-toolkit.jpg'],
   'full-renovations': ['renovation-kitchen-refit.jpg', 'renovation-loft-conversion.jpg', 'renovation-bathroom-full.jpg'],
-  plumbing: ['plumbing-pipe-repair.jpg', 'plumbing-boiler-service.jpg', 'plumbing-leak-detection.jpg'],
+  plumbing: ['plumbing-pipe-repair.jpg', 'plumbing-leak-detection.jpg'],
   electrical: ['electrical-consumer-unit.jpg', 'electrical-socket-install.jpg', 'electrical-wiring-check.jpg'],
   'painting-decorating': ['painting-interior-wall.jpg', 'painting-roller-closeup.jpg', 'painting-feature-wall.jpg'],
   'tiling-flooring': ['tiling-bathroom-floor.jpg', 'tiling-kitchen-splashback.jpg', 'tiling-grout-detail.jpg'],

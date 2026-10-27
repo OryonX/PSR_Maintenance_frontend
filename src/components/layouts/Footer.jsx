@@ -44,7 +44,6 @@ function Footer() {
               {t('footer.tagline')}
             </p>
             <div className="flex flex-wrap gap-2">
-              <TrustBadge type="gas-safe" size="sm" />
               <TrustBadge type="part-p" size="sm" />
               <TrustBadge type="insured" size="sm" />
               <TrustBadge type="trustmark" size="sm" />
