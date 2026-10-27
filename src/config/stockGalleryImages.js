@@ -24,11 +24,6 @@ export const STOCK_GALLERY_IMAGES = {
     author: 'Kirsten Miles',
     authorUrl: 'https://unsplash.com/@sirole?utm_source=psr_maintenance&utm_medium=referral'
   },
-  'plumbing-boiler-service.jpg': {
-    url: 'https://images.unsplash.com/photo-1732660513320-a6b489f3fece?ixid=M3wxMTE0NTI0fDB8MXxzZWFyY2h8M3x8Ym9pbGVyJTIwaGVhdGluZyUyMGVuZ2luZWVyfGVufDF8MHx8fDE3OTMwNDU5OTJ8MA&auto=format&fit=crop&w=1200&h=900&q=75',
-    author: 'Marc Zeman',
-    authorUrl: 'https://unsplash.com/@der_zeman?utm_source=psr_maintenance&utm_medium=referral'
-  },
   'plumbing-leak-detection.jpg': {
     url: 'https://images.unsplash.com/photo-1676210134188-4c05dd172f89?ixid=M3wxMTE0NTI0fDB8MXxzZWFyY2h8MXx8cGx1bWJlciUyMHVuZGVyJTIwc2luayUyMHBpcGV8ZW58MXwwfHx8MTc5MzA0NTk5M3ww&auto=format&fit=crop&w=1200&h=900&q=75',
     author: 'Timur Shakerzianov',
