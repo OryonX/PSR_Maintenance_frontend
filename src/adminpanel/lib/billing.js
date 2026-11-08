@@ -65,6 +65,9 @@ export const invoiceRecipientName = (inv) =>
 export const invoiceRecipientEmail = (inv) =>
   inv.bill_to?.email || inv.client?.email || inv.trade_job?.lead?.email || null
 
+export const invoiceRecipientPhone = (inv) =>
+  inv.client?.phone || inv.bill_to?.phone || inv.trade_job?.lead?.phone || null
+
 const ERROR_MESSAGES = {
   billing_profile_incomplete: (missing) => `Complete your company's billing details in Settings: ${missing}`,
   bill_to_incomplete: (missing) => `Client billing details are incomplete: ${missing}`,

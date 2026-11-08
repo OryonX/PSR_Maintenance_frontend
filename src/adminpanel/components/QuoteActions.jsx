@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Download, Send, AlertTriangle } from 'lucide-react'
+import { Download, Send, AlertTriangle, Eye } from 'lucide-react'
 import Modal from '../../ui/Modal.jsx'
 import Button from '../../ui/Button.jsx'
 import { quotesApi } from '../lib/endpoints.js'
@@ -105,13 +105,18 @@ export function useQuoteActions({ label, onDone, onError }) {
 
 const ICON_BTN = 'p-1.5 rounded-lg text-gray-400 transition-colors disabled:opacity-40'
 
-/** Row icons: Download PDF (any status) + Send/Resend (draft/sent). */
-export function QuoteRowActions({ quote, actions }) {
+/** Row icons: Preview (optional) + Download PDF (any status) + Send/Resend (draft/sent). */
+export function QuoteRowActions({ quote, actions, onPreview }) {
   const handle = (fn) => (e) => { e.stopPropagation(); fn() }
   const sendLabel = quoteSendLabel(quote)
 
   return (
     <div className="flex items-center gap-0.5">
+      {onPreview && (
+        <button title="Preview & send" className={`${ICON_BTN} hover:text-navy-900 hover:bg-gray-100`} onClick={handle(() => onPreview(quote))}>
+          <Eye className="w-4 h-4" />
+        </button>
+      )}
       <button title="Download PDF" className={`${ICON_BTN} hover:text-navy-900 hover:bg-gray-100`} disabled={actions.pdfBusyId === quote.id} onClick={handle(() => actions.pdf(quote))}>
         <Download className="w-4 h-4" />
       </button>

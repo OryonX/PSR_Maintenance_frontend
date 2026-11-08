@@ -3,14 +3,24 @@ import { navigate } from 'vike/client/router'
 import { Plus } from 'lucide-react'
 import HelmetSEO from '../../../seo/HelmetSEO.jsx'
 import { clientInvoicesApi, tradeJobsApi, clientsApi } from '../../../adminpanel/lib/endpoints.js'
+import { getAuthToken } from '../../../adminpanel/lib/auth.js'
+import { apiGetPdfBlobUrl, apiSendWhatsAppDocument } from '../../../api/apiActions.js'
 import { CLIENT_INVOICE_STATUSES, STATUS_TONE } from '../../../adminpanel/lib/constants.js'
-import { formatGBP, invoiceErrorMessage, invoiceRecipientName } from '../../../adminpanel/lib/billing.js'
+import {
+  canSendInvoice,
+  formatGBP,
+  invoiceErrorMessage,
+  invoiceRecipientEmail,
+  invoiceRecipientName,
+  invoiceRecipientPhone
+} from '../../../adminpanel/lib/billing.js'
 import { invoicedJobIdSet } from '../../../adminpanel/lib/lineItems.js'
 import { useTenantConfig } from '../../../adminpanel/hooks/useTenantConfig.js'
 import { usePagination } from '../../../adminpanel/hooks/usePagination.js'
 import ReusableTable from '../../../adminpanel/components/Tables/ReusableTable.jsx'
 import ClientInvoiceForm from '../../../adminpanel/components/Forms/ClientInvoiceForm.jsx'
 import { useClientInvoiceActions, ClientInvoiceRowActions } from '../../../adminpanel/components/ClientInvoiceActions.jsx'
+import PdfPreviewModal from '../../../adminpanel/components/PdfPreviewModal.jsx'
 import Pagination from '../../../ui/Pagination.jsx'
 import Badge from '../../../ui/Badge.jsx'
 import Card from '../../../ui/Card.jsx'
@@ -46,6 +56,7 @@ function Page() {
   const [modalOpen, setModalOpen] = useState(false)
   const [formData, setFormData] = useState(null)
   const [formError, setFormError] = useState(null)
+  const [previewInvoice, setPreviewInvoice] = useState(null)
 
   const loadInvoices = ({ silent = false } = {}) => {
     if (!silent) setLoading(true)
@@ -88,7 +99,7 @@ function Page() {
     { key: 'due_date', label: 'Due', hideBelow: 'lg', render: (row) => (
       <span className={isPastDue(row) ? 'text-red-600 font-medium' : ''}>{formatDate(row.due_date)}</span>
     ) },
-    { key: 'actions', label: '', render: (row) => <ClientInvoiceRowActions invoice={row} actions={actions} /> }
+    { key: 'actions', label: '', render: (row) => <ClientInvoiceRowActions invoice={row} actions={actions} onPreview={setPreviewInvoice} /> }
   ]
 
   const loadErrorText = error?.body?.error === 'module_not_available'
@@ -165,6 +176,31 @@ function Page() {
       </Modal>
 
       {actions.modals}
+
+      {previewInvoice && (
+        <PdfPreviewModal
+          isOpen={Boolean(previewInvoice)}
+          onClose={() => setPreviewInvoice(null)}
+          title={previewInvoice.invoice_number}
+          subtitle={[invoiceRecipientName(previewInvoice), invoiceRecipientEmail(previewInvoice), invoiceRecipientPhone(previewInvoice)]
+            .filter((v) => v && v !== '—').join(' · ')}
+          // VITE_API_BASE_URL already ends in /api — path is relative to it.
+          loadPdfUrl={() => apiGetPdfBlobUrl(getAuthToken(), `/client-invoices/${previewInvoice.id}/pdf`)}
+          // Email → backend POST /client-invoices/{id}/send. It sets status=sent,
+          // so a paid invoice must not be re-emailed from here.
+          sendEmail={canSendInvoice(previewInvoice) ? () => clientInvoicesApi.send(previewInvoice.id) : null}
+          // WhatsApp → n8n webhook. Button only rendered when the recipient has a phone.
+          sendWhatsApp={invoiceRecipientPhone(previewInvoice) ? () => apiSendWhatsAppDocument({
+            doc_type: 'client_invoice',
+            doc_id: previewInvoice.id,
+            phone: invoiceRecipientPhone(previewInvoice),
+            name: invoiceRecipientName(previewInvoice) === '—' ? '' : invoiceRecipientName(previewInvoice)
+          }) : null}
+          whatsappAvailable={Boolean(invoiceRecipientPhone(previewInvoice))}
+          formatError={invoiceErrorMessage}
+          onSent={(kind) => { if (kind === 'email') loadInvoices({ silent: true }) }}
+        />
+      )}
     </>
   )
 }

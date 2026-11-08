@@ -18,6 +18,8 @@
   # only in the redirects, not in the client bundle.
   VITE_QUOTE_WEBHOOK_URL = "/n8n/quote"
   VITE_CHAT_WEBHOOK_URL = "/n8n/chat"
+  # Admin CRM: send a quote/invoice PDF by WhatsApp (PdfPreviewModal)
+  VITE_N8N_WHATSAPP_WEBHOOK = "/n8n/whatsapp"
   # Canonical site URL for SEO tags
   VITE_SITE_URL = "https://psrmaintenance.co.uk"
 
@@ -34,6 +36,12 @@
 [[redirects]]
   from = "/n8n/chat"
   to = "https://n8n.diegoalejandrojs.com/webhook/psr-webhook-chat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/n8n/whatsapp"
+  to = "https://n8n.diegoalejandrojs.com/webhook/2711885a-9a24-4301-a4dd-f5a5b100fbd1"
   status = 200
   force = true
 

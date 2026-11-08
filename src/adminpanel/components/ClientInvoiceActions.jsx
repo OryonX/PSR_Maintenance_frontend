@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Download, Send, Pencil, CheckCircle2, Trash2, AlertTriangle } from 'lucide-react'
+import { Download, Send, Pencil, CheckCircle2, Trash2, AlertTriangle, Eye } from 'lucide-react'
 import Modal from '../../ui/Modal.jsx'
 import Button from '../../ui/Button.jsx'
 import Select from '../../ui/Select.jsx'
@@ -142,12 +142,17 @@ export function useClientInvoiceActions({ onDone, onError }) {
 const ICON_BTN = 'p-1.5 rounded-lg text-gray-400 transition-colors disabled:opacity-40'
 
 /** Compact icon buttons for a table row — only the actions the status allows. */
-export function ClientInvoiceRowActions({ invoice, actions }) {
+export function ClientInvoiceRowActions({ invoice, actions, onPreview }) {
   // The row itself navigates to the detail page; buttons must not.
   const handle = (fn) => (e) => { e.stopPropagation(); fn() }
 
   return (
     <div className="flex items-center gap-0.5">
+      {onPreview && (
+        <button title="Preview & send" className={`${ICON_BTN} hover:text-navy-900 hover:bg-gray-100`} onClick={handle(() => onPreview(invoice))}>
+          <Eye className="w-4 h-4" />
+        </button>
+      )}
       <button title="Download PDF" className={`${ICON_BTN} hover:text-navy-900 hover:bg-gray-100`} disabled={actions.pdfBusyId === invoice.id} onClick={handle(() => actions.pdf(invoice))}>
         <Download className="w-4 h-4" />
       </button>

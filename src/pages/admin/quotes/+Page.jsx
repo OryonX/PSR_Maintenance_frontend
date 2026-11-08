@@ -3,12 +3,16 @@ import { navigate } from 'vike/client/router'
 import { Plus } from 'lucide-react'
 import HelmetSEO from '../../../seo/HelmetSEO.jsx'
 import { quotesApi, leadsApi } from '../../../adminpanel/lib/endpoints.js'
+import { getAuthToken } from '../../../adminpanel/lib/auth.js'
+import { apiGetPdfBlobUrl, apiSendWhatsAppDocument } from '../../../api/apiActions.js'
 import { STATUS_TONE } from '../../../adminpanel/lib/constants.js'
+import { quoteErrorMessage } from '../../../adminpanel/lib/billing.js'
 import { useTenantConfig } from '../../../adminpanel/hooks/useTenantConfig.js'
 import { usePagination } from '../../../adminpanel/hooks/usePagination.js'
 import QuoteForm from '../../../adminpanel/components/Forms/QuoteForm.jsx'
 import ReusableTable from '../../../adminpanel/components/Tables/ReusableTable.jsx'
-import { useQuoteActions, QuoteRowActions, quoteSentLabel } from '../../../adminpanel/components/QuoteActions.jsx'
+import { useQuoteActions, QuoteRowActions, quoteSentLabel, quoteSendLabel } from '../../../adminpanel/components/QuoteActions.jsx'
+import PdfPreviewModal from '../../../adminpanel/components/PdfPreviewModal.jsx'
 import Pagination from '../../../ui/Pagination.jsx'
 import Badge from '../../../ui/Badge.jsx'
 import Card from '../../../ui/Card.jsx'
@@ -29,6 +33,7 @@ function Page() {
   const [error, setError] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [notice, setNotice] = useState(null) // { tone, text }
+  const [previewQuote, setPreviewQuote] = useState(null)
 
   const load = ({ silent = false } = {}) => {
     if (!silent) setLoading(true)
@@ -56,7 +61,7 @@ function Page() {
         {quoteSentLabel(row) && <p className="text-xs text-gray-400 mt-1">{quoteSentLabel(row)}</p>}
       </div>
     ) },
-    { key: 'actions', label: '', render: (row) => <QuoteRowActions quote={row} actions={actions} /> }
+    { key: 'actions', label: '', render: (row) => <QuoteRowActions quote={row} actions={actions} onPreview={setPreviewQuote} /> }
   ]
 
   const handleCreate = async (body) => {
@@ -110,6 +115,30 @@ function Page() {
       </Modal>
 
       {actions.modals}
+
+      {previewQuote && (
+        <PdfPreviewModal
+          isOpen={Boolean(previewQuote)}
+          onClose={() => setPreviewQuote(null)}
+          title={previewQuote.quote_number}
+          subtitle={[previewQuote.lead?.name, previewQuote.lead?.email, previewQuote.lead?.phone].filter(Boolean).join(' · ')}
+          // VITE_API_BASE_URL already ends in /api — path is relative to it.
+          loadPdfUrl={() => apiGetPdfBlobUrl(getAuthToken(), `/quotes/${previewQuote.id}/pdf`)}
+          // Email → backend POST /quotes/{id}/send. It sets status=sent, so only
+          // offer it where the list's Send/Resend is offered.
+          sendEmail={quoteSendLabel(previewQuote) ? () => quotesApi.send(previewQuote.id) : null}
+          // WhatsApp → n8n webhook. Button only rendered when the lead has a phone.
+          sendWhatsApp={previewQuote.lead?.phone ? () => apiSendWhatsAppDocument({
+            doc_type: 'quote',
+            doc_id: previewQuote.id,
+            phone: previewQuote.lead.phone,
+            name: previewQuote.lead?.name || ''
+          }) : null}
+          whatsappAvailable={Boolean(previewQuote.lead?.phone)}
+          formatError={quoteErrorMessage}
+          onSent={(kind) => { if (kind === 'email') load({ silent: true }) }}
+        />
+      )}
     </>
   )
 }
