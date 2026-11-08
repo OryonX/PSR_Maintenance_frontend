@@ -194,7 +194,8 @@ function Page() {
             doc_type: 'client_invoice',
             doc_id: previewInvoice.id,
             phone: invoiceRecipientPhone(previewInvoice),
-            name: invoiceRecipientName(previewInvoice) === '—' ? '' : invoiceRecipientName(previewInvoice)
+            name: invoiceRecipientName(previewInvoice) === '—' ? '' : invoiceRecipientName(previewInvoice),
+            token: getAuthToken()
           }) : null}
           whatsappAvailable={Boolean(invoiceRecipientPhone(previewInvoice))}
           formatError={invoiceErrorMessage}

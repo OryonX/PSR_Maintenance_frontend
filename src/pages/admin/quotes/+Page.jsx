@@ -132,7 +132,8 @@ function Page() {
             doc_type: 'quote',
             doc_id: previewQuote.id,
             phone: previewQuote.lead.phone,
-            name: previewQuote.lead?.name || ''
+            name: previewQuote.lead?.name || '',
+            token: getAuthToken()
           }) : null}
           whatsappAvailable={Boolean(previewQuote.lead?.phone)}
           formatError={quoteErrorMessage}

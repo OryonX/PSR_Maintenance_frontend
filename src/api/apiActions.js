@@ -66,7 +66,10 @@ export const apiGetPdfBlobUrl = async (token, path) => {
  * lo envía por la Cloud API de Meta. Sin VITE_N8N_WHATSAPP_WEBHOOK configurada
  * lanza error controlado que el visor muestra como "not configured".
  */
-export const apiSendWhatsAppDocument = async ({ doc_type, doc_id, phone, name }) => {
+// `token`: the logged-in user's Sanctum token. Forwarded as Authorization so
+// n8n downloads the PDF AS THIS USER — the backend scopes quotes/invoices by
+// the token's organization, so a fixed token from another tenant gets a 404.
+export const apiSendWhatsAppDocument = async ({ doc_type, doc_id, phone, name, token }) => {
   const url = import.meta.env.VITE_N8N_WHATSAPP_WEBHOOK;
   if (!url) {
     const err = new Error("WhatsApp sending is not configured");
@@ -76,7 +79,11 @@ export const apiSendWhatsAppDocument = async ({ doc_type, doc_id, phone, name })
 
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: JSON.stringify({ doc_type, doc_id, phone, name }),
   });
 
